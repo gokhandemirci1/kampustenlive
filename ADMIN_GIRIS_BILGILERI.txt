@@ -1,0 +1,34 @@
+============================================
+ADMIN GİRİŞ BİLGİLERİ
+============================================
+
+Email: admin@kampus.org
+Şifre: Kampusten2024!Admin
+
+============================================
+OLUŞTURMA ADIMLARI
+============================================
+
+1. Supabase Dashboard'a gidin
+2. Authentication > Users bölümüne gidin
+3. "Add user" veya "Invite user" butonuna tıklayın
+4. Bilgileri girin:
+   - Email: admin@kampus.org
+   - Password: Kampusten2024!Admin
+   - Auto Confirm User: ✓ (işaretleyin)
+5. "Create user" butonuna tıklayın
+
+6. SQL Editor'de şu SQL'i çalıştırın:
+   (supabase/create_admin_with_password.sql dosyasındaki 
+    "ADIM 2" kısmını çalıştırın)
+
+============================================
+GÜVENLİK NOTU
+============================================
+
+- İlk girişten sonra şifrenizi değiştirmeniz önerilir
+- Bu şifre sadece test/development için
+- Production'da mutlaka değiştirin!
+
+============================================
+
