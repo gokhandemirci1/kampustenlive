@@ -45,9 +45,9 @@ export const fetchAgoraToken = async (channelName, uid, role = 2) => {
     
     // Supabase Edge Function kullanıyorsak, Supabase client ile çağıralım (CORS sorununu çözer)
     if (tokenServerUrl.includes('/functions/v1/')) {
-      const { supabase } = await import('./supabase')
+      const { supabase: supabaseClient } = await import('./supabase')
       
-      const { data, error } = await supabase.functions.invoke('agora-token', {
+      const { data, error } = await supabaseClient.functions.invoke('agora-token', {
         body: {
           channelName,
           uid: uid.toString(),
@@ -56,11 +56,13 @@ export const fetchAgoraToken = async (channelName, uid, role = 2) => {
       })
 
       if (error) {
-        throw new Error(`Token server error: ${error.message}`)
+        console.error('Supabase function invoke error:', error)
+        throw new Error(`Token server error: ${error.message || 'Failed to invoke function'}`)
       }
 
       if (!data || !data.token) {
-        throw new Error('Invalid token response')
+        console.error('Invalid token response:', data)
+        throw new Error('Invalid token response from server')
       }
 
       return data.token
