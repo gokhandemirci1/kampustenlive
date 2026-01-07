@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Clock, Calendar, User, GraduationCap, Video, Play } from 'lucide-react'
 import { supabase, getCurrentUser } from '../../lib/supabase'
 import { handleApiError } from '../../utils/toast'
 
 const MyEnrolledCourses = () => {
+  const navigate = useNavigate()
   const [enrolledCourses, setEnrolledCourses] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -113,9 +115,8 @@ const MyEnrolledCourses = () => {
   }
 
   const handleJoinCourse = (courseId, courseTitle) => {
-    // TODO: Canlı yayın altyapısı buraya bağlanacak
-    console.log('Joining course:', courseId, courseTitle)
-    // Şimdilik placeholder - canlı yayın URL'i veya modal açılacak
+    // Navigate to live class page
+    navigate(`/live/${courseId}`)
   }
 
   if (isLoading) {

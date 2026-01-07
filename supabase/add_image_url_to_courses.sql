@@ -10,3 +10,4 @@ ADD COLUMN IF NOT EXISTS image_url TEXT;
 -- Yorum ekle
 COMMENT ON COLUMN courses.image_url IS 'Kamp için yüklenen görsel URL''si (Supabase Storage)';
 
+

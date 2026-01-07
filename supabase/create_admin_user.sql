@@ -54,3 +54,4 @@ ON CONFLICT (id) DO UPDATE SET
 -- 4. Auto Confirm: ✓
 -- 5. Yukarıdaki INSERT SQL'ini çalıştırın
 
+

@@ -10,3 +10,4 @@ ADD COLUMN IF NOT EXISTS image_url TEXT;
 -- Yorum ekle
 COMMENT ON COLUMN contents.image_url IS 'İçerik için yüklenen görsel URL''si (Supabase Storage)';
 
+

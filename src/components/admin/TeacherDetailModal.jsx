@@ -261,3 +261,4 @@ const TeacherDetailModal = ({ isOpen, onClose, teacher }) => {
 
 export default TeacherDetailModal
 
+

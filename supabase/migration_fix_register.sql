@@ -67,3 +67,4 @@ END $$;
 -- Not: Bu migration'ı çalıştırdıktan sonra kayıt işlemi düzgün çalışmalı
 -- Register sayfası artık profile'ı UPDATE edecek (INSERT yerine)
 
+

@@ -9,6 +9,7 @@ import Register from './pages/Register'
 import StudentDashboard from './pages/StudentDashboard'
 import TeacherDashboard from './pages/TeacherDashboard'
 import AdminDashboard from './pages/AdminDashboard'
+import LiveClass from './pages/LiveClass'
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
             <Route path="/student/dashboard" element={<StudentDashboard />} />
             <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/live/:courseId" element={<LiveClass />} />
+            <Route path="/live/:courseId/:sessionId" element={<LiveClass />} />
           </Routes>
         </main>
         <Footer />

@@ -73,3 +73,4 @@ npm run dev
 - Route'ları kontrol edin
 - Browser'da doğru URL'yi açtığınızdan emin olun
 
+

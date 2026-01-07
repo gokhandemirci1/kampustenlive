@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Clock, CheckCircle, XCircle, AlertCircle, Calendar, Play, Square, Video, Users } from 'lucide-react'
 import { supabase, getCurrentUser } from '../../lib/supabase'
 import { handleApiError, showToast } from '../../utils/toast'
 
 const MyCoursesList = () => {
+  const navigate = useNavigate()
   const [courses, setCourses] = useState([])
   const [enrollments, setEnrollments] = useState({}) // { courseId: [{ student_name, enrolled_at }] }
   const [isLoading, setIsLoading] = useState(true)
@@ -199,28 +201,8 @@ const MyCoursesList = () => {
 
   const handleStartCourse = async (courseId, courseTitle) => {
     try {
-      const { error } = await supabase
-        .from('courses')
-        .update({ is_live: true })
-        .eq('id', courseId)
-
-      if (error) throw error
-
-      showToast.success(`"${courseTitle}" dersi başlatıldı! Öğrenciler artık derse girebilir.`)
-      
-      // Kurs listesini yenile
-      const user = await getCurrentUser()
-      if (user) {
-        const { data, error: fetchError } = await supabase
-          .from('courses')
-          .select('*')
-          .eq('teacher_id', user.id)
-          .order('created_at', { ascending: false })
-
-        if (!fetchError && data) {
-          setCourses(data)
-        }
-      }
+      // Navigate to live class page - it will create session automatically
+      navigate(`/live/${courseId}`)
     } catch (error) {
       handleApiError(error)
     }

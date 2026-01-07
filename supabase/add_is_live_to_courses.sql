@@ -9,3 +9,4 @@ ADD COLUMN IF NOT EXISTS is_live BOOLEAN DEFAULT FALSE;
 -- Add comment
 COMMENT ON COLUMN courses.is_live IS 'Indicates if the course is currently live/started by the teacher';
 
+

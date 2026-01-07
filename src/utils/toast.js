@@ -64,3 +64,4 @@ export const handleApiSuccess = (message = 'İşlem başarıyla tamamlandı.') =
   showToast.success(message)
 }
 
+

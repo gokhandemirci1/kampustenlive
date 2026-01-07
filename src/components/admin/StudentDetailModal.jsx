@@ -275,3 +275,4 @@ const StudentDetailModal = ({ isOpen, onClose, student }) => {
 
 export default StudentDetailModal
 
+

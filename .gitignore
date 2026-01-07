@@ -29,3 +29,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# Supabase
+.temp/
+supabase/.temp/
+
+# Admin credentials
+ADMIN_GIRIS_BILGILERI.txt
+

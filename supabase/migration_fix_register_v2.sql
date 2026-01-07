@@ -21,3 +21,4 @@ CREATE POLICY "Students can insert own details"
 
 -- Not: Artık Register sayfası tüm işlemi yapacak (trigger yok)
 
+
