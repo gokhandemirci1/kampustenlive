@@ -43,7 +43,30 @@ export const fetchAgoraToken = async (channelName, uid, role = 2) => {
     const tokenServerUrl = getTokenServerUrl()
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
     
-    // Get Supabase session for authentication if using Edge Function
+    // Supabase Edge Function kullanıyorsak, Supabase client ile çağıralım (CORS sorununu çözer)
+    if (tokenServerUrl.includes('/functions/v1/')) {
+      const { supabase } = await import('./supabase')
+      
+      const { data, error } = await supabase.functions.invoke('agora-token', {
+        body: {
+          channelName,
+          uid: uid.toString(),
+          role, // 1 = publisher (teacher), 2 = subscriber (student)
+        },
+      })
+
+      if (error) {
+        throw new Error(`Token server error: ${error.message}`)
+      }
+
+      if (!data || !data.token) {
+        throw new Error('Invalid token response')
+      }
+
+      return data.token
+    }
+    
+    // Custom token server kullanıyorsak fetch ile çağıralım
     const { supabase } = await import('./supabase')
     const { data: { session } } = await supabase.auth.getSession()
     
@@ -51,10 +74,8 @@ export const fetchAgoraToken = async (channelName, uid, role = 2) => {
       'Content-Type': 'application/json',
     }
     
-    // Add authorization header if using Supabase Edge Function
-    if (tokenServerUrl.includes('/functions/v1/') && session) {
+    if (session) {
       headers['Authorization'] = `Bearer ${session.access_token}`
-      headers['apikey'] = import.meta.env.VITE_SUPABASE_ANON_KEY
     }
     
     const response = await fetch(tokenServerUrl, {
@@ -63,7 +84,7 @@ export const fetchAgoraToken = async (channelName, uid, role = 2) => {
       body: JSON.stringify({
         channelName,
         uid: uid.toString(),
-        role, // 1 = publisher (teacher), 2 = subscriber (student)
+        role,
       }),
     })
 
