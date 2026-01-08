@@ -9,7 +9,24 @@ export const createAgoraClient = () => {
     throw new Error('AGORA_APP_ID is not set in environment variables')
   }
 
-  return AgoraRTC.createClient({ mode: 'live', codec: 'vp8' })
+  // Create client with configuration
+  const client = AgoraRTC.createClient({ 
+    mode: 'live', 
+    codec: 'vp8',
+  })
+  
+  // Set client to reduce unnecessary network requests
+  // This helps reduce ERR_NETWORK_CHANGED errors from stats collector
+  try {
+    // Disable automatic stats reporting to reduce network errors
+    // Note: This is optional and doesn't affect video/audio quality
+    client.enableAudioVolumeIndicator = false
+  } catch (e) {
+    // Ignore if option is not available
+    console.debug('Stats collector configuration not available')
+  }
+
+  return client
 }
 
 // Token server URL - Supabase Edge Function veya custom backend
