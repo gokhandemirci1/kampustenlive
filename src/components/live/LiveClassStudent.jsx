@@ -42,17 +42,28 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
   useEffect(() => {
     const playLocalVideo = async () => {
       if (isVideoEnabled && localVideoTrack.current && localVideoContainer.current) {
-        try {
-          await localVideoTrack.current.play(localVideoContainer.current)
-          console.log('Student local video played successfully')
-        } catch (err) {
-          console.error('Error playing student local video:', err)
+        const container = localVideoContainer.current
+        if (container.offsetWidth > 0 && container.offsetHeight > 0) {
+          try {
+            await localVideoTrack.current.play(container)
+            console.log('Student local video played successfully via useEffect', {
+              containerWidth: container.offsetWidth,
+              containerHeight: container.offsetHeight
+            })
+          } catch (err) {
+            console.error('Error playing student local video in useEffect:', err)
+          }
+        } else {
+          // Wait for container to be rendered
+          setTimeout(playLocalVideo, 100)
         }
       }
     }
     
-    playLocalVideo()
-  }, [isVideoEnabled, localVideoTrack.current, localVideoContainer.current])
+    // Small delay to ensure DOM is ready
+    const timeoutId = setTimeout(playLocalVideo, 100)
+    return () => clearTimeout(timeoutId)
+  }, [isVideoEnabled])
 
   const initAgora = async () => {
     try {
