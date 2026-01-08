@@ -24,6 +24,36 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
     }
   }, [])
 
+  // Play remote user videos when they're added
+  useEffect(() => {
+    remoteUsers.forEach((user) => {
+      if (user.videoTrack) {
+        const container = document.getElementById(`remote-${user.uid}`)
+        if (container) {
+          user.videoTrack.play(container).catch(err => {
+            console.error('Error playing remote video:', err)
+          })
+        }
+      }
+    })
+  }, [remoteUsers])
+
+  // Play local video when enabled and container is ready
+  useEffect(() => {
+    const playLocalVideo = async () => {
+      if (isVideoEnabled && localVideoTrack.current && localVideoContainer.current) {
+        try {
+          await localVideoTrack.current.play(localVideoContainer.current)
+          console.log('Student local video played successfully')
+        } catch (err) {
+          console.error('Error playing student local video:', err)
+        }
+      }
+    }
+    
+    playLocalVideo()
+  }, [isVideoEnabled, localVideoTrack.current, localVideoContainer.current])
+
   const initAgora = async () => {
     try {
       const user = await getCurrentUser()
@@ -88,6 +118,16 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
       setRemoteUsers((prev) => {
         const exists = prev.find((u) => u.uid === user.uid)
         if (!exists) {
+          // Play video track when user is added
+          setTimeout(() => {
+            const container = document.getElementById(`remote-${user.uid}`)
+            if (container && user.videoTrack) {
+              user.videoTrack.play(container).catch(err => {
+                console.error('Error playing remote video:', err)
+              })
+              console.log('Remote user video track played:', user.uid)
+            }
+          }, 100)
           return [...prev, user]
         }
         return prev
@@ -115,8 +155,10 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
         encoderConfig: '480p', // Lower resolution for students
       })
 
+      // Play video in container
       if (localVideoContainer.current) {
-        localVideoTrack.current.play(localVideoContainer.current)
+        await localVideoTrack.current.play(localVideoContainer.current)
+        console.log('Student local video track played successfully')
       }
 
       await client.publish(localVideoTrack.current)
@@ -298,18 +340,7 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
         </button>
       </div>
 
-      {/* Render remote user videos */}
-      {remoteUsers.map((user) => {
-        if (user.videoTrack) {
-          setTimeout(() => {
-            const container = document.getElementById(`remote-${user.uid}`)
-            if (container) {
-              user.videoTrack.play(container)
-            }
-          }, 100)
-        }
-        return null
-      })}
+      {/* Remote user videos are rendered above and played via useEffect */}
     </div>
   )
 }

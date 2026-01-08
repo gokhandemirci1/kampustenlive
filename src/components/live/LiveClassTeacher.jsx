@@ -26,6 +26,29 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
     }
   }, [])
 
+  // Play local video when container is ready
+  useEffect(() => {
+    if (localVideoTrack.current && localVideoContainer.current && isPublished) {
+      localVideoTrack.current.play(localVideoContainer.current).catch(err => {
+        console.error('Error playing local video:', err)
+      })
+    }
+  }, [isPublished, localVideoContainer.current])
+
+  // Play remote user videos when they're added
+  useEffect(() => {
+    remoteUsers.forEach((user) => {
+      if (user.videoTrack) {
+        const container = document.getElementById(`remote-${user.uid}`)
+        if (container) {
+          user.videoTrack.play(container).catch(err => {
+            console.error('Error playing remote video:', err)
+          })
+        }
+      }
+    })
+  }, [remoteUsers])
+
   const initAgora = async () => {
     try {
       const user = await getCurrentUser()
@@ -121,24 +144,48 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
 
   const createLocalTracks = async () => {
     try {
+      console.log('Creating local tracks...')
+      
       // Create video track
       localVideoTrack.current = await AgoraRTC.createCameraVideoTrack({
         encoderConfig: '720p',
       })
+      console.log('Video track created:', localVideoTrack.current)
       
       // Create audio track
       localAudioTrack.current = await AgoraRTC.createMicrophoneAudioTrack()
+      console.log('Audio track created:', localAudioTrack.current)
 
-      // Play local video
-      if (localVideoContainer.current) {
-        localVideoTrack.current.play(localVideoContainer.current)
+      // Wait for container to be available and play video
+      const playVideo = async () => {
+        if (localVideoContainer.current && localVideoTrack.current) {
+          try {
+            await localVideoTrack.current.play(localVideoContainer.current)
+            console.log('Local video track played successfully in container')
+          } catch (playError) {
+            console.error('Error playing video in container:', playError)
+            // Retry after a short delay
+            setTimeout(playVideo, 200)
+          }
+        } else {
+          console.log('Container or track not ready, retrying...', {
+            container: !!localVideoContainer.current,
+            track: !!localVideoTrack.current
+          })
+          // Retry after a short delay if container not ready
+          setTimeout(playVideo, 200)
+        }
       }
+      
+      // Wait a bit for container to be rendered
+      setTimeout(playVideo, 300)
 
       setIsVideoEnabled(true)
       setIsAudioEnabled(true)
     } catch (error) {
       console.error('Error creating local tracks:', error)
-      showToast.error('Kamera veya mikrofon erişimi reddedildi')
+      showToast.error('Kamera veya mikrofon erişimi reddedildi: ' + error.message)
+      throw error
     }
   }
 
@@ -163,10 +210,22 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
       setRemoteUsers((prev) => {
         const exists = prev.find((u) => u.uid === user.uid)
         if (!exists) {
+          // Add user and play video track
+          setTimeout(() => {
+            const container = document.getElementById(`remote-${user.uid}`)
+            if (container && user.videoTrack) {
+              user.videoTrack.play(container)
+              console.log('Remote user video track played:', user.uid)
+            }
+          }, 100)
           return [...prev, user]
         }
         return prev
       })
+    }
+
+    if (mediaType === 'audio') {
+      user.audioTrack?.play()
     }
   }
 
