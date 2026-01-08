@@ -131,23 +131,56 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
   }
 
   const handleUserPublished = async (user, mediaType) => {
-    console.log('Student: User published', { uid: user.uid, mediaType })
-    await client.subscribe(user, mediaType)
-    console.log('Student: Subscribed to user', user.uid)
-
-    if (mediaType === 'video') {
-      setRemoteUsers((prev) => {
-        const exists = prev.find((u) => u.uid === user.uid)
-        if (!exists) {
-          console.log('Student: Adding remote user to list', user.uid)
-          return [...prev, user]
-        }
-        return prev
+    try {
+      console.log('Student: User published', { 
+        uid: user.uid, 
+        mediaType,
+        hasVideo: user.hasVideo,
+        hasAudio: user.hasAudio,
+        videoTrack: !!user.videoTrack,
+        audioTrack: !!user.audioTrack
       })
-    }
+      
+      // Subscribe to the user's track
+      await client.subscribe(user, mediaType)
+      console.log('Student: Subscribed to user', user.uid, 'mediaType:', mediaType)
 
-    if (mediaType === 'audio') {
-      user.audioTrack?.play()
+      // Wait a bit for track to be available after subscription
+      await new Promise(resolve => setTimeout(resolve, 100))
+
+      if (mediaType === 'video') {
+        // Check if video track is now available
+        if (user.videoTrack) {
+          setRemoteUsers((prev) => {
+            const exists = prev.find((u) => u.uid === user.uid)
+            if (!exists) {
+              console.log('Student: Adding remote user to list with video track', user.uid)
+              return [...prev, user]
+            } else {
+              // Update existing user with new track
+              console.log('Student: Updating existing remote user with video track', user.uid)
+              return prev.map(u => u.uid === user.uid ? user : u)
+            }
+          })
+        } else {
+          console.warn('Student: Video track not available after subscription for user', user.uid)
+        }
+      }
+
+      if (mediaType === 'audio') {
+        if (user.audioTrack) {
+          try {
+            await user.audioTrack.play()
+            console.log('Student: Audio track played for user', user.uid)
+          } catch (error) {
+            console.error('Error playing audio track:', error)
+          }
+        } else {
+          console.warn('Student: Audio track not available after subscription for user', user.uid)
+        }
+      }
+    } catch (error) {
+      console.error('Error in handleUserPublished:', error)
     }
   }
   
