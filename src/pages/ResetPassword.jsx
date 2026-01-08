@@ -12,77 +12,54 @@ const ResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [isCheckingSession, setIsCheckingSession] = useState(true)
-  const [isValidSession, setIsValidSession] = useState(false)
 
   useEffect(() => {
-    // Supabase'in URL'deki token'ı parse etmesi için biraz bekle
+    // Supabase otomatik olarak URL'deki token'ları parse eder
+    // onAuthStateChange event'ini dinleyerek session'ın oluşmasını bekleyelim
     const checkSession = async () => {
-      setIsCheckingSession(true)
+      // Önce mevcut session'ı kontrol et
+      const { data: { session } } = await supabase.auth.getSession()
       
-      // URL'de hash fragment var mı kontrol et (Supabase token'ı burada gelir)
-      const hashParams = new URLSearchParams(window.location.hash.substring(1))
-      const accessToken = hashParams.get('access_token')
-      const typeParam = hashParams.get('type')
-      
-      console.log('Reset password URL params:', { accessToken, typeParam, hash: window.location.hash })
-      
-      // Eğer URL'de token varsa, Supabase'in işlemesi için bekle
-      if (accessToken) {
-        // Supabase'in session'ı oluşturması için kısa bir süre bekle
-        await new Promise(resolve => setTimeout(resolve, 1000))
-      }
-      
-      // Session'ı kontrol et
-      const { data: { session }, error } = await supabase.auth.getSession()
-      
-      console.log('Session check:', { session: !!session, error })
-      
-      if (error) {
-        console.error('Session error:', error)
-        showToast.error('Geçersiz veya süresi dolmuş link. Lütfen yeni bir şifre sıfırlama isteği yapın.')
-        setTimeout(() => {
-          navigate(`/forgot-password/${type}`)
-        }, 2000)
+      if (session) {
         setIsCheckingSession(false)
         return
       }
-      
-      if (!session) {
-        // Session yoksa, belki hala yükleniyor - biraz daha bekle
-        await new Promise(resolve => setTimeout(resolve, 2000))
-        const { data: { session: retrySession } } = await supabase.auth.getSession()
+
+      // Session yoksa, auth state change event'ini dinle
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+        console.log('Auth state changed:', event, session)
         
-        if (!retrySession) {
-          showToast.error('Geçersiz veya süresi dolmuş link. Lütfen yeni bir şifre sıfırlama isteği yapın.')
-          setTimeout(() => {
-            navigate(`/forgot-password/${type}`)
-          }, 2000)
-          setIsCheckingSession(false)
-          return
+        if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') {
+          if (session) {
+            setIsCheckingSession(false)
+          }
+        } else if (event === 'TOKEN_REFRESHED') {
+          const { data: { session: newSession } } = await supabase.auth.getSession()
+          if (newSession) {
+            setIsCheckingSession(false)
+          }
         }
-        
-        setIsValidSession(true)
-      } else {
-        setIsValidSession(true)
+      })
+
+      // 3 saniye sonra hala session yoksa hata göster
+      setTimeout(async () => {
+        const { data: { session: finalSession } } = await supabase.auth.getSession()
+        if (!finalSession) {
+          console.error('No session found after waiting')
+          showToast.error('Geçersiz veya süresi dolmuş link. Lütfen yeni bir şifre sıfırlama isteği yapın.')
+          navigate(`/forgot-password/${type}`)
+        } else {
+          setIsCheckingSession(false)
+        }
+        subscription.unsubscribe()
+      }, 3000)
+
+      return () => {
+        subscription.unsubscribe()
       }
-      
-      setIsCheckingSession(false)
     }
-    
+
     checkSession()
-    
-    // Auth state değişikliklerini dinle
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state change:', event, session ? 'has session' : 'no session')
-      if (event === 'PASSWORD_RECOVERY' && session) {
-        setIsValidSession(true)
-        setIsCheckingSession(false)
-      }
-    })
-    
-    return () => {
-      subscription.unsubscribe()
-    }
   }, [type, navigate])
 
   const handleSubmit = async (e) => {
@@ -131,6 +108,20 @@ const ResetPassword = () => {
     }
   }
 
+  // Session kontrolü yapılırken loading göster
+  if (isCheckingSession) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md">
+          <div className="bg-white rounded-lg border border-gray-200/50 p-8 shadow-sm text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+            <p className="text-gray-500 font-light">Link doğrulanıyor...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
@@ -155,31 +146,7 @@ const ResetPassword = () => {
 
         {/* Form Card */}
         <div className="bg-white rounded-lg border border-gray-200/50 p-8 shadow-sm">
-          {isCheckingSession ? (
-            <div className="text-center py-8">
-              <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
-              </div>
-              <h2 className="text-xl font-light text-gray-900 mb-2">Bağlantı kontrol ediliyor...</h2>
-              <p className="text-sm text-gray-500 font-light">
-                Lütfen bekleyin
-              </p>
-            </div>
-          ) : !isValidSession ? (
-            <div className="text-center py-8">
-              <h2 className="text-xl font-light text-gray-900 mb-2">Geçersiz Link</h2>
-              <p className="text-sm text-gray-500 font-light mb-6">
-                Bu link geçersiz veya süresi dolmuş. Lütfen yeni bir şifre sıfırlama isteği yapın.
-              </p>
-              <Link
-                to={`/forgot-password/${type}`}
-                className="inline-flex items-center space-x-2 text-primary-500 hover:text-primary-600 font-light transition-colors"
-              >
-                <ArrowLeft size={16} />
-                <span>Yeni şifre sıfırlama isteği yap</span>
-              </Link>
-            </div>
-          ) : isSuccess ? (
+          {isSuccess ? (
             <div className="text-center py-8">
               <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="text-green-500" size={32} />
