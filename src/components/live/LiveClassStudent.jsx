@@ -145,18 +145,32 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
 
       // IMPORTANT: Add event listeners BEFORE joining to catch early events
       // Listen for remote users (teacher and other students)
+      console.log('Student: Setting up event listeners...')
       agoraClient.on('user-published', handleUserPublished)
       agoraClient.on('user-unpublished', handleUserUnpublished)
       agoraClient.on('user-joined', handleUserJoined)
       agoraClient.on('user-left', handleUserLeft)
+      console.log('Student: Event listeners registered')
+
+      // Also listen for connection state changes
+      agoraClient.on('connection-state-change', (curState, revState) => {
+        console.log('Student: Connection state changed', { curState, revState })
+      })
 
       // Join channel - App ID must match the one used to generate token
+      console.log('Student: Joining channel...', { appId, channelName, uid: rtcUid.current })
       await agoraClient.join(appId, channelName, token, rtcUid.current)
       console.log('Student: Successfully joined channel')
+      
+      // Log current connection state
+      console.log('Student: Connection state after join:', agoraClient.connectionState)
+      console.log('Student: Current remote users count:', agoraClient.remoteUsers?.length || 0)
 
       // After joining, check for already published users
       // Sometimes users publish before we join, so we need to check manually
+      console.log('Student: Checking for existing published users...')
       await checkForExistingPublishedUsers(agoraClient)
+      console.log('Student: Finished checking for existing published users')
 
       setIsLoading(false)
       showToast.success('Canlı derse katıldınız!')
@@ -169,18 +183,28 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
 
   const handleUserPublished = async (user, mediaType) => {
     try {
-      console.log('Student: User published', { 
+      console.log('Student: ⚡ USER PUBLISHED EVENT TRIGGERED ⚡', { 
         uid: user.uid, 
         mediaType,
         hasVideo: user.hasVideo,
         hasAudio: user.hasAudio,
         videoTrack: !!user.videoTrack,
-        audioTrack: !!user.audioTrack
+        audioTrack: !!user.audioTrack,
+        connectionState: client?.connectionState
       })
       
       // Subscribe to the user's track
+      console.log('Student: Attempting to subscribe to user', user.uid, 'mediaType:', mediaType)
       await client.subscribe(user, mediaType)
-      console.log('Student: Subscribed to user', user.uid, 'mediaType:', mediaType)
+      console.log('Student: ✅ Successfully subscribed to user', user.uid, 'mediaType:', mediaType)
+      
+      // Log track status after subscription
+      console.log('Student: Track status after subscription', {
+        uid: user.uid,
+        mediaType,
+        videoTrack: !!user.videoTrack,
+        audioTrack: !!user.audioTrack
+      })
 
       if (mediaType === 'video') {
         // Add user to state immediately after subscribing, regardless of track availability
@@ -229,7 +253,13 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
   }
 
   const handleUserJoined = (user) => {
-    console.log('Student: User joined', { uid: user.uid })
+    console.log('Student: ⚡ USER JOINED EVENT TRIGGERED ⚡', { 
+      uid: user.uid,
+      hasVideo: user.hasVideo,
+      hasAudio: user.hasAudio,
+      videoTrack: !!user.videoTrack,
+      audioTrack: !!user.audioTrack
+    })
     // When a user joins, check if they already have published tracks
     // This handles the case where user published before we joined
     setTimeout(async () => {
@@ -242,17 +272,23 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
           console.log('Student: Checking joined user for tracks', {
             uid: user.uid,
             hasVideo,
-            hasAudio
+            hasAudio,
+            videoTrack: !!user.videoTrack,
+            audioTrack: !!user.audioTrack
           })
           
           if (hasVideo || hasAudio) {
             // Manually trigger subscription if tracks are already available
             if (hasVideo) {
+              console.log('Student: Manually subscribing to video for joined user', user.uid)
               await handleUserPublished(user, 'video')
             }
             if (hasAudio) {
+              console.log('Student: Manually subscribing to audio for joined user', user.uid)
               await handleUserPublished(user, 'audio')
             }
+          } else {
+            console.log('Student: Joined user has no tracks yet', user.uid)
           }
         } catch (error) {
           console.error('Error checking joined user tracks:', error)

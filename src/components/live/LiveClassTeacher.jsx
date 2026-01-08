@@ -147,7 +147,11 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
       
       // Publish tracks to channel
       await publishTracks(agoraClient)
-      console.log('Tracks published successfully')
+      console.log('✅ Teacher: Tracks published successfully')
+      
+      // Log current remote users to verify publish
+      console.log('Teacher: Current connection state:', agoraClient.connectionState)
+      console.log('Teacher: Current remote users count:', agoraClient.remoteUsers?.length || 0)
 
       // Update is_live status in database
       if (courseId) {
