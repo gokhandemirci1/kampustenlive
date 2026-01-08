@@ -42,12 +42,12 @@ serve(async (req) => {
     }
 
     // Verify Supabase auth token
-    const token = authHeader.replace('Bearer ', '')
+    const authToken = authHeader.replace('Bearer ', '')
     const userResponse = await fetch(
       `${Deno.env.get('SUPABASE_URL')}/auth/v1/user`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authToken}`,
           apikey: Deno.env.get('SUPABASE_ANON_KEY') || '',
         },
       }
@@ -79,10 +79,12 @@ serve(async (req) => {
     }
 
     // Generate RTC token
-    const token = generateRtcToken(channelName, uid, role || 2)
+    const agoraToken = generateRtcToken(channelName, uid, role || 2)
+
+    console.log('Token generated successfully, length:', agoraToken.length)
 
     return new Response(
-      JSON.stringify({ token, appId: AGORA_APP_ID }),
+      JSON.stringify({ token: agoraToken, appId: AGORA_APP_ID }),
       { 
         status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -101,14 +103,40 @@ function generateRtcToken(channelName: string, uid: string | number, role: numbe
   const appId = AGORA_APP_ID
   const appCertificate = AGORA_APP_CERTIFICATE
   
-  // Token expiration time (24 hours)
-  const expirationTimeInSeconds = Math.floor(Date.now() / 1000) + 3600 * 24
+  // Token expiration time (24 hours from now)
+  const currentTimestamp = Math.floor(Date.now() / 1000)
+  const expirationTimeInSeconds = currentTimestamp + (3600 * 24)
   
   // Determine Agora role
   const agoraRole = role === 1 ? RtcRole.PUBLISHER : RtcRole.SUBSCRIBER
   
-  // Convert uid to number (0 means auto-generate UID)
-  const uidNumber = typeof uid === 'string' ? parseInt(uid) || 0 : uid || 0
+  // Convert uid to number - if it's a string, try to convert to number
+  // If conversion fails or is 0, use 0 (Agora will auto-generate)
+  let uidNumber: number
+  if (typeof uid === 'string') {
+    // Try to parse as number, if it's a UUID substring, use 0
+    const parsed = parseInt(uid, 10)
+    uidNumber = isNaN(parsed) ? 0 : parsed
+  } else {
+    uidNumber = uid || 0
+  }
+  
+  // Validate inputs
+  if (!appId || !appCertificate) {
+    throw new Error('Missing Agora App ID or Certificate')
+  }
+  
+  if (!channelName) {
+    throw new Error('Missing channel name')
+  }
+  
+  console.log('Generating token with:', {
+    appId: appId.substring(0, 8) + '...',
+    channelName,
+    uid: uidNumber,
+    role: agoraRole,
+    expirationTime: expirationTimeInSeconds
+  })
   
   // Generate RTC token using Agora's official token builder
   const token = RtcTokenBuilder.buildTokenWithUid(
@@ -119,6 +147,10 @@ function generateRtcToken(channelName: string, uid: string | number, role: numbe
     agoraRole,
     expirationTimeInSeconds
   )
+  
+  if (!token || token.length === 0) {
+    throw new Error('Token generation failed - empty token returned')
+  }
   
   return token
 }

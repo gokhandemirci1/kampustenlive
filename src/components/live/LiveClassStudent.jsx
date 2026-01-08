@@ -31,7 +31,11 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
         throw new Error('Kullanıcı girişi gerekli')
       }
 
-      rtcUid.current = user.id.substring(0, 8)
+      // UID için user ID'den numeric bir değer oluştur (Agora numeric UID bekliyor)
+      const userIdHash = user.id.split('').reduce((acc, char) => {
+        return ((acc << 5) - acc) + char.charCodeAt(0)
+      }, 0)
+      rtcUid.current = Math.abs(userIdHash) % 2147483647 // Max 32-bit signed int
 
       // Create Agora client
       const agoraClient = createAgoraClient()
