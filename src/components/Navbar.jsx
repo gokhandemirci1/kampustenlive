@@ -74,7 +74,7 @@ const Navbar = () => {
   ]
 
   return (
-    <nav className="bg-[#ffeb99] border-b border-[#ffd700]/30 sticky top-0 z-50">
+    <nav className="bg-primary-500 border-b border-primary-600/30 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -84,8 +84,8 @@ const Navbar = () => {
               alt="Kampusten.org Logo" 
               className="h-10 w-10 transition-transform duration-200 group-hover:scale-105"
             />
-            <div className="text-xl font-bold text-gray-900 hidden sm:block">
-              Kampusten<span className="text-gray-700">.org</span>
+            <div className="text-xl font-bold text-white hidden sm:block">
+              Kampusten<span className="text-white/90">.org</span>
             </div>
           </Link>
 
@@ -93,7 +93,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             <Link
               to="/about"
-              className="text-gray-900 hover:text-gray-700 transition-colors duration-200 font-medium"
+              className="text-white hover:text-white/80 transition-colors duration-200 font-medium"
             >
               Hakkımızda
             </Link>
@@ -114,7 +114,7 @@ const Navbar = () => {
                     <div className="relative" ref={dropdownRef}>
                       <button
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        className="flex items-center space-x-1 text-gray-900 hover:text-gray-700 transition-colors duration-200 font-medium"
+                        className="flex items-center space-x-1 text-white hover:text-white/80 transition-colors duration-200 font-medium"
                       >
                         <span>Giriş Yap</span>
                         <ChevronDown
@@ -145,7 +145,7 @@ const Navbar = () => {
                   /* Logout Button */
                   <button
                     onClick={handleLogout}
-                    className="flex items-center space-x-2 text-gray-900 hover:text-red-600 transition-colors duration-200 font-medium"
+                    className="flex items-center space-x-2 text-white hover:text-red-200 transition-colors duration-200 font-medium"
                   >
                     <LogOut size={18} />
                     <span>Çıkış Yap</span>
@@ -158,7 +158,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-gray-900 hover:text-gray-700 transition-colors p-2 -mr-2"
+            className="md:hidden text-white hover:text-white/80 transition-colors p-2 -mr-2"
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >
@@ -176,7 +176,7 @@ const Navbar = () => {
             <Link
               to="/about"
               onClick={() => setIsMenuOpen(false)}
-              className="block px-4 text-gray-900 hover:text-gray-700 transition-colors duration-200 font-medium"
+              className="block px-4 text-white hover:text-white/80 transition-colors duration-200 font-medium"
             >
               Hakkımızda
             </Link>
@@ -186,13 +186,13 @@ const Navbar = () => {
                 {!isLoggedIn ? (
                   <>
                     <div className="space-y-2 px-4">
-                      <div className="text-sm font-semibold text-gray-700 mb-2">Kayıt Ol</div>
+                      <div className="text-sm font-semibold text-white/80 mb-2">Kayıt Ol</div>
                       {registerOptions.map((option) => (
                         <Link
                           key={option.type}
                           to={option.path}
                           onClick={() => setIsMenuOpen(false)}
-                          className="block px-3 py-2.5 text-gray-900 hover:text-gray-700 hover:bg-white/50 rounded-lg transition-colors duration-200"
+                          className="block px-3 py-2.5 text-white hover:text-white/90 hover:bg-white/20 rounded-lg transition-colors duration-200"
                         >
                           {option.label}
                         </Link>
@@ -200,13 +200,13 @@ const Navbar = () => {
                     </div>
 
                     <div className="space-y-2 px-4">
-                      <div className="text-sm font-semibold text-gray-700 mb-2">Giriş Yap</div>
+                      <div className="text-sm font-semibold text-white/80 mb-2">Giriş Yap</div>
                       {loginOptions.map((option) => (
                         <Link
                           key={option.type}
                           to={option.path}
                           onClick={() => setIsMenuOpen(false)}
-                          className="block px-3 py-2.5 text-gray-900 hover:text-gray-700 hover:bg-white/50 rounded-lg transition-colors duration-200"
+                          className="block px-3 py-2.5 text-white hover:text-white/90 hover:bg-white/20 rounded-lg transition-colors duration-200"
                         >
                           {option.label}
                         </Link>
@@ -216,7 +216,7 @@ const Navbar = () => {
                 ) : (
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center space-x-2 px-4 py-2.5 text-gray-900 hover:text-red-600 hover:bg-white/50 rounded-lg transition-colors duration-200"
+                    className="w-full flex items-center space-x-2 px-4 py-2.5 text-white hover:text-red-200 hover:bg-white/20 rounded-lg transition-colors duration-200"
                   >
                     <LogOut size={18} />
                     <span>Çıkış Yap</span>
