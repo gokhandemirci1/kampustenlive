@@ -47,11 +47,25 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
       // Fetch token with subscriber role (audience)
       const tokenResponse = await fetchAgoraToken(channelName, rtcUid.current, AGORA_ROLES.SUBSCRIBER)
       const token = typeof tokenResponse === 'string' ? tokenResponse : tokenResponse.token
-      const appId = typeof tokenResponse === 'string' ? AGORA_APP_ID : (tokenResponse.appId || AGORA_APP_ID)
+      const appIdFromServer = typeof tokenResponse === 'string' ? null : tokenResponse.appId
+      
+      // Use App ID from server response, fallback to env variable
+      const appId = appIdFromServer || AGORA_APP_ID
 
-      console.log('Student joining channel with:', { appId, channelName, uid: rtcUid.current, tokenLength: token.length })
+      console.log('Student Token Response:', { 
+        tokenLength: token?.length, 
+        appIdFromServer, 
+        appIdFromEnv: AGORA_APP_ID,
+        finalAppId: appId,
+        uid: rtcUid.current,
+        channelName 
+      })
 
-      // Join channel
+      if (!token) {
+        throw new Error('Token is empty or invalid')
+      }
+
+      // Join channel - App ID must match the one used to generate token
       await agoraClient.join(appId, channelName, token, rtcUid.current)
 
       setIsLoading(false)

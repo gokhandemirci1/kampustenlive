@@ -82,9 +82,15 @@ serve(async (req) => {
     const agoraToken = generateRtcToken(channelName, uid, role || 2)
 
     console.log('Token generated successfully, length:', agoraToken.length)
+    console.log('Returning response with App ID:', AGORA_APP_ID.substring(0, 8) + '...')
 
     return new Response(
-      JSON.stringify({ token: agoraToken, appId: AGORA_APP_ID }),
+      JSON.stringify({ 
+        token: agoraToken, 
+        appId: AGORA_APP_ID,
+        channelName,
+        uid: typeof uid === 'string' ? parseInt(uid, 10) || 0 : uid || 0
+      }),
       { 
         status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 

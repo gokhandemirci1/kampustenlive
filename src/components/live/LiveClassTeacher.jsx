@@ -50,13 +50,53 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
 
       // Fetch token
       const tokenResponse = await fetchAgoraToken(channelName, rtcUid.current, AGORA_ROLES.PUBLISHER)
+      console.log('Raw token response:', tokenResponse)
+      
       const token = typeof tokenResponse === 'string' ? tokenResponse : tokenResponse.token
-      const appId = typeof tokenResponse === 'string' ? AGORA_APP_ID : (tokenResponse.appId || AGORA_APP_ID)
+      const appIdFromServer = typeof tokenResponse === 'string' ? null : tokenResponse.appId
+      
+      // Use App ID from server response, fallback to env variable
+      const appId = appIdFromServer || AGORA_APP_ID
 
-      console.log('Joining channel with:', { appId, channelName, uid: rtcUid.current, tokenLength: token.length })
+      console.log('Join Parameters:', { 
+        tokenType: typeof token,
+        tokenLength: token?.length, 
+        tokenPreview: token ? token.substring(0, 30) + '...' : 'null',
+        appIdFromServer, 
+        appIdFromEnv: AGORA_APP_ID,
+        finalAppId: appId,
+        uid: rtcUid.current,
+        uidType: typeof rtcUid.current,
+        channelName,
+        channelNameLength: channelName?.length
+      })
 
-      // Join channel
-      await agoraClient.join(appId, channelName, token, rtcUid.current)
+      if (!token || typeof token !== 'string') {
+        console.error('Invalid token:', token)
+        throw new Error('Token is empty or invalid')
+      }
+
+      if (!appId || typeof appId !== 'string') {
+        console.error('Invalid App ID:', appId)
+        throw new Error('App ID is empty or invalid')
+      }
+
+      // Join channel - App ID must match the one used to generate token
+      console.log('Attempting to join channel...')
+      try {
+        await agoraClient.join(appId, channelName, token, rtcUid.current)
+        console.log('Successfully joined channel!')
+      } catch (joinError) {
+        console.error('Join error details:', {
+          error: joinError,
+          appId,
+          channelName,
+          uid: rtcUid.current,
+          tokenLength: token.length,
+          tokenStart: token.substring(0, 20)
+        })
+        throw joinError
+      }
 
       // Create and publish local tracks
       await createLocalTracks()
