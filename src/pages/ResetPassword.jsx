@@ -11,55 +11,45 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
-  const [isCheckingSession, setIsCheckingSession] = useState(true)
 
   useEffect(() => {
-    // Supabase otomatik olarak URL'deki token'ları parse eder
-    // onAuthStateChange event'ini dinleyerek session'ın oluşmasını bekleyelim
-    const checkSession = async () => {
-      // Önce mevcut session'ı kontrol et
-      const { data: { session } } = await supabase.auth.getSession()
+    // Supabase auth state change'i dinle - password recovery için
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state change:', event, session)
       
-      if (session) {
-        setIsCheckingSession(false)
-        return
+      if (event === 'PASSWORD_RECOVERY') {
+        // Password recovery token geldi, session oluşturuldu
+        console.log('Password recovery event detected')
       }
+    })
 
-      // Session yoksa, auth state change event'ini dinle
-      const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-        console.log('Auth state changed:', event, session)
-        
-        if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') {
-          if (session) {
-            setIsCheckingSession(false)
-          }
-        } else if (event === 'TOKEN_REFRESHED') {
-          const { data: { session: newSession } } = await supabase.auth.getSession()
-          if (newSession) {
-            setIsCheckingSession(false)
-          }
-        }
-      })
+    // URL hash'inde recovery token var mı kontrol et
+    const hashParams = new URLSearchParams(window.location.hash.substring(1))
+    const accessToken = hashParams.get('access_token')
+    const typeParam = hashParams.get('type')
 
-      // 3 saniye sonra hala session yoksa hata göster
+    console.log('URL hash params:', { accessToken: !!accessToken, typeParam })
+
+    // Eğer hash'te token yoksa ve session da yoksa, biraz bekle
+    // Supabase token'ı işliyor olabilir
+    if (!accessToken) {
       setTimeout(async () => {
-        const { data: { session: finalSession } } = await supabase.auth.getSession()
-        if (!finalSession) {
-          console.error('No session found after waiting')
+        const { data: { session }, error } = await supabase.auth.getSession()
+        console.log('Delayed session check:', { hasSession: !!session, error })
+        
+        if (!session && !accessToken) {
+          // Token yok ve session da yok, muhtemelen yanlış link
           showToast.error('Geçersiz veya süresi dolmuş link. Lütfen yeni bir şifre sıfırlama isteği yapın.')
-          navigate(`/forgot-password/${type}`)
-        } else {
-          setIsCheckingSession(false)
+          setTimeout(() => {
+            navigate(`/forgot-password/${type}`)
+          }, 2000)
         }
-        subscription.unsubscribe()
-      }, 3000)
-
-      return () => {
-        subscription.unsubscribe()
-      }
+      }, 2000)
     }
 
-    checkSession()
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [type, navigate])
 
   const handleSubmit = async (e) => {
@@ -74,6 +64,13 @@ const ResetPassword = () => {
 
       if (password !== confirmPassword) {
         throw new Error('Şifreler eşleşmiyor')
+      }
+
+      // Önce session kontrolü yap
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+      
+      if (!session) {
+        throw new Error('Geçersiz veya süresi dolmuş link. Lütfen yeni bir şifre sıfırlama isteği yapın.')
       }
 
       // Update password
@@ -106,20 +103,6 @@ const ResetPassword = () => {
       default:
         return 'Yeni Şifre Belirle'
     }
-  }
-
-  // Session kontrolü yapılırken loading göster
-  if (isCheckingSession) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md">
-          <div className="bg-white rounded-lg border border-gray-200/50 p-8 shadow-sm text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
-            <p className="text-gray-500 font-light">Link doğrulanıyor...</p>
-          </div>
-        </div>
-      </div>
-    )
   }
 
   return (

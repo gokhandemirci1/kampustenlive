@@ -85,7 +85,7 @@ KAMPÜSTEN - Şifre Sıfırlama
 <p>Saygılarımızla,<br>KAMPÜSTEN Ekibi</p>
 ```
 
-### 4. Redirect URL Ayarları
+### 4. Redirect URL Ayarları (ÖNEMLİ!)
 
 **Settings > Auth > URL Configuration** bölümüne gidin:
 
@@ -93,16 +93,23 @@ KAMPÜSTEN - Şifre Sıfırlama
 ```
 https://kampustenlive.vercel.app
 ```
-*(Vercel deployment URL'inizi buraya yazın)*
+*(Vercel deployment URL'inizi buraya yazın - ÖNEMLİ: Bu ayar yanlışsa link anasayfaya gider!)*
 
 #### Redirect URLs
-Aşağıdaki URL'leri ekleyin:
+Aşağıdaki URL'leri **mutlaka** ekleyin (her birini ayrı ayrı):
 ```
 https://kampustenlive.vercel.app/reset-password/student
 https://kampustenlive.vercel.app/reset-password/teacher
 http://localhost:5173/reset-password/student
 http://localhost:5173/reset-password/teacher
 ```
+
+**ÖNEMLİ NOTLAR:**
+- Site URL **mutlaka** production domain'iniz olmalı
+- Redirect URLs'e **hem production hem development** URL'lerini ekleyin
+- Her URL'i **ayrı satır** olarak ekleyin
+- URL'lerde **trailing slash (/) olmamalı**
+- `http://` ve `https://` protokollerini doğru kullanın
 
 ### 5. Namecheap Private Email Mailbox Ayarları
 
