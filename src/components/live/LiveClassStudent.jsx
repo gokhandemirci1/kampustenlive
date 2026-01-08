@@ -24,17 +24,54 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
     }
   }, [])
 
-  // Play remote user videos when they're added
+  // Play remote user videos when they're added (with retry logic for tracks that aren't ready yet)
   useEffect(() => {
     remoteUsers.forEach((user) => {
-      if (user.videoTrack) {
-        const container = document.getElementById(`remote-${user.uid}`)
-        if (container) {
-          user.videoTrack.play(container).catch(err => {
-            console.error('Error playing remote video:', err)
-          })
+      const playRemoteVideo = async (retries = 5) => {
+        // Check if video track is available
+        if (user.videoTrack) {
+          const container = document.getElementById(`remote-${user.uid}`)
+          if (container) {
+            // Check if container is rendered and has dimensions
+            if (container.offsetWidth > 0 && container.offsetHeight > 0) {
+              try {
+                await user.videoTrack.play(container)
+                console.log('Student: Remote user video played successfully', {
+                  uid: user.uid,
+                  containerWidth: container.offsetWidth,
+                  containerHeight: container.offsetHeight
+                })
+              } catch (err) {
+                console.error('Error playing remote video:', err)
+                // Retry if there was an error
+                if (retries > 0) {
+                  setTimeout(() => playRemoteVideo(retries - 1), 300)
+                }
+              }
+            } else {
+              // Container not rendered yet, retry
+              if (retries > 0) {
+                setTimeout(() => playRemoteVideo(retries - 1), 200)
+              }
+            }
+          } else {
+            // Container not found, retry
+            if (retries > 0) {
+              setTimeout(() => playRemoteVideo(retries - 1), 200)
+            } else {
+              console.log('Student: Container not found for user', user.uid)
+            }
+          }
+        } else {
+          // Track not available yet, retry
+          if (retries > 0) {
+            setTimeout(() => playRemoteVideo(retries - 1), 200)
+          } else {
+            console.log('Student: Video track not available for user', user.uid)
+          }
         }
       }
+      playRemoteVideo()
     })
   }, [remoteUsers])
 
@@ -82,8 +119,8 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
       const agoraClient = createAgoraClient()
       setClient(agoraClient)
 
-      // Set client role as audience (default - subscriber)
-      await agoraClient.setClientRole('audience')
+      // Set client role as audience (default - subscriber) with low latency
+      await agoraClient.setClientRole('audience', { level: 1 })
 
       // Fetch token with subscriber role (audience)
       const tokenResponse = await fetchAgoraToken(channelName, rtcUid.current, AGORA_ROLES.SUBSCRIBER)
@@ -145,78 +182,45 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
       await client.subscribe(user, mediaType)
       console.log('Student: Subscribed to user', user.uid, 'mediaType:', mediaType)
 
-      // Wait a bit for track to be available after subscription
-      await new Promise(resolve => setTimeout(resolve, 100))
-
       if (mediaType === 'video') {
-        // Check if video track is now available
-        if (user.videoTrack) {
-          setRemoteUsers((prev) => {
-            const exists = prev.find((u) => u.uid === user.uid)
-            if (!exists) {
-              console.log('Student: Adding remote user to list with video track', user.uid)
-              return [...prev, user]
-            } else {
-              // Update existing user with new track
-              console.log('Student: Updating existing remote user with video track', user.uid)
-              return prev.map(u => u.uid === user.uid ? user : u)
-            }
-          })
-        } else {
-          console.warn('Student: Video track not available after subscription for user', user.uid)
-        }
+        // Add user to state immediately after subscribing, regardless of track availability
+        // The track will be available shortly, and React will re-render when it is
+        setRemoteUsers((prev) => {
+          const exists = prev.find((u) => u.uid === user.uid)
+          if (!exists) {
+            console.log('Student: Adding remote user to list (track may be loading)', user.uid)
+            return [...prev, user]
+          } else {
+            // Update existing user with updated user object (which may now have tracks)
+            console.log('Student: Updating existing remote user', user.uid)
+            return prev.map(u => u.uid === user.uid ? user : u)
+          }
+        })
       }
 
       if (mediaType === 'audio') {
-        if (user.audioTrack) {
-          try {
-            await user.audioTrack.play()
-            console.log('Student: Audio track played for user', user.uid)
-          } catch (error) {
-            console.error('Error playing audio track:', error)
+        // Try to play audio track, with retry if not ready yet
+        const playAudio = async (retries = 3) => {
+          if (user.audioTrack) {
+            try {
+              await user.audioTrack.play()
+              console.log('Student: Audio track played for user', user.uid)
+            } catch (error) {
+              console.error('Error playing audio track:', error)
+            }
+          } else if (retries > 0) {
+            // Retry after a short delay if track not ready
+            setTimeout(() => playAudio(retries - 1), 200)
+          } else {
+            console.warn('Student: Audio track not available after subscription for user', user.uid)
           }
-        } else {
-          console.warn('Student: Audio track not available after subscription for user', user.uid)
         }
+        playAudio()
       }
     } catch (error) {
       console.error('Error in handleUserPublished:', error)
     }
   }
-  
-  // Play remote videos when they're added (via useEffect)
-  useEffect(() => {
-    remoteUsers.forEach((user) => {
-      if (user.videoTrack) {
-        const playRemoteVideo = async () => {
-          const container = document.getElementById(`remote-${user.uid}`)
-          if (container) {
-            // Check if container is rendered
-            if (container.offsetWidth > 0 && container.offsetHeight > 0) {
-              try {
-                await user.videoTrack.play(container)
-                console.log('Student: Remote user video played successfully', {
-                  uid: user.uid,
-                  containerWidth: container.offsetWidth,
-                  containerHeight: container.offsetHeight
-                })
-              } catch (err) {
-                console.error('Error playing remote video:', err)
-                // Retry after delay
-                setTimeout(playRemoteVideo, 300)
-              }
-            } else {
-              // Retry if container not rendered yet
-              setTimeout(playRemoteVideo, 200)
-            }
-          } else {
-            console.log('Student: Container not found for user', user.uid)
-          }
-        }
-        playRemoteVideo()
-      }
-    })
-  }, [remoteUsers])
 
   const handleUserUnpublished = (user, mediaType) => {
     if (mediaType === 'video') {
@@ -281,7 +285,7 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
           audioTrack: !!remoteUser.audioTrack
         })
 
-        // Subscribe to video if available
+        // Subscribe to video if available (even if track not ready yet)
         if (remoteUser.hasVideo && !remoteUser.videoTrack) {
           try {
             await agoraClient.subscribe(remoteUser, 'video')
@@ -291,7 +295,7 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
           }
         }
 
-        // Subscribe to audio if available
+        // Subscribe to audio if available (even if track not ready yet)
         if (remoteUser.hasAudio && !remoteUser.audioTrack) {
           try {
             await agoraClient.subscribe(remoteUser, 'audio')
@@ -301,26 +305,37 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
           }
         }
 
-        // If video track is already available, add to remoteUsers
-        if (remoteUser.videoTrack) {
+        // Add user to state if they have video (or if we just subscribed to video)
+        // Add immediately after subscribing, track will be available shortly
+        if (remoteUser.hasVideo) {
           setRemoteUsers((prev) => {
             const exists = prev.find((u) => u.uid === remoteUser.uid)
             if (!exists) {
-              console.log('Student: Adding existing remote user with video', remoteUser.uid)
+              console.log('Student: Adding existing remote user (track may be loading)', remoteUser.uid)
               return [...prev, remoteUser]
+            } else {
+              // Update existing user with latest state
+              return prev.map(u => u.uid === remoteUser.uid ? remoteUser : u)
             }
-            return prev
           })
         }
 
-        // Play audio if available
-        if (remoteUser.audioTrack) {
-          try {
-            remoteUser.audioTrack.play()
-            console.log('Student: Playing existing audio track for user', remoteUser.uid)
-          } catch (error) {
-            console.error('Error playing existing audio:', error)
+        // Play audio if available, with retry logic
+        if (remoteUser.hasAudio) {
+          const playAudio = async (retries = 3) => {
+            if (remoteUser.audioTrack) {
+              try {
+                await remoteUser.audioTrack.play()
+                console.log('Student: Playing existing audio track for user', remoteUser.uid)
+              } catch (error) {
+                console.error('Error playing existing audio:', error)
+              }
+            } else if (retries > 0) {
+              // Track not ready yet, retry
+              setTimeout(() => playAudio(retries - 1), 200)
+            }
           }
+          playAudio()
         }
       }
     } catch (error) {
