@@ -139,17 +139,38 @@ function generateRtcToken(channelName: string, uid: string | number, role: numbe
   })
   
   // Generate RTC token using Agora's official token builder
-  const token = RtcTokenBuilder.buildTokenWithUid(
-    appId,
-    appCertificate,
-    channelName,
-    uidNumber,
-    agoraRole,
-    expirationTimeInSeconds
-  )
-  
-  if (!token || token.length === 0) {
-    throw new Error('Token generation failed - empty token returned')
+  let token: string
+  try {
+    token = RtcTokenBuilder.buildTokenWithUid(
+      appId,
+      appCertificate,
+      channelName,
+      uidNumber,
+      agoraRole,
+      expirationTimeInSeconds
+    )
+    
+    console.log('Token generation result:', {
+      success: !!token,
+      tokenLength: token?.length || 0,
+      tokenPreview: token ? token.substring(0, 20) + '...' : 'null'
+    })
+    
+    if (!token || token.length === 0) {
+      throw new Error('Token generation failed - empty token returned')
+    }
+    
+    // Validate token format (should be a JWT-like string)
+    if (typeof token !== 'string' || token.split('.').length !== 3) {
+      console.error('Invalid token format - not a valid JWT structure')
+      throw new Error('Token format validation failed')
+    }
+    
+    console.log('Token generated successfully')
+    
+  } catch (error) {
+    console.error('Token generation error:', error)
+    throw error
   }
   
   return token
