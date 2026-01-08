@@ -91,17 +91,26 @@ KAMPÜSTEN - Şifre Sıfırlama
 
 #### Site URL
 ```
-https://kampustenlive.vercel.app
+https://www.kampusten.org
 ```
-*(Vercel deployment URL'inizi buraya yazın - ÖNEMLİ: Bu ayar yanlışsa link anasayfaya gider!)*
+*(Production domain'iniz - ÖNEMLİ: Bu ayar yanlışsa link anasayfaya gider!)*
+
+**NOT:** Sonunda `/` olmamalı, sadece `https://www.kampusten.org` yazın.
 
 #### Redirect URLs
 Aşağıdaki URL'leri **mutlaka** ekleyin (her birini ayrı ayrı):
 ```
-https://kampustenlive.vercel.app/reset-password/student
-https://kampustenlive.vercel.app/reset-password/teacher
+https://www.kampusten.org/reset-password/student
+https://www.kampusten.org/reset-password/teacher
 http://localhost:5173/reset-password/student
 http://localhost:5173/reset-password/teacher
+```
+
+**ÖNEMLİ:** 
+- `www` olmadan da ekleyebilirsiniz (eğer domain'iniz her iki şekilde de çalışıyorsa):
+```
+https://kampusten.org/reset-password/student
+https://kampusten.org/reset-password/teacher
 ```
 
 **ÖNEMLİ NOTLAR:**
