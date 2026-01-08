@@ -121,22 +121,22 @@ const MyEnrolledCourses = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200/50 p-8">
-        <h2 className="text-xl font-light text-gray-900 mb-6 tracking-tight">
+      <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-indigo-600 bg-clip-text text-transparent mb-6">
           Satın Aldığım Kamplar
         </h2>
-        <div className="text-center py-8 text-gray-400 font-light">Yükleniyor...</div>
+        <div className="text-center py-8 text-gray-500">Yükleniyor...</div>
       </div>
     )
   }
 
   if (enrolledCourses.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200/50 p-8">
-        <h2 className="text-xl font-light text-gray-900 mb-6 tracking-tight">
+      <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-indigo-600 bg-clip-text text-transparent mb-6">
           Satın Aldığım Kamplar
         </h2>
-        <div className="text-center py-8 text-gray-400 font-light">
+        <div className="text-center py-8 text-gray-500">
           Henüz hiç kampa kayıt olmadınız.
         </div>
       </div>
@@ -144,8 +144,8 @@ const MyEnrolledCourses = () => {
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200/50 p-8">
-      <h2 className="text-xl font-light text-gray-900 mb-8 tracking-tight">
+    <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-indigo-600 bg-clip-text text-transparent mb-6">
         Satın Aldığım Kamplar
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -186,20 +186,20 @@ const MyEnrolledCourses = () => {
             )}
 
             <div className="p-6">
-              <h3 className="text-lg font-normal text-gray-900 mb-2 tracking-tight">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 {course.title}
               </h3>
-              <p className="text-sm text-gray-500 mb-4 line-clamp-2 font-light">
+              <p className="text-sm text-gray-600 mb-4 line-clamp-2">
                 {course.description}
               </p>
 
               <div className="space-y-2 mb-4">
-                <div className="flex items-center space-x-2 text-sm text-gray-500 font-light">
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <User size={16} className="text-gray-400" />
                   <span>{course.teacher_name}</span>
                 </div>
                 {(course.teacher_university || course.teacher_department) && (
-                  <div className="flex items-start space-x-2 text-sm text-gray-400 font-light">
+                  <div className="flex items-start space-x-2 text-sm text-gray-500">
                     <GraduationCap size={16} className="text-gray-400 mt-0.5" />
                     <div className="flex-1">
                       {course.teacher_university && course.teacher_department ? (
@@ -213,7 +213,7 @@ const MyEnrolledCourses = () => {
                   </div>
                 )}
                 {course.schedule_text && (
-                  <div className="flex items-center space-x-2 text-sm text-gray-500 font-light">
+                  <div className="flex items-center space-x-2 text-sm text-gray-600">
                     <Clock size={16} className="text-gray-400" />
                     <span className="line-clamp-1">{course.schedule_text}</span>
                   </div>
@@ -224,10 +224,10 @@ const MyEnrolledCourses = () => {
               <button
                 onClick={() => handleJoinCourse(course.id, course.title)}
                 disabled={!course.is_live}
-                className={`w-full px-4 py-3 rounded-lg transition-all duration-200 text-sm font-light flex items-center justify-center space-x-2 ${
+                className={`w-full px-4 py-3 rounded-xl transition-all duration-200 text-sm font-semibold flex items-center justify-center space-x-2 ${
                   course.is_live
-                    ? 'bg-green-500 text-white hover:bg-green-600'
-                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    ? 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-md shadow-green-500/30 hover:shadow-lg hover:shadow-green-500/40 hover:scale-105'
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
               >
                 {course.is_live ? (

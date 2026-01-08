@@ -6,8 +6,6 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import ForgotPassword from './pages/ForgotPassword'
-import ResetPassword from './pages/ResetPassword'
 import StudentDashboard from './pages/StudentDashboard'
 import TeacherDashboard from './pages/TeacherDashboard'
 import AdminDashboard from './pages/AdminDashboard'
@@ -23,8 +21,6 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login/:type" element={<Login />} />
             <Route path="/register/:type" element={<Register />} />
-            <Route path="/forgot-password/:type" element={<ForgotPassword />} />
-            <Route path="/reset-password/:type" element={<ResetPassword />} />
             <Route path="/student/dashboard" element={<StudentDashboard />} />
             <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
