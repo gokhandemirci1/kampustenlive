@@ -1,23 +1,14 @@
-import { useState, useEffect } from 'react'
-import { useParams, Link, useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
+import { useParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { showToast, handleApiError } from '../utils/toast'
 import { ArrowLeft, Mail } from 'lucide-react'
 
 const ForgotPassword = () => {
   const { type } = useParams()
-  const [searchParams] = useSearchParams()
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSent, setIsSent] = useState(false)
-
-  // Check for error in URL params
-  useEffect(() => {
-    const error = searchParams.get('error')
-    if (error === 'expired') {
-      showToast.error('Şifre sıfırlama linkinin süresi dolmuş. Lütfen yeni bir link isteyin.')
-    }
-  }, [searchParams])
 
   const getTitle = () => {
     switch (type) {
@@ -35,12 +26,10 @@ const ForgotPassword = () => {
     setIsLoading(true)
 
     try {
-      // Redirect URL'i oluştur - production domain kullan
-      const redirectUrl = window.location.hostname === 'localhost' 
-        ? `${window.location.origin}/reset-password/${type}`
-        : `https://www.kampusten.org/reset-password/${type}`
+      // Redirect URL'i oluştur
+      const redirectUrl = `${window.location.origin}/reset-password/${type}`
       
-      console.log('Password reset request:', { email, redirectUrl, hostname: window.location.hostname })
+      console.log('Password reset request:', { email, redirectUrl })
 
       // Supabase password reset email gönder
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
