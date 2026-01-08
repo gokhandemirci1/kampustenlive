@@ -141,6 +141,19 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
       await publishTracks(agoraClient)
 
       setIsPublished(true)
+      
+      // Ensure video plays after state update
+      setTimeout(async () => {
+        if (localVideoTrack.current && localVideoContainer.current) {
+          try {
+            await localVideoTrack.current.play(localVideoContainer.current)
+            console.log('Video played after publish')
+          } catch (err) {
+            console.error('Error playing video after publish:', err)
+          }
+        }
+      }, 500)
+      
       setIsLoading(false)
 
       // Listen for remote users
