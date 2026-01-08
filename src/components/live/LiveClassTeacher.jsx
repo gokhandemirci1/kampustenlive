@@ -149,6 +149,20 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
       await publishTracks(agoraClient)
       console.log('Tracks published successfully')
 
+      // Update is_live status in database
+      if (courseId) {
+        const { error: updateError } = await supabase
+          .from('courses')
+          .update({ is_live: true })
+          .eq('id', courseId)
+        
+        if (updateError) {
+          console.error('Error updating is_live status:', updateError)
+        } else {
+          console.log('Course is_live status updated to true')
+        }
+      }
+
       setIsPublished(true)
       setIsLoading(false)
       

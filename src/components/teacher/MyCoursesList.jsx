@@ -201,8 +201,34 @@ const MyCoursesList = () => {
 
   const handleStartCourse = async (courseId, courseTitle) => {
     try {
+      // Set is_live to true before navigating
+      const { error } = await supabase
+        .from('courses')
+        .update({ is_live: true })
+        .eq('id', courseId)
+
+      if (error) throw error
+
+      showToast.success(`"${courseTitle}" dersi başlatılıyor...`)
+      
       // Navigate to live class page - it will create session automatically
       navigate(`/live/${courseId}`)
+      
+      // Refresh courses list after a short delay to update UI
+      setTimeout(async () => {
+        const user = await getCurrentUser()
+        if (user) {
+          const { data, error: fetchError } = await supabase
+            .from('courses')
+            .select('*')
+            .eq('teacher_id', user.id)
+            .order('created_at', { ascending: false })
+
+          if (!fetchError && data) {
+            setCourses(data)
+          }
+        }
+      }, 500)
     } catch (error) {
       handleApiError(error)
     }
