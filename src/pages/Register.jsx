@@ -233,6 +233,16 @@ const Register = () => {
     <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
         <div className="text-center">
+          {/* Logo */}
+          <div className="mb-6 flex justify-center">
+            <Link to="/">
+              <img 
+                src="/images/logo.svg" 
+                alt="Kampusten.org Logo" 
+                className="h-16 w-16 mx-auto transition-transform duration-200 hover:scale-105"
+              />
+            </Link>
+          </div>
           <h2 className="text-3xl font-bold text-gray-900">{getTitle()}</h2>
           <p className="mt-2 text-gray-600">Hesap oluşturun ve başlayın</p>
         </div>

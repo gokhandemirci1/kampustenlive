@@ -15,6 +15,15 @@ const Home = () => {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
           <div className="text-center">
+            {/* Logo */}
+            <div className="mb-8 flex justify-center">
+              <img 
+                src="/images/logo.svg" 
+                alt="Kampusten.org Logo" 
+                className="h-24 w-24 sm:h-32 sm:w-32 drop-shadow-lg animate-fade-in"
+              />
+            </div>
+            
             {/* Badge */}
             <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-primary-200 rounded-full text-sm font-medium text-primary-700 mb-6">
               <GraduationCap size={16} />

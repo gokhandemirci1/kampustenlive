@@ -78,8 +78,13 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold text-primary-600">
+          <Link to="/" className="flex items-center space-x-3 group">
+            <img 
+              src="/images/logo.svg" 
+              alt="Kampusten.org Logo" 
+              className="h-10 w-10 transition-transform duration-200 group-hover:scale-105"
+            />
+            <div className="text-xl font-bold text-primary-600 hidden sm:block">
               Kampusten<span className="text-primary-400">.org</span>
             </div>
           </Link>
