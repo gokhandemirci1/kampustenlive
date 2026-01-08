@@ -13,7 +13,7 @@ const AdminSidebar = () => {
             className="h-8 w-8 transition-transform duration-200 group-hover:scale-105"
           />
           <div className="text-lg font-bold text-primary-600">
-            Kampusten<span className="text-primary-400">.org</span>
+            KAMPÜSTEN
           </div>
         </Link>
       </div>

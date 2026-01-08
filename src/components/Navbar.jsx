@@ -85,7 +85,7 @@ const Navbar = () => {
               className="h-10 w-10 transition-transform duration-200 group-hover:scale-105"
             />
             <div className="text-xl font-bold text-white hidden sm:block">
-              Kampusten<span className="text-white/90">.org</span>
+              KAMPÜSTEN
             </div>
           </Link>
 

@@ -15,11 +15,11 @@ const Footer = () => {
                 className="h-12 w-12 transition-transform duration-200 group-hover:scale-105"
               />
               <div className="text-lg font-bold text-primary-600">
-                Kampusten<span className="text-primary-400">.org</span>
+                KAMPÜSTEN
               </div>
             </Link>
             <div className="text-sm text-gray-500 text-center md:text-left">
-              © {new Date().getFullYear()} Kampusten.org. Tüm hakları saklıdır.
+              © {new Date().getFullYear()} KAMPÜSTEN. Tüm hakları saklıdır.
             </div>
           </div>
 
