@@ -199,15 +199,48 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
     try {
       console.log('Creating local tracks...')
       
-      // Create video track
+      // Detect mobile device for optimal settings
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        (typeof window !== 'undefined' && window.innerWidth < 768)
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+      
+      console.log('Device info:', { isMobile, isIOS, userAgent: navigator.userAgent })
+      
+      // Mobile devices, especially iOS, have better performance with lower resolution
+      const videoConfig = isMobile 
+        ? (isIOS ? '480p_1' : '480p') // iOS'ta 480p_1 (daha düşük bitrate) kullan
+        : '720p'
+      
+      console.log('Creating video track with config:', videoConfig)
+      
+      // Create video track with device-appropriate config
       localVideoTrack.current = await AgoraRTC.createCameraVideoTrack({
-        encoderConfig: '720p',
+        encoderConfig: videoConfig,
+        optimizationMode: 'motion', // Motion optimization for better performance on mobile
       })
       console.log('Video track created:', localVideoTrack.current)
       
       // Create audio track
-      localAudioTrack.current = await AgoraRTC.createMicrophoneAudioTrack()
+      console.log('Creating audio track...')
+      localAudioTrack.current = await AgoraRTC.createMicrophoneAudioTrack({
+        encoderConfig: 'speech_standard', // Optimize for speech on mobile
+      })
       console.log('Audio track created:', localAudioTrack.current)
+
+      // Verify tracks are created
+      if (!localVideoTrack.current) {
+        throw new Error('Video track creation failed')
+      }
+      if (!localAudioTrack.current) {
+        throw new Error('Audio track creation failed')
+      }
+
+      console.log('Tracks verified:', {
+        videoTrack: !!localVideoTrack.current,
+        audioTrack: !!localAudioTrack.current,
+        videoTrackId: localVideoTrack.current?.getTrackId?.(),
+        audioTrackId: localAudioTrack.current?.getTrackId?.(),
+      })
 
       setIsVideoEnabled(true)
       setIsAudioEnabled(true)
@@ -254,15 +287,51 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
 
   const publishTracks = async (agoraClient) => {
     try {
+      console.log('Publishing tracks...', {
+        videoTrack: !!localVideoTrack.current,
+        audioTrack: !!localAudioTrack.current,
+        clientState: agoraClient.connectionState,
+      })
+      
+      // Publish video track
       if (localVideoTrack.current) {
-        await agoraClient.publish(localVideoTrack.current)
+        try {
+          await agoraClient.publish(localVideoTrack.current)
+          console.log('Video track published successfully')
+        } catch (videoError) {
+          console.error('Error publishing video track:', videoError)
+          showToast.error('Video yayını başlatılamadı: ' + videoError.message)
+          // Continue with audio even if video fails
+        }
+      } else {
+        console.warn('No video track to publish')
       }
+      
+      // Publish audio track
       if (localAudioTrack.current) {
-        await agoraClient.publish(localAudioTrack.current)
+        try {
+          await agoraClient.publish(localAudioTrack.current)
+          console.log('Audio track published successfully')
+        } catch (audioError) {
+          console.error('Error publishing audio track:', audioError)
+          showToast.error('Ses yayını başlatılamadı: ' + audioError.message)
+          // Continue even if audio fails
+        }
+      } else {
+        console.warn('No audio track to publish')
       }
+      
+      // Verify published tracks
+      const publishedTracks = await agoraClient.getLocalVideoStats()
+      const publishedAudioTracks = await agoraClient.getLocalAudioStats()
+      console.log('Published tracks verification:', {
+        videoStats: publishedTracks,
+        audioStats: publishedAudioTracks,
+      })
     } catch (error) {
       console.error('Error publishing tracks:', error)
-      showToast.error('Yayın başlatılamadı')
+      showToast.error('Yayın başlatılamadı: ' + error.message)
+      throw error
     }
   }
 

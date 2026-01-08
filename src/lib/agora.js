@@ -3,16 +3,47 @@ import AgoraRTC from 'agora-rtc-sdk-ng'
 // Agora App ID from environment
 export const AGORA_APP_ID = import.meta.env.VITE_AGORA_APP_ID
 
+// Detect if running on mobile device
+export const isMobileDevice = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    (typeof window !== 'undefined' && window.innerWidth < 768)
+}
+
+// Detect if running on iOS
+export const isIOS = () => {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent)
+}
+
+// Get optimal codec for device
+export const getOptimalCodec = () => {
+  // iOS ve mobil cihazlarda H264 daha iyi desteklenir
+  if (isMobileDevice() || isIOS()) {
+    return 'h264'
+  }
+  // Desktop'ta VP8 genellikle daha iyi performans gösterir
+  return 'vp8'
+}
+
 // Agora Client helper
 export const createAgoraClient = () => {
   if (!AGORA_APP_ID) {
     throw new Error('AGORA_APP_ID is not set in environment variables')
   }
 
+  const codec = getOptimalCodec()
+  const isMobile = isMobileDevice()
+  
+  console.log('Creating Agora client with config:', {
+    codec,
+    isMobile,
+    isIOS: isIOS(),
+    userAgent: navigator.userAgent
+  })
+
   // Create client with configuration
   const client = AgoraRTC.createClient({ 
     mode: 'live', 
-    codec: 'vp8',
+    codec: codec,
   })
   
   // Set client to reduce unnecessary network requests
