@@ -190,9 +190,24 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
       // Switch to host role to publish
       await client.setClientRole('host')
 
+      // Detect mobile device for optimal settings
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        (typeof window !== 'undefined' && window.innerWidth < 768)
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+      
+      console.log('Student enabling video - Device info:', { isMobile, isIOS })
+      
+      // Mobile devices, especially iOS, have better performance with lower resolution
+      const videoConfig = isMobile 
+        ? (isIOS ? '480p_1' : '480p') // iOS'ta 480p_1 (daha düşük bitrate) kullan
+        : '480p' // Students use lower resolution
+      
+      console.log('Creating student video track with config:', videoConfig)
+      
       // Create and publish video track
       localVideoTrack.current = await AgoraRTC.createCameraVideoTrack({
-        encoderConfig: '480p', // Lower resolution for students
+        encoderConfig: videoConfig,
+        optimizationMode: 'motion', // Motion optimization for better performance on mobile
       })
       console.log('Student video track created:', localVideoTrack.current)
 
@@ -224,7 +239,16 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
       // Start playing video
       playVideo()
 
-      await client.publish(localVideoTrack.current)
+      // Publish video track with error handling
+      try {
+        await client.publish(localVideoTrack.current)
+        console.log('Student video track published successfully')
+      } catch (publishError) {
+        console.error('Error publishing student video track:', publishError)
+        showToast.error('Video yayını başlatılamadı: ' + publishError.message)
+        throw publishError
+      }
+      
       setIsVideoEnabled(true)
       
       // Also try to play after state update
@@ -259,18 +283,39 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
 
   const enableAudio = async () => {
     try {
+      console.log('Student enabling audio...')
+      
       // Switch to host role to publish
       await client.setClientRole('host')
 
-      // Create and publish audio track
-      localAudioTrack.current = await AgoraRTC.createMicrophoneAudioTrack()
-      await client.publish(localAudioTrack.current)
+      // Create and publish audio track with mobile optimization
+      console.log('Creating student audio track...')
+      localAudioTrack.current = await AgoraRTC.createMicrophoneAudioTrack({
+        encoderConfig: 'speech_standard', // Optimize for speech on mobile
+      })
+      
+      console.log('Student audio track created:', localAudioTrack.current)
+      
+      // Publish audio track with error handling
+      try {
+        await client.publish(localAudioTrack.current)
+        console.log('Student audio track published successfully')
+      } catch (publishError) {
+        console.error('Error publishing student audio track:', publishError)
+        showToast.error('Ses yayını başlatılamadı: ' + publishError.message)
+        throw publishError
+      }
+      
       setIsAudioEnabled(true)
     } catch (error) {
       console.error('Error enabling audio:', error)
-      showToast.error('Mikrofon açılamadı')
+      showToast.error('Mikrofon açılamadı: ' + error.message)
       // Revert to audience if failed
-      await client.setClientRole('audience')
+      try {
+        await client.setClientRole('audience')
+      } catch (roleError) {
+        console.error('Error reverting to audience:', roleError)
+      }
     }
   }
 
