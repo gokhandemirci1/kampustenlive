@@ -352,23 +352,46 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
   }
 
   const handleUserPublished = async (user, mediaType) => {
-    console.log('Teacher: User published', { uid: user.uid, mediaType })
-    await client.subscribe(user, mediaType)
-    console.log('Teacher: Subscribed to user', user.uid)
-    
-    if (mediaType === 'video') {
-      setRemoteUsers((prev) => {
-        const exists = prev.find((u) => u.uid === user.uid)
-        if (!exists) {
-          console.log('Teacher: Adding remote user to list', user.uid)
-          return [...prev, user]
-        }
-        return prev
+    try {
+      console.log('Teacher: ⚡ USER PUBLISHED EVENT TRIGGERED ⚡', { 
+        uid: user.uid, 
+        mediaType,
+        hasVideo: user.hasVideo,
+        hasAudio: user.hasAudio,
+        videoTrack: !!user.videoTrack,
+        audioTrack: !!user.audioTrack
       })
-    }
+      
+      console.log('Teacher: Attempting to subscribe to user', user.uid, 'mediaType:', mediaType)
+      await client.subscribe(user, mediaType)
+      console.log('Teacher: ✅ Successfully subscribed to user', user.uid, 'mediaType:', mediaType)
+      
+      if (mediaType === 'video') {
+        setRemoteUsers((prev) => {
+          const exists = prev.find((u) => u.uid === user.uid)
+          if (!exists) {
+            console.log('Teacher: Adding remote user to list', user.uid)
+            return [...prev, user]
+          } else {
+            // Update existing user with new track
+            console.log('Teacher: Updating existing remote user', user.uid)
+            return prev.map(u => u.uid === user.uid ? user : u)
+          }
+        })
+      }
 
-    if (mediaType === 'audio') {
-      user.audioTrack?.play()
+      if (mediaType === 'audio') {
+        if (user.audioTrack) {
+          try {
+            await user.audioTrack.play()
+            console.log('Teacher: Audio track played for user', user.uid)
+          } catch (error) {
+            console.error('Error playing audio track:', error)
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error in handleUserPublished:', error)
     }
   }
 
