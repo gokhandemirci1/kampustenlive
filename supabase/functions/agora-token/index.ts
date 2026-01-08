@@ -160,12 +160,8 @@ function generateRtcToken(channelName: string, uid: string | number, role: numbe
       throw new Error('Token generation failed - empty token returned')
     }
     
-    // Validate token format (should be a JWT-like string)
-    if (typeof token !== 'string' || token.split('.').length !== 3) {
-      console.error('Invalid token format - not a valid JWT structure')
-      throw new Error('Token format validation failed')
-    }
-    
+    // Agora token'ları JWT formatında değildir - özel formattadır
+    // Token başarıyla üretildiyse kullanılabilir
     console.log('Token generated successfully')
     
   } catch (error) {
