@@ -211,11 +211,8 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
       }
       setTimeout(tryPlayVideo, 300)
 
-      // Listen for remote users
-      agoraClient.on('user-published', handleUserPublished)
-      agoraClient.on('user-unpublished', handleUserUnpublished)
-      agoraClient.on('user-joined', handleUserJoined)
-      agoraClient.on('user-left', handleUserLeft)
+      // Event listeners are already registered before join (see above)
+      // No need to register again
 
       showToast.success('Canlı yayın başlatıldı!')
     } catch (error) {
