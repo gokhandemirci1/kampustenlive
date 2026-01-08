@@ -49,10 +49,14 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
       await agoraClient.setClientRole('host')
 
       // Fetch token
-      const token = await fetchAgoraToken(channelName, rtcUid.current, AGORA_ROLES.PUBLISHER)
+      const tokenResponse = await fetchAgoraToken(channelName, rtcUid.current, AGORA_ROLES.PUBLISHER)
+      const token = typeof tokenResponse === 'string' ? tokenResponse : tokenResponse.token
+      const appId = typeof tokenResponse === 'string' ? AGORA_APP_ID : (tokenResponse.appId || AGORA_APP_ID)
+
+      console.log('Joining channel with:', { appId, channelName, uid: rtcUid.current, tokenLength: token.length })
 
       // Join channel
-      await agoraClient.join(AGORA_APP_ID, channelName, token, rtcUid.current)
+      await agoraClient.join(appId, channelName, token, rtcUid.current)
 
       // Create and publish local tracks
       await createLocalTracks()

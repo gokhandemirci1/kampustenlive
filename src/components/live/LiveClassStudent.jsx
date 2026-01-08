@@ -45,10 +45,14 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
       await agoraClient.setClientRole('audience')
 
       // Fetch token with subscriber role (audience)
-      const token = await fetchAgoraToken(channelName, rtcUid.current, AGORA_ROLES.SUBSCRIBER)
+      const tokenResponse = await fetchAgoraToken(channelName, rtcUid.current, AGORA_ROLES.SUBSCRIBER)
+      const token = typeof tokenResponse === 'string' ? tokenResponse : tokenResponse.token
+      const appId = typeof tokenResponse === 'string' ? AGORA_APP_ID : (tokenResponse.appId || AGORA_APP_ID)
+
+      console.log('Student joining channel with:', { appId, channelName, uid: rtcUid.current, tokenLength: token.length })
 
       // Join channel
-      await agoraClient.join(AGORA_APP_ID, channelName, token, rtcUid.current)
+      await agoraClient.join(appId, channelName, token, rtcUid.current)
 
       setIsLoading(false)
       showToast.success('Canlı derse katıldınız!')

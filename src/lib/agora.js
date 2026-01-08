@@ -47,10 +47,13 @@ export const fetchAgoraToken = async (channelName, uid, role = 2) => {
     if (tokenServerUrl.includes('/functions/v1/')) {
       const { supabase: supabaseClient } = await import('./supabase')
       
+      // UID'yi numeric olarak gönder (Agora numeric bekliyor)
+      const numericUid = typeof uid === 'string' ? parseInt(uid, 10) || 0 : uid || 0
+      
       const { data, error } = await supabaseClient.functions.invoke('agora-token', {
         body: {
           channelName,
-          uid: uid.toString(),
+          uid: numericUid, // Numeric UID gönder
           role, // 1 = publisher (teacher), 2 = subscriber (student)
         },
       })
@@ -65,7 +68,8 @@ export const fetchAgoraToken = async (channelName, uid, role = 2) => {
         throw new Error('Invalid token response from server')
       }
 
-      return data.token
+      // Return token and appId from server response
+      return { token: data.token, appId: data.appId }
     }
     
     // Custom token server kullanıyorsak fetch ile çağıralım
@@ -96,7 +100,7 @@ export const fetchAgoraToken = async (channelName, uid, role = 2) => {
     }
 
     const data = await response.json()
-    return data.token
+    return { token: data.token, appId: data.appId || AGORA_APP_ID }
   } catch (error) {
     console.error('Error fetching Agora token:', error)
     throw error
