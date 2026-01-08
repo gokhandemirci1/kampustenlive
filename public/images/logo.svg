@@ -1,35 +1,5 @@
-<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-  <rect width="100%" height="100%" fill="#fee566"/>
-
-  <g transform="translate(100, 130) scale(0.8)">
-    
-    <path d="M210,180 Q290,200 330,225 L340,220 Q290,170 210,100 Z" fill="#ffffff" stroke="#1d1d1b" stroke-width="2"/>
-    <path d="M210,180 Q280,180 320,190 L330,185 Q280,130 210,50 Z" fill="#ffffff" stroke="#1d1d1b" stroke-width="2"/>
-    <path d="M210,180 Q260,160 290,150 L300,145 Q260,80 215,30 Z" fill="#ffffff" stroke="#1d1d1b" stroke-width="2"/>
-    <path d="M210,180 Q230,100 240,40 L220,30 L205,175 Z" fill="#ffffff" stroke="#1d1d1b" stroke-width="2"/>
-    
-    <path d="M210,185 Q300,185 360,175 Q320,200 210,195 Z" fill="#1d1d1b"/>
-
-    <path d="M140,40 L210,30 L210,180 L140,150 Z" fill="#ffffff" stroke="#1d1d1b" stroke-width="4" stroke-linejoin="round"/>
-    
-    <path d="M20,175 L140,150 L210,180 L80,185 Z" fill="#1d1d1b" stroke="#1d1d1b" stroke-width="2" stroke-linejoin="round"/>
-    
-    <path d="M35,173 L135,153 L195,178 L75,182 Z" fill="none" stroke="#ffffff" stroke-width="1"/>
-    <line x1="60" y1="175" x2="150" y2="157" stroke="#ffffff" stroke-width="1"/>
-    <line x1="85" y1="177" x2="165" y2="162" stroke="#ffffff" stroke-width="1"/>
-    <line x1="110" y1="179" x2="180" y2="167" stroke="#ffffff" stroke-width="1"/>
-    <line x1="50" y1="155" x2="40" y2="175" stroke="#ffffff" stroke-width="1"/>
-    <line x1="70" y1="152" x2="60" y2="177" stroke="#ffffff" stroke-width="1"/>
-    <line x1="90" y1="150" x2="80" y2="179" stroke="#ffffff" stroke-width="1"/>
-    <line x1="110" y1="148" x2="100" y2="180" stroke="#ffffff" stroke-width="1"/>
-    <line x1="130" y1="148" x2="120" y2="181" stroke="#ffffff" stroke-width="1"/>
-    
-    <circle cx="210" cy="180" r="5" fill="#1d1d1b"/>
-
-  </g>
-
-  <text x="50%" y="330" text-anchor="middle" font-family="'Comic Sans MS', 'Chalkboard SE', sans-serif" font-weight="900" font-size="55" fill="#1d1d1b" letter-spacing="2">KAMPÜSTEN</text>
-  
-  <text x="50%" y="370" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="28" fill="#1d1d1b" letter-spacing="4">ÖZEL DERS</text>
-
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M100 30C72.3858 30 50 52.3858 50 80C50 115 100 170 100 170C100 170 150 115 150 80C150 52.3858 127.614 30 100 30Z" fill="#0EA5E9"/>
+  <path d="M75 85H125M75 70H125M75 100H105" stroke="white" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="100" cy="80" r="45" stroke="white" stroke-width="2" stroke-dasharray="4 4"/>
 </svg>
