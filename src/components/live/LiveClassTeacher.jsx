@@ -28,12 +28,27 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
 
   // Play local video when container is ready
   useEffect(() => {
-    if (localVideoTrack.current && localVideoContainer.current && isPublished) {
-      localVideoTrack.current.play(localVideoContainer.current).catch(err => {
-        console.error('Error playing local video:', err)
-      })
+    const playLocalVideo = async () => {
+      if (localVideoTrack.current && localVideoContainer.current && isPublished && isVideoEnabled) {
+        try {
+          // Ensure container has dimensions
+          if (localVideoContainer.current.offsetWidth > 0 && localVideoContainer.current.offsetHeight > 0) {
+            await localVideoTrack.current.play(localVideoContainer.current)
+            console.log('Local video played via useEffect - container ready')
+          } else {
+            // Wait for container to be rendered
+            setTimeout(playLocalVideo, 100)
+          }
+        } catch (err) {
+          console.error('Error playing local video in useEffect:', err)
+        }
+      }
     }
-  }, [isPublished, localVideoContainer.current])
+    
+    // Small delay to ensure DOM is ready
+    const timeoutId = setTimeout(playLocalVideo, 100)
+    return () => clearTimeout(timeoutId)
+  }, [isPublished, isVideoEnabled])
 
   // Play remote user videos when they're added
   useEffect(() => {
@@ -333,7 +348,7 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
           <div
             ref={localVideoContainer}
             className="w-full h-full"
-            style={{ minHeight: '400px' }}
+            style={{ minHeight: '400px', width: '100%', height: '100%' }}
           ></div>
           {!isVideoEnabled && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
