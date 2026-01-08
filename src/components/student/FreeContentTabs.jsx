@@ -54,8 +54,8 @@ const FreeContentTabs = () => {
   const activeTabData = tabs.find((tab) => tab.id === activeTab)
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/50 shadow-lg p-6">
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Ücretsiz İçerikler</h2>
+    <div className="bg-white rounded-lg border border-gray-200/50 p-8">
+      <h2 className="text-xl font-light text-gray-900 mb-8 tracking-tight">Ücretsiz İçerikler</h2>
 
       {/* Tabs */}
       <div className="border-b border-gray-200 mb-6">
@@ -70,10 +70,10 @@ const FreeContentTabs = () => {
                   setActiveTab(tab.id)
                   setIsLoading(true)
                 }}
-                className={`flex items-center space-x-2 pb-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`flex items-center space-x-2 pb-4 px-1 border-b-2 font-light text-sm transition-colors ${
                   isActive
                     ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-gray-400 hover:text-gray-600 hover:border-gray-300'
                 }`}
               >
                 <Icon size={18} />
@@ -86,38 +86,38 @@ const FreeContentTabs = () => {
 
       {/* Content List */}
       {isLoading ? (
-        <div className="text-center py-8 text-gray-500">Yükleniyor...</div>
+        <div className="text-center py-8 text-gray-400 font-light">Yükleniyor...</div>
       ) : contents.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-8 text-gray-400 font-light">
           Bu kategoride içerik bulunmuyor.
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {contents.map((content) => {
             const Icon = activeTabData?.icon || FileText
             return (
               <div
                 key={content.id}
                 onClick={() => handleContentClick(content.url)}
-                className="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 cursor-pointer transition-all duration-200"
+                className="flex items-start space-x-4 p-4 border border-gray-200/50 rounded-lg hover:border-gray-300 hover:bg-gray-50 cursor-pointer transition-all duration-200"
               >
                 <div className="flex-shrink-0 mt-1">
-                  <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                    <Icon className="text-primary-600" size={20} />
+                  <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center">
+                    <Icon className="text-primary-500" size={20} />
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-base font-semibold text-gray-900 mb-1">
+                  <h3 className="text-base font-normal text-gray-900 mb-1 tracking-tight">
                     {content.title}
                   </h3>
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
+                  <div className="flex items-center space-x-4 text-sm text-gray-400 font-light">
                     <span>{content.category}</span>
                     <span>•</span>
                     <span>{formatDate(content.created_at)}</span>
                   </div>
                 </div>
                 <div className="flex-shrink-0">
-                  <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
+                  <span className="px-2 py-1 text-xs font-light bg-green-50 text-green-600 rounded-full">
                     Ücretsiz
                   </span>
                 </div>

@@ -104,8 +104,8 @@ const CartWidget = ({ cart, onRemoveFromCart, onCartUpdate }) => {
       {isOpen && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
           <div className="bg-white max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-200">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h2 className="text-lg font-light text-gray-900 uppercase tracking-wider">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200/50">
+              <h2 className="text-lg font-light text-gray-900 tracking-tight">
                 Sepet ({cart.length})
               </h2>
               <button
@@ -140,8 +140,8 @@ const CartWidget = ({ cart, onRemoveFromCart, onCartUpdate }) => {
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-light text-gray-900 mb-1">{course.title}</h3>
-                          <p className="text-sm text-gray-500 font-light line-clamp-1">
+                          <h3 className="font-normal text-gray-900 mb-1 tracking-tight">{course.title}</h3>
+                          <p className="text-sm text-gray-400 font-light line-clamp-1">
                             {course.teacher_name}
                           </p>
                           <p className="text-sm font-light text-gray-900 mt-2">
@@ -158,9 +158,9 @@ const CartWidget = ({ cart, onRemoveFromCart, onCartUpdate }) => {
                     ))}
                   </div>
 
-                  <div className="border-t border-gray-200 pt-6">
+                  <div className="border-t border-gray-200/50 pt-6">
                     <div className="flex justify-between items-center mb-6">
-                      <span className="text-sm font-light text-gray-600 uppercase tracking-wider">
+                      <span className="text-sm font-light text-gray-500 tracking-tight">
                         Toplam
                       </span>
                       <span className="text-xl font-light text-gray-900">
@@ -171,7 +171,7 @@ const CartWidget = ({ cart, onRemoveFromCart, onCartUpdate }) => {
                     <button
                       onClick={handleCheckout}
                       disabled={isProcessing}
-                      className="w-full px-6 py-3 bg-[#ffde59] text-gray-900 rounded-sm hover:bg-[#ffd700] transition-colors duration-200 font-light text-sm tracking-wide flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors duration-200 font-light text-sm flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Check size={18} />
                       <span>{isProcessing ? 'İşleniyor...' : 'Onayla ve Kayıt Ol'}</span>

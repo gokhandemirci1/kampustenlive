@@ -84,18 +84,18 @@ const LiveCoursesGrid = ({ onEnrollSuccess, onAddToCart }) => {
 
   if (isLoading) {
     return (
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/50 shadow-lg p-6">
-        <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-indigo-600 bg-clip-text text-transparent mb-6">Canlı Dersler</h2>
-        <div className="text-center py-8 text-gray-500">Yükleniyor...</div>
+      <div className="bg-white rounded-lg border border-gray-200/50 p-8">
+        <h2 className="text-xl font-light text-gray-900 mb-6 tracking-tight">Canlı Dersler</h2>
+        <div className="text-center py-8 text-gray-400 font-light">Yükleniyor...</div>
       </div>
     )
   }
 
   if (courses.length === 0) {
     return (
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/50 shadow-lg p-6">
-        <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-indigo-600 bg-clip-text text-transparent mb-6">Canlı Dersler</h2>
-        <div className="text-center py-8 text-gray-500">
+      <div className="bg-white rounded-lg border border-gray-200/50 p-8">
+        <h2 className="text-xl font-light text-gray-900 mb-6 tracking-tight">Canlı Dersler</h2>
+        <div className="text-center py-8 text-gray-400 font-light">
           Şu anda yayında olan ders bulunmuyor.
         </div>
       </div>
@@ -103,13 +103,13 @@ const LiveCoursesGrid = ({ onEnrollSuccess, onAddToCart }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-indigo-600 bg-clip-text text-transparent mb-6">Canlı Dersler</h2>
+    <div className="bg-white rounded-lg border border-gray-200/50 p-8">
+      <h2 className="text-xl font-light text-gray-900 mb-8 tracking-tight">Canlı Dersler</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map((course) => (
           <div
             key={course.id}
-            className="border border-gray-200/50 rounded-2xl overflow-hidden hover:border-primary-300 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 bg-white/80 backdrop-blur-sm"
+            className="border border-gray-200/50 rounded-lg overflow-hidden hover:border-gray-300 transition-all duration-200 bg-white"
           >
             {/* Ders Görseli */}
             {course.image_url ? (
@@ -128,25 +128,25 @@ const LiveCoursesGrid = ({ onEnrollSuccess, onAddToCart }) => {
 
             <div className="p-6">
               <div className="flex items-start justify-between mb-3">
-                <span className="px-2 py-1 text-xs font-medium bg-primary-100 text-primary-700 rounded-full">
+                <span className="px-2 py-1 text-xs font-light bg-primary-50 text-primary-600 rounded-full">
                   Yayında
                 </span>
               </div>
 
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-normal text-gray-900 mb-2 tracking-tight">
                 {course.title}
               </h3>
-              <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+              <p className="text-sm text-gray-500 mb-4 line-clamp-2 font-light">
                 {course.description}
               </p>
 
               <div className="space-y-2 mb-4">
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="flex items-center space-x-2 text-sm text-gray-500 font-light">
                   <User size={16} className="text-gray-400" />
                   <span>{course.teacher_name}</span>
                 </div>
                 {(course.teacher_university || course.teacher_department) && (
-                  <div className="flex items-start space-x-2 text-sm text-gray-500">
+                  <div className="flex items-start space-x-2 text-sm text-gray-400 font-light">
                     <GraduationCap size={16} className="text-gray-400 mt-0.5" />
                     <div className="flex-1">
                       {course.teacher_university && course.teacher_department ? (
@@ -159,12 +159,12 @@ const LiveCoursesGrid = ({ onEnrollSuccess, onAddToCart }) => {
                     </div>
                   </div>
                 )}
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="flex items-center space-x-2 text-sm text-gray-500 font-light">
                   <Clock size={16} className="text-gray-400" />
                   <span className="line-clamp-1">{course.schedule_text}</span>
                 </div>
-                <div className="flex items-center space-x-2 text-sm font-semibold text-primary-600">
-                  <DollarSign size={16} />
+                <div className="flex items-center space-x-2 text-sm font-normal text-gray-900">
+                  <DollarSign size={16} className="text-gray-500" />
                   <span>{formatCurrency(course.price)}</span>
                 </div>
               </div>
@@ -174,7 +174,7 @@ const LiveCoursesGrid = ({ onEnrollSuccess, onAddToCart }) => {
                   setSelectedCourse(course)
                   setIsModalOpen(true)
                 }}
-                className="w-full px-4 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-200 text-sm font-semibold shadow-md shadow-primary-500/30 hover:shadow-lg hover:shadow-primary-500/40 hover:scale-105"
+                className="w-full px-4 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all duration-200 text-sm font-light"
               >
                 Kampa Katıl
               </button>

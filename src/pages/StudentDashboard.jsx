@@ -105,16 +105,16 @@ const StudentDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 py-8">
+    <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary-500/10 via-indigo-500/5 to-transparent rounded-2xl blur-3xl"></div>
-          <div className="relative">
-
-           
-            <p className="text-gray-600 text-lg">Kampüsten uygulamasını telefonuza indirerek anlık bilgi alın ve öğrenmeye devam edin</p>
-          </div>
+        <div className="mb-12">
+          <h1 className="text-3xl font-light text-gray-900 mb-3 tracking-tight">
+            Öğrenci Paneli
+          </h1>
+          <p className="text-gray-500 text-base font-light">
+            Kampüsten uygulamasını telefonuza indirerek anlık bilgi alın ve öğrenmeye devam edin
+          </p>
         </div>
 
         {/* Main Content Grid */}
