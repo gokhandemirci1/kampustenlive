@@ -106,15 +106,23 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
         throw new Error('Token is empty or invalid')
       }
 
-      // Join channel - App ID must match the one used to generate token
-      await agoraClient.join(appId, channelName, token, rtcUid.current)
-
-      setIsLoading(false)
-      showToast.success('Canlı derse katıldınız!')
-
+      // IMPORTANT: Add event listeners BEFORE joining to catch early events
       // Listen for remote users (teacher and other students)
       agoraClient.on('user-published', handleUserPublished)
       agoraClient.on('user-unpublished', handleUserUnpublished)
+      agoraClient.on('user-joined', handleUserJoined)
+      agoraClient.on('user-left', handleUserLeft)
+
+      // Join channel - App ID must match the one used to generate token
+      await agoraClient.join(appId, channelName, token, rtcUid.current)
+      console.log('Student: Successfully joined channel')
+
+      // After joining, check for already published users
+      // Sometimes users publish before we join, so we need to check manually
+      await checkForExistingPublishedUsers(agoraClient)
+
+      setIsLoading(false)
+      showToast.success('Canlı derse katıldınız!')
     } catch (error) {
       console.error('Error initializing Agora:', error)
       handleApiError(error)
@@ -180,6 +188,110 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
   const handleUserUnpublished = (user, mediaType) => {
     if (mediaType === 'video') {
       setRemoteUsers((prev) => prev.filter((u) => u.uid !== user.uid))
+    }
+  }
+
+  const handleUserJoined = (user) => {
+    console.log('Student: User joined', { uid: user.uid })
+    // When a user joins, check if they already have published tracks
+    // This handles the case where user published before we joined
+    setTimeout(async () => {
+      if (client) {
+        try {
+          // Check if user has video track
+          const hasVideo = user.hasVideo
+          const hasAudio = user.hasAudio
+          
+          console.log('Student: Checking joined user for tracks', {
+            uid: user.uid,
+            hasVideo,
+            hasAudio
+          })
+          
+          if (hasVideo || hasAudio) {
+            // Manually trigger subscription if tracks are already available
+            if (hasVideo) {
+              await handleUserPublished(user, 'video')
+            }
+            if (hasAudio) {
+              await handleUserPublished(user, 'audio')
+            }
+          }
+        } catch (error) {
+          console.error('Error checking joined user tracks:', error)
+        }
+      }
+    }, 500) // Small delay to ensure tracks are ready
+  }
+
+  const handleUserLeft = (user) => {
+    console.log('Student: User left', { uid: user.uid })
+    setRemoteUsers((prev) => prev.filter((u) => u.uid !== user.uid))
+  }
+
+  // Check for users who already published before we joined
+  const checkForExistingPublishedUsers = async (agoraClient) => {
+    try {
+      console.log('Student: Checking for existing published users...')
+      
+      // Get remote audio and video tracks
+      const remoteUsersData = agoraClient.remoteUsers
+      
+      console.log('Student: Found remote users:', remoteUsersData.length)
+      
+      for (const remoteUser of remoteUsersData) {
+        console.log('Student: Processing remote user', {
+          uid: remoteUser.uid,
+          hasVideo: remoteUser.hasVideo,
+          hasAudio: remoteUser.hasAudio,
+          videoTrack: !!remoteUser.videoTrack,
+          audioTrack: !!remoteUser.audioTrack
+        })
+
+        // Subscribe to video if available
+        if (remoteUser.hasVideo && !remoteUser.videoTrack) {
+          try {
+            await agoraClient.subscribe(remoteUser, 'video')
+            console.log('Student: Subscribed to existing video track for user', remoteUser.uid)
+          } catch (error) {
+            console.error('Error subscribing to existing video:', error)
+          }
+        }
+
+        // Subscribe to audio if available
+        if (remoteUser.hasAudio && !remoteUser.audioTrack) {
+          try {
+            await agoraClient.subscribe(remoteUser, 'audio')
+            console.log('Student: Subscribed to existing audio track for user', remoteUser.uid)
+          } catch (error) {
+            console.error('Error subscribing to existing audio:', error)
+          }
+        }
+
+        // If video track is already available, add to remoteUsers
+        if (remoteUser.videoTrack) {
+          setRemoteUsers((prev) => {
+            const exists = prev.find((u) => u.uid === remoteUser.uid)
+            if (!exists) {
+              console.log('Student: Adding existing remote user with video', remoteUser.uid)
+              return [...prev, remoteUser]
+            }
+            return prev
+          })
+        }
+
+        // Play audio if available
+        if (remoteUser.audioTrack) {
+          try {
+            remoteUser.audioTrack.play()
+            console.log('Student: Playing existing audio track for user', remoteUser.uid)
+          } catch (error) {
+            console.error('Error playing existing audio:', error)
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error checking for existing published users:', error)
     }
   }
 
