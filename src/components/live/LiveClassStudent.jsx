@@ -147,6 +147,8 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
 
   const enableVideo = async () => {
     try {
+      console.log('Student enabling video...')
+      
       // Switch to host role to publish
       await client.setClientRole('host')
 
@@ -154,18 +156,53 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
       localVideoTrack.current = await AgoraRTC.createCameraVideoTrack({
         encoderConfig: '480p', // Lower resolution for students
       })
+      console.log('Student video track created:', localVideoTrack.current)
 
-      // Play video in container
-      if (localVideoContainer.current) {
-        await localVideoTrack.current.play(localVideoContainer.current)
-        console.log('Student local video track played successfully')
+      // Play video in container with retry mechanism
+      const playVideo = async () => {
+        if (localVideoContainer.current && localVideoTrack.current) {
+          const container = localVideoContainer.current
+          if (container.offsetWidth > 0 && container.offsetHeight > 0) {
+            try {
+              await localVideoTrack.current.play(container)
+              console.log('Student local video track played successfully', {
+                containerWidth: container.offsetWidth,
+                containerHeight: container.offsetHeight
+              })
+            } catch (playError) {
+              console.error('Error playing student video in container:', playError)
+              setTimeout(playVideo, 300)
+            }
+          } else {
+            console.log('Student container not rendered yet, retrying...')
+            setTimeout(playVideo, 200)
+          }
+        } else {
+          console.log('Student container or track not ready, retrying...')
+          setTimeout(playVideo, 200)
+        }
       }
+
+      // Start playing video
+      playVideo()
 
       await client.publish(localVideoTrack.current)
       setIsVideoEnabled(true)
+      
+      // Also try to play after state update
+      setTimeout(async () => {
+        if (localVideoTrack.current && localVideoContainer.current) {
+          try {
+            await localVideoTrack.current.play(localVideoContainer.current)
+            console.log('Student video played after publish')
+          } catch (err) {
+            console.error('Error playing student video after publish:', err)
+          }
+        }
+      }, 500)
     } catch (error) {
       console.error('Error enabling video:', error)
-      showToast.error('Kamera açılamadı')
+      showToast.error('Kamera açılamadı: ' + error.message)
       // Revert to audience if failed
       await client.setClientRole('audience')
     }
