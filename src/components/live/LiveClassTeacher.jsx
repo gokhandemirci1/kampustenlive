@@ -147,11 +147,23 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
       
       // Publish tracks to channel
       await publishTracks(agoraClient)
-      console.log('✅ Teacher: Tracks published successfully')
+      console.log('✅ Teacher: All tracks published successfully')
       
       // Log current remote users to verify publish
       console.log('Teacher: Current connection state:', agoraClient.connectionState)
       console.log('Teacher: Current remote users count:', agoraClient.remoteUsers?.length || 0)
+      
+      // Verify published tracks
+      try {
+        const localVideoStats = await agoraClient.getLocalVideoStats()
+        const localAudioStats = await agoraClient.getLocalAudioStats()
+        console.log('Teacher: Published track stats:', {
+          videoStats: localVideoStats,
+          audioStats: localAudioStats
+        })
+      } catch (statsError) {
+        console.error('Error getting track stats:', statsError)
+      }
 
       // Update is_live status in database
       if (courseId) {
