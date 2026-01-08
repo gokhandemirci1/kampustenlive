@@ -26,40 +26,46 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
     }
   }, [])
 
-  // Play local video when container is ready
+  // Play local video when container is ready (useEffect as backup)
   useEffect(() => {
-    const playLocalVideo = async () => {
-      if (localVideoTrack.current && localVideoContainer.current && isPublished && isVideoEnabled) {
-        try {
-          // Ensure container has dimensions
-          if (localVideoContainer.current.offsetWidth > 0 && localVideoContainer.current.offsetHeight > 0) {
-            await localVideoTrack.current.play(localVideoContainer.current)
-            console.log('Local video played via useEffect - container ready')
-          } else {
-            // Wait for container to be rendered
-            setTimeout(playLocalVideo, 100)
-          }
-        } catch (err) {
-          console.error('Error playing local video in useEffect:', err)
-        }
-      }
+    if (isPublished && isVideoEnabled && localVideoTrack.current) {
+      const timeoutId = setTimeout(() => {
+        playLocalVideo()
+      }, 500)
+      return () => clearTimeout(timeoutId)
     }
-    
-    // Small delay to ensure DOM is ready
-    const timeoutId = setTimeout(playLocalVideo, 100)
-    return () => clearTimeout(timeoutId)
   }, [isPublished, isVideoEnabled])
 
-  // Play remote user videos when they're added
+  // Play remote user videos when they're added (via useEffect)
   useEffect(() => {
     remoteUsers.forEach((user) => {
       if (user.videoTrack) {
-        const container = document.getElementById(`remote-${user.uid}`)
-        if (container) {
-          user.videoTrack.play(container).catch(err => {
-            console.error('Error playing remote video:', err)
-          })
+        const playRemoteVideo = async () => {
+          const container = document.getElementById(`remote-${user.uid}`)
+          if (container) {
+            // Check if container is rendered
+            if (container.offsetWidth > 0 && container.offsetHeight > 0) {
+              try {
+                await user.videoTrack.play(container)
+                console.log('Teacher: Remote user video played successfully', {
+                  uid: user.uid,
+                  containerWidth: container.offsetWidth,
+                  containerHeight: container.offsetHeight
+                })
+              } catch (err) {
+                console.error('Error playing remote video:', err)
+                // Retry after delay
+                setTimeout(playRemoteVideo, 300)
+              }
+            } else {
+              // Retry if container not rendered yet
+              setTimeout(playRemoteVideo, 200)
+            }
+          } else {
+            console.log('Teacher: Container not found for user', user.uid)
+          }
         }
+        playRemoteVideo()
       }
     })
   }, [remoteUsers])
@@ -136,25 +142,30 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
         throw joinError
       }
 
-      // Create and publish local tracks
+      // Create local tracks
       await createLocalTracks()
+      
+      // Publish tracks to channel
       await publishTracks(agoraClient)
+      console.log('Tracks published successfully')
 
       setIsPublished(true)
-      
-      // Ensure video plays after state update
-      setTimeout(async () => {
-        if (localVideoTrack.current && localVideoContainer.current) {
-          try {
-            await localVideoTrack.current.play(localVideoContainer.current)
-            console.log('Video played after publish')
-          } catch (err) {
-            console.error('Error playing video after publish:', err)
-          }
-        }
-      }, 500)
-      
       setIsLoading(false)
+      
+      // Play local video after publish and state update
+      // Retry mechanism to ensure container is rendered
+      let retries = 0
+      const maxRetries = 10
+      const tryPlayVideo = async () => {
+        retries++
+        const played = await playLocalVideo()
+        if (!played && retries < maxRetries) {
+          setTimeout(tryPlayVideo, 200)
+        } else if (!played) {
+          console.warn('Failed to play video after', maxRetries, 'retries')
+        }
+      }
+      setTimeout(tryPlayVideo, 300)
 
       // Listen for remote users
       agoraClient.on('user-published', handleUserPublished)
@@ -184,36 +195,46 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
       localAudioTrack.current = await AgoraRTC.createMicrophoneAudioTrack()
       console.log('Audio track created:', localAudioTrack.current)
 
-      // Wait for container to be available and play video
-      const playVideo = async () => {
-        if (localVideoContainer.current && localVideoTrack.current) {
-          try {
-            await localVideoTrack.current.play(localVideoContainer.current)
-            console.log('Local video track played successfully in container')
-          } catch (playError) {
-            console.error('Error playing video in container:', playError)
-            // Retry after a short delay
-            setTimeout(playVideo, 200)
-          }
-        } else {
-          console.log('Container or track not ready, retrying...', {
-            container: !!localVideoContainer.current,
-            track: !!localVideoTrack.current
-          })
-          // Retry after a short delay if container not ready
-          setTimeout(playVideo, 200)
-        }
-      }
-      
-      // Wait a bit for container to be rendered
-      setTimeout(playVideo, 300)
-
       setIsVideoEnabled(true)
       setIsAudioEnabled(true)
     } catch (error) {
       console.error('Error creating local tracks:', error)
       showToast.error('Kamera veya mikrofon erişimi reddedildi: ' + error.message)
       throw error
+    }
+  }
+  
+  // Separate function to play local video
+  const playLocalVideo = async () => {
+    if (!localVideoTrack.current || !localVideoContainer.current) {
+      console.log('Cannot play video: track or container missing', {
+        track: !!localVideoTrack.current,
+        container: !!localVideoContainer.current
+      })
+      return false
+    }
+
+    const container = localVideoContainer.current
+    
+    // Check if container is rendered with dimensions
+    if (container.offsetWidth === 0 || container.offsetHeight === 0) {
+      console.log('Container not rendered yet, dimensions:', {
+        width: container.offsetWidth,
+        height: container.offsetHeight
+      })
+      return false
+    }
+
+    try {
+      await localVideoTrack.current.play(container)
+      console.log('Local video played successfully', {
+        containerWidth: container.offsetWidth,
+        containerHeight: container.offsetHeight
+      })
+      return true
+    } catch (playError) {
+      console.error('Error playing video:', playError)
+      return false
     }
   }
 
@@ -232,20 +253,15 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
   }
 
   const handleUserPublished = async (user, mediaType) => {
+    console.log('Teacher: User published', { uid: user.uid, mediaType })
     await client.subscribe(user, mediaType)
+    console.log('Teacher: Subscribed to user', user.uid)
     
     if (mediaType === 'video') {
       setRemoteUsers((prev) => {
         const exists = prev.find((u) => u.uid === user.uid)
         if (!exists) {
-          // Add user and play video track
-          setTimeout(() => {
-            const container = document.getElementById(`remote-${user.uid}`)
-            if (container && user.videoTrack) {
-              user.videoTrack.play(container)
-              console.log('Remote user video track played:', user.uid)
-            }
-          }, 100)
+          console.log('Teacher: Adding remote user to list', user.uid)
           return [...prev, user]
         }
         return prev
@@ -357,11 +373,11 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
       {/* Main video area */}
       <div className="flex-1 flex flex-wrap gap-4 p-4 overflow-auto">
         {/* Local video (teacher) */}
-        <div className="relative bg-black rounded-lg overflow-hidden" style={{ minWidth: '300px', flex: '1 1 300px' }}>
+        <div className="relative bg-black rounded-lg overflow-hidden" style={{ minWidth: '300px', minHeight: '400px', flex: '1 1 300px' }}>
           <div
             ref={localVideoContainer}
             className="w-full h-full"
-            style={{ minHeight: '400px', width: '100%', height: '100%' }}
+            style={{ width: '100%', height: '100%', minHeight: '400px' }}
           ></div>
           {!isVideoEnabled && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
@@ -375,11 +391,11 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
 
         {/* Remote users (students) */}
         {remoteUsers.map((user) => (
-          <div key={user.uid} className="relative bg-black rounded-lg overflow-hidden" style={{ minWidth: '300px', flex: '1 1 300px' }}>
+          <div key={user.uid} className="relative bg-black rounded-lg overflow-hidden" style={{ minWidth: '300px', minHeight: '400px', flex: '1 1 300px' }}>
             <div
               id={`remote-${user.uid}`}
               className="w-full h-full"
-              style={{ minHeight: '400px' }}
+              style={{ width: '100%', height: '100%', minHeight: '400px' }}
             ></div>
             <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
               Öğrenci

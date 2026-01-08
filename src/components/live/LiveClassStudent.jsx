@@ -123,22 +123,15 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
   }
 
   const handleUserPublished = async (user, mediaType) => {
+    console.log('Student: User published', { uid: user.uid, mediaType })
     await client.subscribe(user, mediaType)
+    console.log('Student: Subscribed to user', user.uid)
 
     if (mediaType === 'video') {
       setRemoteUsers((prev) => {
         const exists = prev.find((u) => u.uid === user.uid)
         if (!exists) {
-          // Play video track when user is added
-          setTimeout(() => {
-            const container = document.getElementById(`remote-${user.uid}`)
-            if (container && user.videoTrack) {
-              user.videoTrack.play(container).catch(err => {
-                console.error('Error playing remote video:', err)
-              })
-              console.log('Remote user video track played:', user.uid)
-            }
-          }, 100)
+          console.log('Student: Adding remote user to list', user.uid)
           return [...prev, user]
         }
         return prev
@@ -149,6 +142,40 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
       user.audioTrack?.play()
     }
   }
+  
+  // Play remote videos when they're added (via useEffect)
+  useEffect(() => {
+    remoteUsers.forEach((user) => {
+      if (user.videoTrack) {
+        const playRemoteVideo = async () => {
+          const container = document.getElementById(`remote-${user.uid}`)
+          if (container) {
+            // Check if container is rendered
+            if (container.offsetWidth > 0 && container.offsetHeight > 0) {
+              try {
+                await user.videoTrack.play(container)
+                console.log('Student: Remote user video played successfully', {
+                  uid: user.uid,
+                  containerWidth: container.offsetWidth,
+                  containerHeight: container.offsetHeight
+                })
+              } catch (err) {
+                console.error('Error playing remote video:', err)
+                // Retry after delay
+                setTimeout(playRemoteVideo, 300)
+              }
+            } else {
+              // Retry if container not rendered yet
+              setTimeout(playRemoteVideo, 200)
+            }
+          } else {
+            console.log('Student: Container not found for user', user.uid)
+          }
+        }
+        playRemoteVideo()
+      }
+    })
+  }, [remoteUsers])
 
   const handleUserUnpublished = (user, mediaType) => {
     if (mediaType === 'video') {
@@ -324,22 +351,22 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
       <div className="flex-1 flex flex-wrap gap-4 p-4 overflow-auto">
         {/* Remote users (teacher and other students) */}
         {remoteUsers.map((user) => (
-          <div key={user.uid} className="relative bg-black rounded-lg overflow-hidden" style={{ minWidth: '300px', flex: '1 1 300px' }}>
+          <div key={user.uid} className="relative bg-black rounded-lg overflow-hidden" style={{ minWidth: '300px', minHeight: '400px', flex: '1 1 300px' }}>
             <div
               id={`remote-${user.uid}`}
               className="w-full h-full"
-              style={{ minHeight: '400px' }}
+              style={{ width: '100%', height: '100%', minHeight: '400px' }}
             ></div>
           </div>
         ))}
 
         {/* Local video (only if enabled) */}
         {isVideoEnabled && (
-          <div className="relative bg-black rounded-lg overflow-hidden" style={{ minWidth: '300px', flex: '1 1 300px' }}>
+          <div className="relative bg-black rounded-lg overflow-hidden" style={{ minWidth: '300px', minHeight: '400px', flex: '1 1 300px' }}>
             <div
               ref={localVideoContainer}
               className="w-full h-full"
-              style={{ minHeight: '400px' }}
+              style={{ width: '100%', height: '100%', minHeight: '400px' }}
             ></div>
             <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
               Sen
