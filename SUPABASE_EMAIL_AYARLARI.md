@@ -169,7 +169,46 @@ http://localhost:5173/reset-password/teacher
 4. **SMTP User** alanına tam e-posta adresini yazdığınızdan emin olun (örn: `noreply@yourdomain.com`)
 5. Namecheap Private Email panelinde mailbox'ın aktif olduğundan emin olun
 
+### 500 Server Error (E-posta gönderilemiyor)
+
+Bu hata genellikle Supabase SMTP ayarlarının yapılmadığını veya yanlış yapılandırıldığını gösterir.
+
+**Kontrol Listesi:**
+
+1. **Supabase Dashboard > Settings > Auth > SMTP Settings** bölümüne gidin
+   - SMTP ayarlarının **aktif** olduğundan emin olun
+   - Tüm alanların doldurulduğundan emin olun
+
+2. **SMTP Ayarlarını Kontrol Edin:**
+   ```
+   ✅ SMTP Host: mail.privateemail.com
+   ✅ SMTP Port: 587 (veya 465)
+   ✅ SMTP User: noreply@yourdomain.com (TAM E-POSTA ADRESİ)
+   ✅ SMTP Password: [Mailbox şifreniz]
+   ✅ Sender Email: noreply@yourdomain.com (SMTP User ile aynı)
+   ✅ Sender Name: KAMPÜSTEN
+   ```
+
+3. **Supabase Dashboard > Logs** bölümünü kontrol edin
+   - Son hataları görüntüleyin
+   - SMTP bağlantı hatalarını kontrol edin
+
+4. **Test SMTP Bağlantısı:**
+   - Supabase Dashboard'da "Test SMTP Connection" butonunu kullanın
+   - Bağlantı başarısız olursa, ayarları tekrar kontrol edin
+
+5. **Namecheap Private Email Kontrolleri:**
+   - Mailbox'ın aktif olduğundan emin olun
+   - Mailbox şifresinin doğru olduğundan emin olun
+   - SMTP erişiminin açık olduğundan emin olun
+
+6. **Alternatif Çözümler:**
+   - SMTP Port'u 587'den 465'e değiştirmeyi deneyin (veya tam tersi)
+   - SMTP Host'u `mail.privateemail.com` yerine `smtp.privateemail.com` deneyin
+   - Mailbox şifresini sıfırlayıp yeni şifreyi Supabase'e girin
+
 ### Redirect URL hatası
 1. Settings > Auth > URL Configuration'da redirect URL'lerin doğru olduğundan emin olun
 2. Production ve development URL'lerini eklediğinizden emin olun
+3. Redirect URL'lerde `http://` ve `https://` protokollerinin doğru olduğundan emin olun
 

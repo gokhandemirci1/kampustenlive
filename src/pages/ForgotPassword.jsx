@@ -26,16 +26,32 @@ const ForgotPassword = () => {
     setIsLoading(true)
 
     try {
+      // Redirect URL'i oluştur
+      const redirectUrl = `${window.location.origin}/reset-password/${type}`
+      
+      console.log('Password reset request:', { email, redirectUrl })
+
       // Supabase password reset email gönder
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password/${type}`,
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: redirectUrl,
       })
 
-      if (error) throw error
+      if (error) {
+        console.error('Password reset error:', error)
+        // Daha detaylı hata mesajı göster
+        if (error.message?.includes('SMTP') || error.message?.includes('email')) {
+          showToast.error('E-posta gönderilemedi. Lütfen Supabase SMTP ayarlarını kontrol edin.')
+        } else {
+          throw error
+        }
+        return
+      }
 
+      console.log('Password reset success:', data)
       showToast.success('Şifre sıfırlama linki e-posta adresinize gönderildi!')
       setIsSent(true)
     } catch (error) {
+      console.error('Unexpected error:', error)
       handleApiError(error)
     } finally {
       setIsLoading(false)
