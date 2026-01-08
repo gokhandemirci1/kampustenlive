@@ -13,13 +13,15 @@ const ResetPassword = () => {
   const [isSuccess, setIsSuccess] = useState(false)
 
   useEffect(() => {
+    let mounted = true
+
     // Supabase auth state change'i dinle - password recovery için
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('Auth state change:', event, session)
       
-      if (event === 'PASSWORD_RECOVERY') {
-        // Password recovery token geldi, session oluşturuldu
-        console.log('Password recovery event detected')
+      if (event === 'PASSWORD_RECOVERY' && session) {
+        console.log('Password recovery event detected, session created')
+        // Session oluşturuldu, sayfa zaten doğru yerde
       }
     })
 
@@ -28,26 +30,51 @@ const ResetPassword = () => {
     const accessToken = hashParams.get('access_token')
     const typeParam = hashParams.get('type')
 
-    console.log('URL hash params:', { accessToken: !!accessToken, typeParam })
+    console.log('ResetPassword - URL hash params:', { 
+      hasAccessToken: !!accessToken, 
+      typeParam,
+      fullHash: window.location.hash.substring(0, 50) + '...'
+    })
 
-    // Eğer hash'te token yoksa ve session da yoksa, biraz bekle
-    // Supabase token'ı işliyor olabilir
-    if (!accessToken) {
+    // Eğer hash'te recovery token varsa, Supabase'in işlemesini bekle
+    if (accessToken && typeParam === 'recovery') {
+      console.log('Recovery token found, waiting for Supabase to process...')
+      
+      // Supabase'in token'ı işlemesi için biraz bekle
       setTimeout(async () => {
-        const { data: { session }, error } = await supabase.auth.getSession()
-        console.log('Delayed session check:', { hasSession: !!session, error })
+        if (!mounted) return
         
-        if (!session && !accessToken) {
-          // Token yok ve session da yok, muhtemelen yanlış link
+        const { data: { session }, error } = await supabase.auth.getSession()
+        console.log('Session after recovery token processing:', { hasSession: !!session, error })
+        
+        if (!session) {
+          console.error('Session not created from recovery token')
           showToast.error('Geçersiz veya süresi dolmuş link. Lütfen yeni bir şifre sıfırlama isteği yapın.')
           setTimeout(() => {
-            navigate(`/forgot-password/${type}`)
+            if (mounted) navigate(`/forgot-password/${type}`)
           }, 2000)
         }
-      }, 2000)
+      }, 1500)
+    } else if (!accessToken) {
+      // Hash'te token yok, session kontrolü yap
+      setTimeout(async () => {
+        if (!mounted) return
+        
+        const { data: { session }, error } = await supabase.auth.getSession()
+        console.log('Session check (no hash):', { hasSession: !!session, error })
+        
+        if (!session) {
+          console.warn('No session found, redirecting to forgot password')
+          showToast.error('Geçersiz veya süresi dolmuş link. Lütfen yeni bir şifre sıfırlama isteği yapın.')
+          setTimeout(() => {
+            if (mounted) navigate(`/forgot-password/${type}`)
+          }, 2000)
+        }
+      }, 1000)
     }
 
     return () => {
+      mounted = false
       subscription.unsubscribe()
     }
   }, [type, navigate])

@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Navbar from './components/Navbar'
@@ -12,11 +13,39 @@ import StudentDashboard from './pages/StudentDashboard'
 import TeacherDashboard from './pages/TeacherDashboard'
 import AdminDashboard from './pages/AdminDashboard'
 import LiveClass from './pages/LiveClass'
+import { supabase } from './lib/supabase'
+
+// Component to handle Supabase auth hash fragments
+const AuthHandler = () => {
+  const location = useLocation()
+
+  useEffect(() => {
+    // Check if URL has hash fragment (Supabase auth tokens)
+    if (window.location.hash) {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1))
+      const accessToken = hashParams.get('access_token')
+      const type = hashParams.get('type')
+
+      // If it's a password recovery token, let Supabase handle it
+      if (accessToken && type === 'recovery') {
+        console.log('Password recovery token detected in URL hash')
+        // Supabase will automatically handle this with detectSessionInUrl: true
+        // But we need to ensure the hash is processed
+        supabase.auth.getSession().then(({ data, error }) => {
+          console.log('Session after hash processing:', { hasSession: !!data.session, error })
+        })
+      }
+    }
+  }, [location])
+
+  return null
+}
 
 function App() {
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
+        <AuthHandler />
         <Navbar />
         <main className="flex-grow">
           <Routes>
