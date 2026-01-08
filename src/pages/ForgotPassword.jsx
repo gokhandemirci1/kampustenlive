@@ -26,10 +26,19 @@ const ForgotPassword = () => {
     setIsLoading(true)
 
     try {
-      // Redirect URL'i oluştur
-      const redirectUrl = `${window.location.origin}/reset-password/${type}`
+      // Redirect URL'i oluştur - production domain kullan
+      // Production'da her zaman www.kampusten.org kullan, localhost'ta ise localhost
+      const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'
+      const redirectUrl = isProduction 
+        ? `https://www.kampusten.org/reset-password/${type}`
+        : `${window.location.origin}/reset-password/${type}`
       
-      console.log('Password reset request:', { email, redirectUrl })
+      console.log('Password reset request:', { 
+        email, 
+        redirectUrl, 
+        hostname: window.location.hostname,
+        isProduction 
+      })
 
       // Supabase password reset email gönder
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
