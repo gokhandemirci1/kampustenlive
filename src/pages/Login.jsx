@@ -70,79 +70,82 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-        <div className="text-center">
-          {/* Logo */}
-          <div className="mb-6 flex justify-center">
-            <Link to="/">
-              <img 
-                src="/images/logo.svg" 
-                alt="Kampusten.org Logo" 
-                className="h-16 w-16 mx-auto transition-transform duration-200 hover:scale-105"
-              />
-            </Link>
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900">{getTitle()}</h2>
-          <p className="mt-2 text-gray-600">Hesabınıza giriş yapın</p>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md">
+        {/* Logo ve Başlık */}
+        <div className="text-center mb-10">
+          <Link to="/" className="inline-block mb-6">
+            <img 
+              src="/images/logo.svg" 
+              alt="KAMPÜSTEN Logo" 
+              className="h-20 w-20 mx-auto transition-transform duration-200 hover:scale-105"
+            />
+          </Link>
+          <h1 className="text-3xl font-light text-gray-900 mb-2 tracking-tight">
+            {getTitle()}
+          </h1>
+          <p className="text-gray-500 font-light">Hesabınıza giriş yapın</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-2"
+        {/* Form Card */}
+        <div className="bg-white rounded-lg border border-gray-200/50 p-8 shadow-sm">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-light text-gray-700 mb-2"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 font-light text-gray-900 placeholder-gray-400"
+                placeholder="ornek@email.com"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-light text-gray-700 mb-2"
+              >
+                Şifre
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 font-light text-gray-900 placeholder-gray-400"
+                placeholder="••••••••"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full px-4 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all duration-200 font-light text-sm disabled:opacity-50 disabled:cursor-not-allowed mt-6"
             >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              placeholder="ornek@email.com"
-            />
+              {isLoading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+            </button>
+          </form>
+
+          <div className="mt-6 pt-6 border-t border-gray-200/50 text-center">
+            <p className="text-sm text-gray-500 font-light">
+              Hesabınız yok mu?{' '}
+              <Link
+                to={`/register/${type}`}
+                className="text-primary-500 hover:text-primary-600 font-normal transition-colors"
+              >
+                Kayıt olun
+              </Link>
+            </p>
           </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Şifre
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              placeholder="••••••••"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
-          </button>
-        </form>
-
-        <div className="text-center">
-          <p className="text-sm text-gray-600">
-            Hesabınız yok mu?{' '}
-            <Link
-              to={`/register/${type}`}
-              className="text-primary-600 hover:text-primary-700 font-medium"
-            >
-              Kayıt olun
-            </Link>
-          </p>
         </div>
       </div>
     </div>

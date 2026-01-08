@@ -230,28 +230,30 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-        <div className="text-center">
-          {/* Logo */}
-          <div className="mb-6 flex justify-center">
-            <Link to="/">
-              <img 
-                src="/images/logo.svg" 
-                alt="Kampusten.org Logo" 
-                className="h-16 w-16 mx-auto transition-transform duration-200 hover:scale-105"
-              />
-            </Link>
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900">{getTitle()}</h2>
-          <p className="mt-2 text-gray-600">Hesap oluşturun ve başlayın</p>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md">
+        {/* Logo ve Başlık */}
+        <div className="text-center mb-10">
+          <Link to="/" className="inline-block mb-6">
+            <img 
+              src="/images/logo.svg" 
+              alt="KAMPÜSTEN Logo" 
+              className="h-20 w-20 mx-auto transition-transform duration-200 hover:scale-105"
+            />
+          </Link>
+          <h1 className="text-3xl font-light text-gray-900 mb-2 tracking-tight">
+            {getTitle()}
+          </h1>
+          <p className="text-gray-500 font-light">Hesap oluşturun ve başlayın</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Form Card */}
+        <div className="bg-white rounded-lg border border-gray-200/50 p-8 shadow-sm">
+          <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label
               htmlFor="full_name"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-light text-gray-700 mb-2"
             >
               Ad Soyad <span className="text-red-500">*</span>
             </label>
@@ -262,7 +264,7 @@ const Register = () => {
               value={formData.full_name}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 font-light text-gray-900 placeholder-gray-400"
               placeholder="Adınız Soyadınız"
             />
           </div>
@@ -270,7 +272,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-light text-gray-700 mb-2"
             >
               Email <span className="text-red-500">*</span>
             </label>
@@ -281,7 +283,7 @@ const Register = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 font-light text-gray-900 placeholder-gray-400"
               placeholder="ornek@email.com"
             />
           </div>
@@ -289,7 +291,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-light text-gray-700 mb-2"
             >
               Şifre <span className="text-red-500">*</span>
             </label>
@@ -301,7 +303,7 @@ const Register = () => {
               onChange={handleChange}
               required
               minLength={6}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 font-light text-gray-900 placeholder-gray-400"
               placeholder="En az 6 karakter"
             />
           </div>
@@ -309,7 +311,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-light text-gray-700 mb-2"
             >
               Şifre Tekrar <span className="text-red-500">*</span>
             </label>
@@ -320,7 +322,7 @@ const Register = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 font-light text-gray-900 placeholder-gray-400"
               placeholder="Şifrenizi tekrar girin"
             />
           </div>
@@ -329,7 +331,7 @@ const Register = () => {
             <div>
               <label
                 htmlFor="grade_level"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-light text-gray-700 mb-2"
               >
                 Sınıf Seviyesi <span className="text-red-500">*</span>
               </label>
@@ -339,7 +341,7 @@ const Register = () => {
                 value={formData.grade_level}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 font-light text-gray-900 bg-white"
               >
                 <option value="">Seçiniz</option>
                 <option value="9. Sınıf">9. Sınıf</option>
@@ -356,7 +358,7 @@ const Register = () => {
               <div>
                 <label
                   htmlFor="university"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-light text-gray-700 mb-2"
                 >
                   Üniversite <span className="text-red-500">*</span>
                 </label>
@@ -367,7 +369,7 @@ const Register = () => {
                   value={formData.university}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 font-light text-gray-900 placeholder-gray-400"
                   placeholder="Örn: Boğaziçi Üniversitesi"
                 />
               </div>
@@ -375,7 +377,7 @@ const Register = () => {
               <div>
                 <label
                   htmlFor="department"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-light text-gray-700 mb-2"
                 >
                   Bölüm <span className="text-red-500">*</span>
                 </label>
@@ -386,14 +388,14 @@ const Register = () => {
                   value={formData.department}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 font-light text-gray-900 placeholder-gray-400"
                   placeholder="Örn: Matematik"
                 />
               </div>
 
               {/* Profil Resmi Yükleme (Opsiyonel) */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center space-x-2">
+                <label className="block text-sm font-light text-gray-700 mb-2 flex items-center space-x-2">
                   <User size={16} />
                   <span>Profil Resmi (Opsiyonel)</span>
                 </label>
@@ -402,7 +404,7 @@ const Register = () => {
                     <img
                       src={avatarPreview}
                       alt="Avatar preview"
-                      className="w-24 h-24 rounded-full object-cover border-2 border-primary-200"
+                      className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
                     />
                     <button
                       type="button"
@@ -413,7 +415,7 @@ const Register = () => {
                     </button>
                   </div>
                 ) : (
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-primary-400 transition-colors">
+                  <div className="border border-dashed border-gray-200 rounded-lg p-6 text-center hover:border-gray-300 transition-colors">
                     <input
                       ref={avatarInputRef}
                       type="file"
@@ -426,13 +428,13 @@ const Register = () => {
                       htmlFor="avatar-upload"
                       className="cursor-pointer flex flex-col items-center space-y-2"
                     >
-                      <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center">
                         <Upload className="text-gray-400" size={24} />
                       </div>
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm text-gray-500 font-light">
                         Profil resmi yüklemek için tıklayın
                       </span>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-gray-400 font-light">
                         PNG, JPG, GIF (Max 2MB)
                       </span>
                     </label>
@@ -440,9 +442,9 @@ const Register = () => {
                 )}
               </div>
 
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <p className="text-sm text-yellow-800">
-                  <strong>Not:</strong> Öğretmen hesapları yönetici onayından sonra aktif
+              <div className="bg-yellow-50/50 border border-yellow-200/50 rounded-lg p-4">
+                <p className="text-sm text-yellow-700 font-light">
+                  <span className="font-normal">Not:</span> Öğretmen hesapları yönetici onayından sonra aktif
                   olacaktır. Onay süreci genellikle 1-2 iş günü sürmektedir.
                 </p>
               </div>
@@ -452,7 +454,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={isLoading || isUploadingAvatar}
-            className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-4 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all duration-200 font-light text-sm disabled:opacity-50 disabled:cursor-not-allowed mt-6"
           >
             {(isLoading || isUploadingAvatar) ? (
               isUploadingAvatar ? 'Profil resmi yükleniyor...' : 'Kayıt yapılıyor...'
@@ -462,12 +464,12 @@ const Register = () => {
           </button>
         </form>
 
-        <div className="text-center">
-          <p className="text-sm text-gray-600">
+        <div className="mt-6 pt-6 border-t border-gray-200/50 text-center">
+          <p className="text-sm text-gray-500 font-light">
             Zaten hesabınız var mı?{' '}
             <Link
               to={`/login/${type}`}
-              className="text-primary-600 hover:text-primary-700 font-medium"
+              className="text-primary-500 hover:text-primary-600 font-normal transition-colors"
             >
               Giriş yapın
             </Link>
