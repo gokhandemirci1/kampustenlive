@@ -109,12 +109,20 @@ const Login = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-light text-gray-700 mb-2"
-              >
-                Şifre
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-light text-gray-700"
+                >
+                  Şifre
+                </label>
+                <Link
+                  to={`/forgot-password/${type}`}
+                  className="text-sm text-primary-500 hover:text-primary-600 font-light transition-colors"
+                >
+                  Şifremi Unuttum
+                </Link>
+              </div>
               <input
                 type="password"
                 id="password"
