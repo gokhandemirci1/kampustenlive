@@ -125,11 +125,25 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
         throw new Error('App ID is empty or invalid')
       }
 
+      // IMPORTANT: Add event listeners BEFORE joining to ensure we catch all events
+      console.log('Teacher: Setting up event listeners...')
+      agoraClient.on('user-published', handleUserPublished)
+      agoraClient.on('user-unpublished', handleUserUnpublished)
+      agoraClient.on('user-joined', handleUserJoined)
+      agoraClient.on('user-left', handleUserLeft)
+      console.log('Teacher: Event listeners registered')
+
+      // Also listen for connection state changes
+      agoraClient.on('connection-state-change', (curState, revState) => {
+        console.log('Teacher: Connection state changed', { curState, revState })
+      })
+
       // Join channel - App ID must match the one used to generate token
-      console.log('Attempting to join channel...')
+      console.log('Teacher: Attempting to join channel...', { appId, channelName, uid: rtcUid.current })
       try {
         await agoraClient.join(appId, channelName, token, rtcUid.current)
-        console.log('Successfully joined channel!')
+        console.log('✅ Teacher: Successfully joined channel!')
+        console.log('Teacher: Connection state after join:', agoraClient.connectionState)
       } catch (joinError) {
         console.error('Join error details:', {
           error: joinError,
