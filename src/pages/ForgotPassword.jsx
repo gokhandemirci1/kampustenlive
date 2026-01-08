@@ -29,9 +29,12 @@ const ForgotPassword = () => {
       // Redirect URL'i oluştur - production domain kullan
       // Production'da her zaman www.kampusten.org kullan, localhost'ta ise localhost
       const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'
-      const redirectUrl = isProduction 
-        ? `https://www.kampusten.org/reset-password/${type}`
-        : `${window.location.origin}/reset-password/${type}`
+      const baseUrl = isProduction 
+        ? 'https://www.kampusten.org'
+        : window.location.origin
+      
+      // Redirect URL'e type bilgisini query parameter olarak ekle
+      const redirectUrl = `${baseUrl}/reset-password/${type}?type=${type}`
       
       console.log('Password reset request:', { 
         email, 
