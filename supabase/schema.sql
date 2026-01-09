@@ -37,6 +37,7 @@ CREATE TABLE teacher_details (
     id UUID PRIMARY KEY REFERENCES profiles(id) ON DELETE CASCADE,
     university TEXT,
     department TEXT,
+    yks_rank INTEGER,
     is_approved BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
