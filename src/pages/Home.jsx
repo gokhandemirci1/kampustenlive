@@ -125,14 +125,14 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4 mt-8 sm:mt-12">
               <Link
                 to="/register/student"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 sm:px-8 py-3 sm:py-4 bg-[#ffde59] text-gray-900 rounded-lg font-bold hover:bg-[#ffd700] transition-all duration-200 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-sm sm:text-base border-2 border-gray-900/20"
               >
                 <span>Hemen Başla</span>
                 <ArrowRight size={18} className="sm:w-5 sm:h-5" />
               </Link>
               <Link
                 to="/register/teacher"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-primary-600 border-2 border-primary-200 rounded-lg font-semibold hover:bg-primary-50 transition-all duration-200 text-sm sm:text-base"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 sm:px-8 py-3 sm:py-4 bg-white/95 backdrop-blur-md text-gray-900 border-2 border-gray-900 rounded-lg font-bold hover:bg-white transition-all duration-200 text-sm sm:text-base shadow-xl"
               >
                 <Users size={18} className="sm:w-5 sm:h-5" />
                 <span>Öğretmen Ol</span>
