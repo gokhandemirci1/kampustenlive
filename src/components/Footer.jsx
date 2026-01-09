@@ -36,7 +36,7 @@ const Footer = () => {
                 alt="Kampusten.org Logo" 
                 className="h-12 w-12 rounded-full object-cover shadow-md transition-all duration-200 group-hover:scale-110 group-hover:shadow-lg border-2 border-white/50"
               />
-              <div className="text-lg font-bold text-white">
+              <div className="text-base sm:text-lg font-bold text-white">
                 KAMPÜSTEN
               </div>
             </Link>

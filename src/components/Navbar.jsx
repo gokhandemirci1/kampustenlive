@@ -84,7 +84,7 @@ const Navbar = () => {
               alt="Kampusten.org Logo" 
               className="h-10 w-10 rounded-full object-cover shadow-md transition-all duration-200 group-hover:scale-105 group-hover:shadow-lg border-2 border-primary-100"
             />
-            <div className="text-xl font-bold text-white">
+            <div className="text-base sm:text-lg font-bold text-white">
               KAMPÜSTEN
             </div>
           </Link>
