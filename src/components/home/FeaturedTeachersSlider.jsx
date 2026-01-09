@@ -16,6 +16,7 @@ const FeaturedTeachersSlider = () => {
     setIsLoading(true)
     try {
       // Onaylı öğretmenleri çek - university, department ve profil bilgileriyle
+      // Public olarak okuyabilmek için profiles RLS politikası gerekiyor
       const { data, error } = await supabase
         .from('teacher_details')
         .select(`
@@ -24,7 +25,7 @@ const FeaturedTeachersSlider = () => {
           department,
           yks_rank,
           is_approved,
-          profiles!inner(
+          profiles (
             id,
             full_name,
             avatar_url
@@ -33,22 +34,35 @@ const FeaturedTeachersSlider = () => {
         .eq('is_approved', true)
         .limit(10)
 
-      if (error) throw error
+      console.log('Teachers query result:', { data, error })
 
-      if (data) {
-        const teachersData = data.map(teacher => ({
-          id: teacher.id,
-          name: teacher.profiles?.full_name || 'İsimsiz Öğretmen',
-          university: teacher.university || '',
-          department: teacher.department || '',
-          avatar_url: teacher.profiles?.avatar_url || null,
-          yks_rank: teacher.yks_rank || null
-        }))
+      if (error) {
+        console.error('Supabase error:', error)
+        throw error
+      }
+
+      if (data && data.length > 0) {
+        const teachersData = data
+          .filter(teacher => teacher.profiles !== null) // profiles null olanları filtrele
+          .map(teacher => ({
+            id: teacher.id,
+            name: teacher.profiles?.full_name || 'İsimsiz Öğretmen',
+            university: teacher.university || '',
+            department: teacher.department || '',
+            avatar_url: teacher.profiles?.avatar_url || null,
+            yks_rank: teacher.yks_rank || null
+          }))
+        console.log('Processed teachers data:', teachersData)
         setTeachers(teachersData)
+      } else {
+        console.log('No approved teachers found')
+        setTeachers([])
       }
     } catch (error) {
       console.error('Error fetching teachers:', error)
-      handleApiError(error)
+      // handleApiError hatayı toast olarak gösterebilir, sessizce geçelim
+      // handleApiError(error)
+      setTeachers([])
     } finally {
       setIsLoading(false)
     }
@@ -71,14 +85,18 @@ const FeaturedTeachersSlider = () => {
   if (isLoading) {
     return (
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="text-center py-12 text-gray-500">Yükleniyor...</div>
+        <div className="text-center py-12 text-gray-500">Eğitmenler yükleniyor...</div>
       </div>
     )
   }
 
+  // Eğer öğretmen yoksa, bölümü gösterme ama null döndürme (debug için mesaj göster)
   if (teachers.length === 0) {
+    console.log('No teachers to display')
     return null
   }
+
+  console.log('Rendering teachers slider with', teachers.length, 'teachers')
 
   return (
     <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
