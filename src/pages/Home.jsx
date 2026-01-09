@@ -74,10 +74,10 @@ const Home = () => {
           }}
         >
           {/* Professional Gradient Overlay - Semi-transparent yellow background */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#ffde59]/40 via-[#ffde59]/35 to-[#ffde59]/45"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#ffde59]/30 via-[#ffde59]/25 to-[#ffde59]/35"></div>
           
           {/* Additional subtle overlay for better contrast and readability */}
-          <div className="absolute inset-0 bg-white/20"></div>
+          <div className="absolute inset-0 bg-black/10"></div>
         </div>
 
         {/* Content Layer - z-index to ensure it's above background */}
@@ -93,25 +93,27 @@ const Home = () => {
             </div>
             
             {/* Badge */}
-            <div className="inline-flex items-center space-x-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm border border-primary-200 rounded-full text-xs sm:text-sm font-medium text-primary-700 mb-4 sm:mb-6">
-              <GraduationCap size={14} className="sm:w-4 sm:h-4" />
+            <div className="inline-flex items-center space-x-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-white/95 backdrop-blur-md border-2 border-[#ffde59] rounded-full text-xs sm:text-sm font-bold text-gray-900 mb-4 sm:mb-6 shadow-xl">
+              <GraduationCap size={14} className="sm:w-4 sm:h-4 text-[#ffde59]" />
               <span className="px-1">Öğrenciden Öğrenciye Özel Ders</span>
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight px-2">
-              YKS'ye Hazırlanırken
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight px-2">
+              <span className="text-gray-900 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3), 0 0 2px rgba(255,255,255,0.8)' }}>
+                YKS'ye Hazırlanırken
+              </span>
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffde59] via-[#ffd700] to-[#ffde59] drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4), 0 0 4px rgba(255,222,89,0.6)' }}>
                 Yanınızdayız
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed px-4">
+            <p className="text-base sm:text-lg md:text-xl text-gray-900 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed px-4 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.2), 0 0 2px rgba(255,255,255,0.9)' }}>
               Deneyimli öğretmenlerle özel ders alın, hedefinize ulaşın.
               <br />
-              <span className="text-primary-600 font-medium">
+              <span className="text-[#ffd700] font-bold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3), 0 0 2px rgba(0,0,0,0.5)' }}>
                 Öğrenciden öğrenciye, samimi ve etkili eğitim.
               </span>
             </p>
