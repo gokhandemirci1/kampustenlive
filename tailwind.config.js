@@ -9,16 +9,16 @@ export default {
       colors: {
         // Soft color palette - açık mavi, gri ve beyaz tonları
         primary: {
-          50: '#f0f9ff',   // Çok açık mavi
-          100: '#e0f2fe',  // Açık mavi
-          200: '#bae6fd',  // Yumuşak mavi
-          300: '#7dd3fc',  // Orta açık mavi
-          400: '#38bdf8',  // Canlı açık mavi
-          500: '#0ea5e9',  // Standart mavi
-          600: '#0284c7',  // Koyu mavi
-          700: '#0369a1',  // Daha koyu mavi
-          800: '#075985',  // Çok koyu mavi
-          900: '#0c4a6e',  // En koyu mavi
+          50: '#fffef0',   // Çok açık sarı
+          100: '#fffce0',  // Açık sarı
+          200: '#fff9ba',  // Yumuşak sarı
+          300: '#fff57d',  // Orta açık sarı
+          400: '#fff138',  // Canlı açık sarı
+          500: '#ffde59',  // Standart sarı (ana renk)
+          600: '#ffd700',  // Koyu sarı
+          700: '#e6c200',  // Daha koyu sarı
+          800: '#ccad00',  // Çok koyu sarı
+          900: '#b39900',  // En koyu sarı
         },
         gray: {
           50: '#fafafa',   // Neredeyse beyaz
@@ -33,8 +33,8 @@ export default {
           900: '#171717',  // En koyu gri
         },
         accent: {
-          light: '#f8fafc',  // Çok açık gri-mavi
-          soft: '#e2e8f0',   // Yumuşak gri
+          light: '#fffef5',  // Çok açık sarı-gri
+          soft: '#fff9e2',   // Yumuşak sarı
         }
       },
       fontFamily: {

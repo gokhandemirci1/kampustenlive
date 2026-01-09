@@ -78,14 +78,14 @@ const Register = () => {
   const uploadAvatar = async (file, userId) => {
     try {
       // Dosya adını oluştur
+      // NOT: filePath'te bucket adı olmamalı, çünkü .from('avatars') ile zaten belirtiliyor
       const fileExt = file.name.split('.').pop()
       const fileName = `${userId}/avatar_${Date.now()}.${fileExt}`
-      const filePath = `avatars/${fileName}`
 
       // Supabase Storage'a yükle
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(filePath, file, {
+        .upload(fileName, file, {
           cacheControl: '3600',
           upsert: false
         })
@@ -95,7 +95,7 @@ const Register = () => {
       // Public URL'yi al
       const { data: { publicUrl } } = supabase.storage
         .from('avatars')
-        .getPublicUrl(filePath)
+        .getPublicUrl(fileName)
 
       return publicUrl
     } catch (error) {
@@ -144,12 +144,23 @@ const Register = () => {
       }
 
       // Eğer profil resmi seçildiyse yükle
+      // NOT: Session'ın aktif olması için kısa bir bekleme gerekebilir
       let avatarUrl = null
       if (selectedAvatar && isTeacher) {
         setIsUploadingAvatar(true)
         try {
+          // Session'ın aktif olması için kısa bir bekleme
+          await new Promise(resolve => setTimeout(resolve, 500))
+          
+          // Session'ı kontrol et
+          const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+          if (sessionError || !session) {
+            throw new Error('Session oluşturulamadı. Lütfen tekrar deneyin.')
+          }
+          
           avatarUrl = await uploadAvatar(selectedAvatar, authData.user.id)
         } catch (error) {
+          console.error('Avatar upload error:', error)
           handleApiError(error)
           setIsUploadingAvatar(false)
           setIsLoading(false)
@@ -158,32 +169,53 @@ const Register = () => {
         setIsUploadingAvatar(false)
       }
 
-      // Create profile (trigger devre dışı, biz oluşturuyoruz)
-      const { error: profileError } = await supabase
+      // Profile'ı güncelle (trigger zaten oluşturmuş olabilir)
+      // Önce kontrol et, varsa update yap, yoksa insert yap
+      const { data: existingProfile } = await supabase
         .from('profiles')
-        .insert({
-          id: authData.user.id,
-          role: type,
-          full_name: formData.full_name,
-          avatar_url: avatarUrl || null,
-        })
+        .select('id')
+        .eq('id', authData.user.id)
+        .maybeSingle()
 
-      if (profileError) {
-        // Eğer profile zaten varsa (trigger çalıştıysa), update yap
-        if (profileError.code === '23505') {
-          // Duplicate key - profile zaten var, update yap
-          const { error: updateError } = await supabase
-            .from('profiles')
-            .update({
-              role: type,
-              full_name: formData.full_name,
-              avatar_url: avatarUrl || null,
-            })
-            .eq('id', authData.user.id)
-          
-          if (updateError) throw updateError
-        } else {
-          throw profileError
+      if (existingProfile) {
+        // Profile zaten var, update yap
+        const { error: updateError } = await supabase
+          .from('profiles')
+          .update({
+            role: type,
+            full_name: formData.full_name,
+            avatar_url: avatarUrl || null,
+          })
+          .eq('id', authData.user.id)
+        
+        if (updateError) throw updateError
+      } else {
+        // Profile yok, insert yap
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            id: authData.user.id,
+            role: type,
+            full_name: formData.full_name,
+            avatar_url: avatarUrl || null,
+          })
+
+        if (profileError) {
+          // Eğer başka bir thread tarafından oluşturulduysa, update yap
+          if (profileError.code === '23505') {
+            const { error: updateError } = await supabase
+              .from('profiles')
+              .update({
+                role: type,
+                full_name: formData.full_name,
+                avatar_url: avatarUrl || null,
+              })
+              .eq('id', authData.user.id)
+            
+            if (updateError) throw updateError
+          } else {
+            throw profileError
+          }
         }
       }
 

@@ -18,7 +18,7 @@ const AdminDashboard = () => {
   const [statsRefreshKey, setStatsRefreshKey] = useState(0)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-primary-50/30 to-gray-50">
       <AdminSidebar />
       
       <div className="ml-64 pt-16">

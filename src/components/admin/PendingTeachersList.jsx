@@ -100,7 +100,7 @@ const PendingTeachersList = ({ onTeacherApproved }) => {
   if (pendingTeachers.length === 0) {
     return (
       <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/50 shadow-lg p-6">
-        <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent mb-4">
+        <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent mb-4">
           Onay Bekleyen Öğretmenler
         </h2>
         <p className="text-gray-500 text-center py-8">
@@ -112,7 +112,7 @@ const PendingTeachersList = ({ onTeacherApproved }) => {
 
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/50 shadow-lg hover:shadow-xl transition-all duration-300 p-6">
-      <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent mb-6">
+      <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent mb-6">
         Onay Bekleyen Öğretmenler
       </h2>
       <div className="space-y-4">

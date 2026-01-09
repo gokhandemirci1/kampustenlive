@@ -78,7 +78,7 @@ const CampsList = () => {
   const getStatusBadge = (status) => {
     const statusMap = {
       pending: { label: 'Beklemede', class: 'bg-yellow-100 text-yellow-700' },
-      approved: { label: 'Onaylandı', class: 'bg-blue-100 text-blue-700' },
+      approved: { label: 'Onaylandı', class: 'bg-primary-100 text-primary-700' },
       published: { label: 'Yayında', class: 'bg-green-100 text-green-700' },
     }
     const statusInfo = statusMap[status] || statusMap.pending

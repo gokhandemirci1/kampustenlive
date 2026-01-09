@@ -197,7 +197,7 @@ const StudentDetailModal = ({ isOpen, onClose, student }) => {
                               enrollment.courses?.status === 'published'
                                 ? 'bg-green-100 text-green-700'
                                 : enrollment.courses?.status === 'approved'
-                                ? 'bg-blue-100 text-blue-700'
+                                ? 'bg-primary-100 text-primary-700'
                                 : 'bg-yellow-100 text-yellow-700'
                             }`}
                           >

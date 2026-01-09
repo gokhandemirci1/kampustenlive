@@ -180,14 +180,14 @@ const StatisticsCards = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/50 shadow-lg hover:shadow-xl transition-all duration-300 p-6">
-        <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent mb-6">
+        <h2 className="text-xl font-semibold bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent mb-6">
           Hızlı İstatistikler
         </h2>
         <div className="space-y-3">
-          <div className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-50 to-blue-100/50 rounded-xl hover:from-blue-100 hover:to-blue-200/50 transition-all duration-200 hover:scale-[1.02] border border-blue-200/50">
+          <div className="flex justify-between items-center p-4 bg-gradient-to-r from-primary-50 to-primary-100/50 rounded-xl hover:from-primary-100 hover:to-primary-200/50 transition-all duration-200 hover:scale-[1.02] border border-primary-200/50">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <GraduationCap className="text-blue-600" size={20} />
+              <div className="p-2 bg-primary-100 rounded-lg">
+                <GraduationCap className="text-primary-600" size={20} />
               </div>
               <span className="text-gray-700 font-medium">Toplam Öğrenci</span>
             </div>
