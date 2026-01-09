@@ -272,10 +272,31 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md">
-        {/* Logo ve Başlık */}
-        <div className="text-center mb-10">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Image - Same as Homepage */}
+      <div 
+        className={`absolute inset-0 bg-cover bg-center bg-no-repeat ${!isMobile ? 'md:bg-fixed' : ''}`}
+        style={{
+          backgroundImage: 'url(/images/hero_background.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: isMobile ? 'center top' : 'center center',
+          backgroundRepeat: 'no-repeat',
+          minHeight: '100vh',
+          width: '100%'
+        }}
+      >
+        {/* Professional Gradient Overlay - Semi-transparent yellow background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#ffde59]/30 via-[#ffde59]/25 to-[#ffde59]/35"></div>
+        
+        {/* Additional subtle overlay for better contrast and readability */}
+        <div className="absolute inset-0 bg-black/10"></div>
+      </div>
+
+      {/* Content Layer */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md">
+          {/* Logo ve Başlık */}
+          <div className="text-center mb-10">
           <Link to="/" className="inline-block mb-6">
             <img 
               src="/images/logo.jpg" 
@@ -517,7 +538,8 @@ const Register = () => {
             </Link>
           </p>
         </div>
-      </div>
+          </div>
+        </div>
       </div>
     </div>
   )
