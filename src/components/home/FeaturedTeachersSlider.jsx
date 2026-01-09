@@ -99,7 +99,7 @@ const FeaturedTeachersSlider = () => {
   console.log('Rendering teachers slider with', teachers.length, 'teachers')
 
   return (
-    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div id="teachers" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 scroll-mt-20">
       {/* Section Header */}
       <div className="text-center mb-6 sm:mb-8">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">

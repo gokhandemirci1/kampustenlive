@@ -50,7 +50,7 @@ const Testimonials = () => {
   const current = testimonials[currentIndex]
 
   return (
-    <div className="relative z-10 bg-gradient-to-br from-primary-50 via-white to-primary-50 py-16 sm:py-20 lg:py-24">
+    <div id="testimonials" className="relative z-10 bg-gradient-to-br from-primary-50 via-white to-primary-50 py-16 sm:py-20 lg:py-24 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
