@@ -80,9 +80,9 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             <img 
-              src="/images/logo.svg" 
+              src="/images/logo.jpg" 
               alt="Kampusten.org Logo" 
-              className="h-10 w-10 transition-transform duration-200 group-hover:scale-105"
+              className="h-10 w-10 rounded-full object-cover shadow-md transition-all duration-200 group-hover:scale-105 group-hover:shadow-lg border-2 border-primary-100"
             />
             <div className="text-xl font-bold text-primary-600">
               KAMPÜSTEN

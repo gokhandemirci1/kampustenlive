@@ -268,9 +268,9 @@ const Register = () => {
         <div className="text-center mb-10">
           <Link to="/" className="inline-block mb-6">
             <img 
-              src="/images/logo.svg" 
+              src="/images/logo.jpg" 
               alt="KAMPÜSTEN Logo" 
-              className="h-20 w-20 mx-auto transition-transform duration-200 hover:scale-105"
+              className="h-20 w-20 mx-auto rounded-full object-cover shadow-lg border-4 border-primary-100 transition-all duration-200 hover:scale-110 hover:shadow-xl"
             />
           </Link>
           <h1 className="text-3xl font-light text-gray-900 mb-2 tracking-tight">

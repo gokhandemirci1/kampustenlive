@@ -56,9 +56,9 @@ const Home = () => {
             {/* Logo */}
             <div className="mb-8 flex justify-center">
               <img 
-                src="/images/logo.svg" 
+                src="/images/logo.jpg" 
                 alt="Kampusten.org Logo" 
-                className="h-24 w-24 sm:h-32 sm:w-32 drop-shadow-lg animate-fade-in"
+                className="h-24 w-24 sm:h-32 sm:w-32 rounded-full object-cover shadow-xl border-4 border-white/50 animate-fade-in hover:shadow-2xl transition-all duration-300 hover:scale-105"
               />
             </div>
             

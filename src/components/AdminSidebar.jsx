@@ -8,9 +8,9 @@ const AdminSidebar = () => {
       <div className="h-16 border-b border-gray-200/50 flex items-center justify-center px-4 bg-gradient-to-r from-primary-50/50 to-white">
         <Link to="/" className="flex items-center space-x-2 group">
           <img 
-            src="/images/logo.svg" 
+            src="/images/logo.jpg" 
             alt="Kampusten.org Logo" 
-            className="h-8 w-8 transition-transform duration-200 group-hover:scale-105"
+            className="h-8 w-8 rounded-full object-cover shadow-md transition-all duration-200 group-hover:scale-110 group-hover:shadow-lg border border-primary-200"
           />
           <div className="text-lg font-bold text-primary-600">
             KAMPÜSTEN

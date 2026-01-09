@@ -10,9 +10,9 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start space-y-3">
             <Link to="/" className="flex items-center space-x-3 group">
               <img 
-                src="/images/logo.svg" 
+                src="/images/logo.jpg" 
                 alt="Kampusten.org Logo" 
-                className="h-12 w-12 transition-transform duration-200 group-hover:scale-105"
+                className="h-12 w-12 rounded-full object-cover shadow-md transition-all duration-200 group-hover:scale-110 group-hover:shadow-lg border-2 border-primary-100"
               />
               <div className="text-lg font-bold text-primary-600">
                 KAMPÜSTEN
