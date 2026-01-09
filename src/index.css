@@ -86,6 +86,91 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* How It Works Animations */
+  @keyframes step-number-in {
+    0% {
+      transform: scale(0) rotate(180deg);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2) rotate(0deg);
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+
+  .animate-step-number-in {
+    animation: step-number-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes step-card-in {
+    0% {
+      opacity: 0;
+      transform: translateY(48px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .animate-step-card-in {
+    animation: step-card-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes step-icon-in {
+    0% {
+      transform: scale(0) rotate(-180deg);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1) rotate(10deg);
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+
+  .animate-step-icon-in {
+    animation: step-icon-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+  }
+
+  @keyframes arrow-draw {
+    0% {
+      width: 0;
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      width: 32px;
+      opacity: 1;
+    }
+  }
+
+  .animate-arrow-draw {
+    animation: arrow-draw 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes arrow-slide {
+    0% {
+      opacity: 0;
+      transform: translateX(-16px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-arrow-slide {
+    animation: arrow-slide 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  }
 }
 
 /* Toast Notification Custom Styles */

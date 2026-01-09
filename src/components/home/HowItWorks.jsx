@@ -1,7 +1,10 @@
+import { useState, useEffect, useRef } from 'react'
 import { UserPlus, Search, Calendar, GraduationCap, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const HowItWorks = () => {
+  const [visibleSteps, setVisibleSteps] = useState([])
+  const stepRefs = useRef([])
   const steps = [
     {
       icon: UserPlus,
@@ -29,6 +32,42 @@ const HowItWorks = () => {
     }
   ]
 
+  useEffect(() => {
+    const observers = []
+
+    stepRefs.current.forEach((ref, index) => {
+      if (ref) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                setTimeout(() => {
+                  setVisibleSteps((prev) => {
+                    if (!prev.includes(index)) {
+                      return [...prev, index]
+                    }
+                    return prev
+                  })
+                }, index * 150) // Staggered animation: 150ms delay per step
+              }
+            })
+          },
+          {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+          }
+        )
+
+        observer.observe(ref)
+        observers.push(observer)
+      }
+    })
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect())
+    }
+  }, [])
+
   return (
     <div className="relative z-10 bg-white py-16 sm:py-20 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,19 +83,37 @@ const HowItWorks = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {steps.map((step, index) => {
             const Icon = step.icon
+            const isVisible = visibleSteps.includes(index)
             return (
               <div
                 key={index}
+                ref={(el) => (stepRefs.current[index] = el)}
                 className="relative group"
               >
                 {/* Step Number */}
-                <div className="absolute -top-4 -left-4 w-10 h-10 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg z-10">
+                <div
+                  className={`absolute -top-4 -left-4 w-10 h-10 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg z-10 transition-all duration-700 ${
+                    isVisible
+                      ? 'animate-step-number-in scale-100 rotate-0 opacity-100'
+                      : 'scale-0 rotate-180 opacity-0'
+                  }`}
+                >
                   {index + 1}
                 </div>
 
                 {/* Card */}
-                <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 sm:p-8 h-full transform hover:scale-105 transition-all duration-300 hover:shadow-xl hover:shadow-primary-500/20">
-                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${step.color} mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                <div
+                  className={`bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 sm:p-8 h-full transform transition-all duration-700 hover:scale-105 hover:shadow-xl hover:shadow-primary-500/20 ${
+                    isVisible
+                      ? 'animate-step-card-in opacity-100 translate-y-0'
+                      : 'opacity-0 translate-y-12'
+                  }`}
+                >
+                  <div
+                    className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${step.color} mb-6 shadow-lg transition-all duration-700 group-hover:scale-110 ${
+                      isVisible ? 'animate-step-icon-in scale-100' : 'scale-0'
+                    }`}
+                  >
                     <Icon className="text-white" size={32} />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -69,8 +126,22 @@ const HowItWorks = () => {
 
                 {/* Connector Arrow */}
                 {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-12 -right-4 w-8 h-0.5 bg-gradient-to-r from-primary-500 to-transparent z-0">
-                    <ArrowRight className="absolute -right-2 -top-2 text-primary-500" size={16} strokeWidth={2} />
+                  <div
+                    className={`hidden lg:block absolute top-12 -right-4 w-8 h-0.5 bg-gradient-to-r from-primary-500 to-transparent z-0 transition-all duration-1000 ${
+                      isVisible && visibleSteps.includes(index + 1)
+                        ? 'animate-arrow-draw opacity-100'
+                        : 'opacity-0'
+                    }`}
+                  >
+                    <ArrowRight
+                      className={`absolute -right-2 -top-2 text-primary-500 transition-all duration-1000 ${
+                        isVisible && visibleSteps.includes(index + 1)
+                          ? 'animate-arrow-slide opacity-100 translate-x-0'
+                          : 'opacity-0 -translate-x-4'
+                      }`}
+                      size={16}
+                      strokeWidth={2}
+                    />
                   </div>
                 )}
               </div>
