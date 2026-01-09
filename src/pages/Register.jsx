@@ -297,18 +297,20 @@ const Register = () => {
         <div className="w-full max-w-md">
           {/* Logo ve Başlık */}
           <div className="text-center mb-10">
-          <Link to="/" className="inline-block mb-6">
-            <img 
-              src="/images/logo.jpg" 
-              alt="KAMPÜSTEN Logo" 
-              className="h-20 w-20 mx-auto rounded-full object-cover shadow-lg border-4 border-primary-100 transition-all duration-200 hover:scale-110 hover:shadow-xl"
-            />
-          </Link>
-          <h1 className="text-3xl font-light text-gray-900 mb-2 tracking-tight">
-            {getTitle()}
-          </h1>
-          <p className="text-gray-500 font-light">Hesap oluşturun ve başlayın</p>
-        </div>
+            <Link to="/" className="inline-block mb-6">
+              <img 
+                src="/images/logo.jpg" 
+                alt="KAMPÜSTEN Logo" 
+                className="h-20 w-20 mx-auto rounded-full object-cover shadow-lg border-4 border-primary-100 transition-all duration-200 hover:scale-110 hover:shadow-xl"
+              />
+            </Link>
+            <div className="bg-white/90 backdrop-blur-sm rounded-xl px-6 py-4 shadow-lg border border-white/50 inline-block">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight drop-shadow-sm">
+                {getTitle()}
+              </h1>
+              <p className="text-gray-700 font-semibold text-base">Hesap oluşturun ve başlayın</p>
+            </div>
+          </div>
 
         {/* Form Card */}
         <div className="bg-white/95 backdrop-blur-md rounded-lg border border-gray-200/50 p-8 shadow-xl">
