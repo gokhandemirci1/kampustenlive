@@ -74,7 +74,12 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-gradient-to-r from-[#ffde59] via-[#ffde59]/80 via-[#ffd700]/60 via-gray-800/70 to-black border-b border-gray-200/50 sticky top-0 z-50 shadow-lg">
+    <nav 
+      className="border-b border-gray-200/50 sticky top-0 z-50 shadow-lg"
+      style={{
+        background: 'linear-gradient(to right, #ffde59 0%, #ffd700 25%, #ccaa00 50%, #664400 75%, #000000 100%)'
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
