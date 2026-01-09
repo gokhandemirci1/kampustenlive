@@ -44,12 +44,14 @@ const Home = () => {
     <div className="min-h-screen">
       {/* Hero Section with Background Image */}
       <div className="relative min-h-screen overflow-hidden">
-        {/* Background Image */}
+        {/* Background Image - Mobile Responsive */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat md:bg-fixed"
           style={{
             backgroundImage: 'url(/images/hero_background.jpg)',
-            backgroundAttachment: 'fixed'
+            backgroundSize: 'cover',
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat'
           }}
         >
           {/* Professional Gradient Overlay - Semi-transparent yellow background */}
