@@ -77,7 +77,7 @@ const Navbar = () => {
     <nav 
       className="border-b border-gray-200/50 sticky top-0 z-50 shadow-lg"
       style={{
-        background: 'linear-gradient(to right, #ffde59 0%, #ffd700 25%, #ccaa00 50%, #664400 75%, #000000 100%)'
+        background: 'linear-gradient(to right, #ffde59 0%, #ffd700 20%, #cc9900 40%, #664400 60%, #332200 80%, #000000 100%)'
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
