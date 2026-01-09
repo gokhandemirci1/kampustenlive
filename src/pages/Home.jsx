@@ -2,6 +2,11 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { GraduationCap, BookOpen, Users, ArrowRight } from 'lucide-react'
 import FeaturedTeachersSlider from '../components/home/FeaturedTeachersSlider'
+import StatsSection from '../components/home/StatsCounter'
+import HowItWorks from '../components/home/HowItWorks'
+import Testimonials from '../components/home/Testimonials'
+import WhyChooseUs from '../components/home/WhyChooseUs'
+import FAQ from '../components/home/FAQ'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -164,6 +169,49 @@ const Home = () => {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <StatsSection />
+
+      {/* How It Works Section */}
+      <HowItWorks />
+
+      {/* Why Choose Us Section */}
+      <WhyChooseUs />
+
+      {/* Testimonials Section */}
+      <Testimonials />
+
+      {/* FAQ Section */}
+      <FAQ />
+
+      {/* Final CTA Section */}
+      <div className="relative z-10 bg-gradient-to-r from-primary-500 via-primary-600 to-primary-500 py-16 sm:py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
+            Hemen Başlayın, Hedefinize Ulaşın!
+          </h2>
+          <p className="text-lg sm:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            YKS'ye hazırlanırken yalnız değilsiniz. Binlerce öğrenciyle birlikte başarıya ulaşın.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              to="/register/student"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-4 bg-white text-primary-600 rounded-lg font-bold hover:bg-gray-100 transition-all duration-200 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-lg"
+            >
+              <span>Ücretsiz Hesap Oluştur</span>
+              <ArrowRight size={22} />
+            </Link>
+            <Link
+              to="/register/teacher"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-4 bg-white/10 backdrop-blur-md text-white border-2 border-white/30 rounded-lg font-bold hover:bg-white/20 transition-all duration-200 text-lg"
+            >
+              <Users size={22} />
+              <span>Öğretmen Ol</span>
+            </Link>
           </div>
         </div>
       </div>
