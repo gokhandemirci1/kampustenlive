@@ -5,6 +5,17 @@ import { GraduationCap, BookOpen, Users, ArrowRight } from 'lucide-react'
 const Home = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     // Check if URL has hash fragment with password recovery token
@@ -46,12 +57,14 @@ const Home = () => {
       <div className="relative min-h-screen overflow-hidden">
         {/* Background Image - Mobile Responsive */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className={`absolute inset-0 bg-cover bg-center bg-no-repeat ${!isMobile ? 'md:bg-fixed' : ''}`}
           style={{
             backgroundImage: 'url(/images/hero_background.jpg)',
             backgroundSize: 'cover',
-            backgroundPosition: 'center center',
-            backgroundRepeat: 'no-repeat'
+            backgroundPosition: isMobile ? 'center top' : 'center center',
+            backgroundRepeat: 'no-repeat',
+            minHeight: '100vh',
+            width: '100%'
           }}
         >
           {/* Professional Gradient Overlay - Semi-transparent yellow background */}
