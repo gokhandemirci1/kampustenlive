@@ -74,14 +74,20 @@ const Home = () => {
             {/* Badge */}
             <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-primary-200 rounded-full text-sm font-medium text-primary-700 mb-6">
               <GraduationCap size={16} />
-              <span>Öğrenciden Öğrenciye Özel Ders</span>
+              <span className="text-primary-700" style={{ textShadow: '2px 2px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000, 0px 2px 0px #000, 2px 0px 0px #000, 0px -2px 0px #000, -2px 0px 0px #000' }}>Öğrenciden Öğrenciye Özel Ders</span>
             </div>
 
             {/* Main Heading */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               YKS'ye Hazırlanırken
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400" style={{ 
+                WebkitTextStroke: '2.5px #000',
+                textStroke: '2.5px #000',
+                WebkitTextFillColor: 'transparent',
+                textShadow: '3px 3px 0px rgba(0,0,0,0.9), -3px -3px 0px rgba(0,0,0,0.9), 3px -3px 0px rgba(0,0,0,0.9), -3px 3px 0px rgba(0,0,0,0.9), 0px 3px 0px rgba(0,0,0,0.9), 3px 0px 0px rgba(0,0,0,0.9), 0px -3px 0px rgba(0,0,0,0.9), -3px 0px 0px rgba(0,0,0,0.9), 2px 2px 4px rgba(0,0,0,0.5)',
+                paintOrder: 'stroke fill'
+              }}>
                 Yanınızdayız
               </span>
             </h1>
@@ -90,7 +96,7 @@ const Home = () => {
             <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
               Deneyimli öğretmenlerle özel ders alın, hedefinize ulaşın.
               <br />
-              <span className="text-primary-600 font-medium">
+              <span className="text-primary-600 font-medium" style={{ textShadow: '2px 2px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000, 0px 2px 0px #000, 2px 0px 0px #000, 0px -2px 0px #000, -2px 0px 0px #000' }}>
                 Öğrenciden öğrenciye, samimi ve etkili eğitim.
               </span>
             </p>
@@ -109,7 +115,7 @@ const Home = () => {
                 className="inline-flex items-center space-x-2 px-8 py-4 bg-white text-primary-600 border-2 border-primary-200 rounded-lg font-semibold hover:bg-primary-50 transition-all duration-200"
               >
                 <Users size={20} />
-                <span>Öğretmen Ol</span>
+                <span className="text-primary-600" style={{ textShadow: '1.5px 1.5px 0px #000, -1.5px -1.5px 0px #000, 1.5px -1.5px 0px #000, -1.5px 1.5px 0px #000, 0px 1.5px 0px #000, 1.5px 0px 0px #000, 0px -1.5px 0px #000, -1.5px 0px 0px #000' }}>Öğretmen Ol</span>
               </Link>
             </div>
 
