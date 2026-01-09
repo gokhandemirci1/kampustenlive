@@ -51,8 +51,7 @@ const Home = () => {
             backgroundImage: 'url(/images/hero_background.jpg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center center',
-            backgroundRepeat: 'no-repeat',
-            backgroundAttachment: window.innerWidth >= 768 ? 'fixed' : 'scroll'
+            backgroundRepeat: 'no-repeat'
           }}
         >
           {/* Professional Gradient Overlay - Semi-transparent yellow background */}
