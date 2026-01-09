@@ -8,6 +8,7 @@ const PendingCoursesList = ({ onCourseApproved }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [editingPrice, setEditingPrice] = useState(null)
   const [priceValue, setPriceValue] = useState('')
+  const [hoursValue, setHoursValue] = useState('')
 
   useEffect(() => {
     fetchPendingCourses()
@@ -36,9 +37,14 @@ const PendingCoursesList = ({ onCourseApproved }) => {
     }
   }
 
-  const handleApprove = async (courseId, price) => {
+  const handleApprove = async (courseId, price, hours) => {
     if (!price || parseFloat(price) <= 0) {
       showToast.error('Lütfen geçerli bir fiyat girin')
+      return
+    }
+
+    if (!hours || parseInt(hours) <= 0) {
+      showToast.error('Lütfen geçerli bir saat bilgisi girin')
       return
     }
 
@@ -48,6 +54,7 @@ const PendingCoursesList = ({ onCourseApproved }) => {
         .update({
           status: 'published',
           price: parseFloat(price),
+          total_hours: parseInt(hours),
         })
         .eq('id', courseId)
 
@@ -57,6 +64,7 @@ const PendingCoursesList = ({ onCourseApproved }) => {
       setPendingCourses((prev) => prev.filter((c) => c.id !== courseId))
       setEditingPrice(null)
       setPriceValue('')
+      setHoursValue('')
 
       if (onCourseApproved) {
         onCourseApproved()
@@ -86,14 +94,16 @@ const PendingCoursesList = ({ onCourseApproved }) => {
     }
   }
 
-  const startEditingPrice = (courseId, currentPrice) => {
+  const startEditingPrice = (courseId, currentPrice, currentHours) => {
     setEditingPrice(courseId)
     setPriceValue(currentPrice || '')
+    setHoursValue(currentHours || '')
   }
 
   const cancelEditingPrice = () => {
     setEditingPrice(null)
     setPriceValue('')
+    setHoursValue('')
   }
 
   if (isLoading) {
@@ -172,7 +182,7 @@ const PendingCoursesList = ({ onCourseApproved }) => {
 
               <div className="flex flex-col md:flex-row items-start md:items-center gap-3 md:ml-4">
                 {editingPrice === course.id ? (
-                  <div className="flex items-center space-x-2">
+                  <div className="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-2">
                     <div className="flex items-center space-x-2">
                       <DollarSign size={16} className="text-gray-500" />
                       <input
@@ -187,35 +197,60 @@ const PendingCoursesList = ({ onCourseApproved }) => {
                       />
                       <span className="text-sm text-gray-600">TL</span>
                     </div>
-                    <button
-                      onClick={() => handleApprove(course.id, priceValue)}
-                      className="flex items-center space-x-1 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors duration-200 text-sm font-medium"
-                    >
-                      <Check size={16} />
-                      <span>Onayla</span>
-                    </button>
-                    <button
-                      onClick={cancelEditingPrice}
-                      className="px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors duration-200 text-sm font-medium"
-                    >
-                      İptal
-                    </button>
-                  </div>
-                ) : (
-                  <>
                     <div className="flex items-center space-x-2">
-                      <DollarSign size={16} className="text-gray-500" />
-                      <span className="text-sm text-gray-600">
-                        Fiyat: <strong className="text-gray-900">{course.price || 0} TL</strong>
-                      </span>
+                      <Clock size={16} className="text-gray-500" />
+                      <input
+                        type="number"
+                        value={hoursValue}
+                        onChange={(e) => setHoursValue(e.target.value)}
+                        min="1"
+                        step="1"
+                        placeholder="Saat"
+                        className="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                      />
+                      <span className="text-sm text-gray-600">saat</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() => startEditingPrice(course.id, course.price)}
+                        onClick={() => handleApprove(course.id, priceValue, hoursValue)}
+                        className="flex items-center space-x-1 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors duration-200 text-sm font-medium"
+                      >
+                        <Check size={16} />
+                        <span>Onayla</span>
+                      </button>
+                      <button
+                        onClick={cancelEditingPrice}
+                        className="px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors duration-200 text-sm font-medium"
+                      >
+                        İptal
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex flex-col space-y-1">
+                      <div className="flex items-center space-x-2">
+                        <DollarSign size={16} className="text-gray-500" />
+                        <span className="text-sm text-gray-600">
+                          Fiyat: <strong className="text-gray-900">{course.price || 0} TL</strong>
+                        </span>
+                      </div>
+                      {course.total_hours && (
+                        <div className="flex items-center space-x-2">
+                          <Clock size={16} className="text-gray-500" />
+                          <span className="text-sm text-gray-600">
+                            Saat: <strong className="text-gray-900">{course.total_hours} saat</strong>
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => startEditingPrice(course.id, course.price, course.total_hours)}
                         className="flex items-center space-x-1 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors duration-200 text-sm font-medium"
                       >
                         <DollarSign size={16} />
-                        <span>Fiyat Ata & Onayla</span>
+                        <span>Fiyat & Saat Ata & Onayla</span>
                       </button>
                       <button
                         onClick={() => handleReject(course.id)}

@@ -145,7 +145,11 @@ const CartWidget = ({ cart, onRemoveFromCart, onCartUpdate }) => {
                             {course.teacher_name}
                           </p>
                           <p className="text-sm font-light text-gray-900 mt-2">
-                            {formatCurrency(course.price)}
+                            {course.total_hours && course.total_hours > 0 ? (
+                              <span>{course.total_hours} saat {formatCurrency(course.price)}</span>
+                            ) : (
+                              formatCurrency(course.price)
+                            )}
                           </p>
                         </div>
                         <button

@@ -8,6 +8,7 @@ const CreateCampModal = ({ isOpen, onClose, onSuccess }) => {
     title: '',
     description: '',
     price: '',
+    total_hours: '',
     schedule_text: '',
     start_date: '',
     start_time: '',
@@ -32,6 +33,7 @@ const CreateCampModal = ({ isOpen, onClose, onSuccess }) => {
         title: '',
         description: '',
         price: '',
+        total_hours: '',
         schedule_text: '',
         start_date: '',
         start_time: '',
@@ -202,6 +204,10 @@ const CreateCampModal = ({ isOpen, onClose, onSuccess }) => {
         setIsUploadingImage(false)
       }
 
+      if (!formData.total_hours || parseInt(formData.total_hours) <= 0) {
+        throw new Error('Lütfen geçerli bir saat bilgisi girin')
+      }
+
       const { error } = await supabase
         .from('courses')
         .insert({
@@ -209,6 +215,7 @@ const CreateCampModal = ({ isOpen, onClose, onSuccess }) => {
           description: formData.description || null,
           teacher_id: formData.teacher_id,
           price: parseFloat(formData.price) || 0,
+          total_hours: parseInt(formData.total_hours) || 0,
           schedule_text: fullSchedule || null,
           image_url: imageUrl || null,
           status: 'published', // Admin oluşturduğu için direkt published
@@ -221,6 +228,7 @@ const CreateCampModal = ({ isOpen, onClose, onSuccess }) => {
         title: '',
         description: '',
         price: '',
+        total_hours: '',
         schedule_text: '',
         start_date: '',
         start_time: '',
@@ -387,21 +395,39 @@ const CreateCampModal = ({ isOpen, onClose, onSuccess }) => {
             )}
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center space-x-2">
-              <DollarSign size={16} />
-              <span>Ücret (₺) *</span>
-            </label>
-            <input
-              type="number"
-              required
-              min="0"
-              step="0.01"
-              value={formData.price}
-              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              placeholder="0.00"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center space-x-2">
+                <DollarSign size={16} />
+                <span>Toplam Ücret (₺) *</span>
+              </label>
+              <input
+                type="number"
+                required
+                min="0"
+                step="0.01"
+                value={formData.price}
+                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                placeholder="0.00"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center space-x-2">
+                <Clock size={16} />
+                <span>Toplam Saat *</span>
+              </label>
+              <input
+                type="number"
+                required
+                min="1"
+                step="1"
+                value={formData.total_hours}
+                onChange={(e) => setFormData({ ...formData, total_hours: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                placeholder="20"
+              />
+            </div>
           </div>
 
           {/* Fotoğraf Yükleme */}

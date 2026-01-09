@@ -127,7 +127,13 @@ const CourseDetailModal = ({ isOpen, onClose, course, onAddToCart }) => {
               <DollarSign size={18} className="text-gray-400" />
               <div>
                 <span className="text-xs font-light text-gray-500 uppercase tracking-wider">Fiyat</span>
-                <p className="text-gray-900 font-light text-lg">{formatCurrency(course.price)}</p>
+                {course.total_hours && course.total_hours > 0 ? (
+                  <p className="text-gray-900 font-light text-lg">
+                    {formatCurrency(course.price / course.total_hours)}/1 saat
+                  </p>
+                ) : (
+                  <p className="text-gray-900 font-light text-lg">{formatCurrency(course.price)}</p>
+                )}
               </div>
             </div>
           </div>

@@ -165,7 +165,13 @@ const LiveCoursesGrid = ({ onEnrollSuccess, onAddToCart }) => {
                 </div>
                 <div className="flex items-center space-x-2 text-sm font-normal text-gray-900">
                   <DollarSign size={16} className="text-gray-500" />
-                  <span>{formatCurrency(course.price)}</span>
+                  {course.total_hours && course.total_hours > 0 ? (
+                    <span>
+                      {formatCurrency(course.price / course.total_hours)}/1 saat
+                    </span>
+                  ) : (
+                    <span>{formatCurrency(course.price)}</span>
+                  )}
                 </div>
               </div>
 
