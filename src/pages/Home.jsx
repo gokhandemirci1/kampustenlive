@@ -52,11 +52,11 @@ const Home = () => {
             backgroundAttachment: 'fixed'
           }}
         >
-          {/* Professional Gradient Overlay - Optimized opacity for readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-primary-100/85"></div>
+          {/* Professional Gradient Overlay - Semi-transparent yellow background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#ffde59]/40 via-[#ffde59]/35 to-[#ffde59]/45"></div>
           
-          {/* Subtle tint overlay for brand consistency */}
-          <div className="absolute inset-0 bg-primary-500/8"></div>
+          {/* Additional subtle overlay for better contrast and readability */}
+          <div className="absolute inset-0 bg-white/20"></div>
         </div>
 
         {/* Content Layer - z-index to ensure it's above background */}
