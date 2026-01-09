@@ -103,24 +103,24 @@ const Login = () => {
       {/* Content Layer */}
       <div className="relative z-10 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md">
-        {/* Logo ve Başlık */}
-        <div className="text-center mb-10">
-          <Link to="/" className="inline-block mb-6">
+          {/* Logo ve Başlık */}
+          <div className="text-center mb-10">
+            <Link to="/" className="inline-block mb-6">
             <img 
               src="/images/logo.jpg" 
               alt="KAMPÜSTEN Logo" 
               className="h-20 w-20 mx-auto rounded-full object-cover shadow-lg border-4 border-primary-100 transition-all duration-200 hover:scale-110 hover:shadow-xl"
             />
-          </Link>
-          <h1 className="text-3xl font-light text-gray-900 mb-2 tracking-tight">
-            {getTitle()}
-          </h1>
-          <p className="text-gray-500 font-light">Hesabınıza giriş yapın</p>
-        </div>
+            </Link>
+            <h1 className="text-3xl font-light text-gray-900 mb-2 tracking-tight">
+              {getTitle()}
+            </h1>
+            <p className="text-gray-500 font-light">Hesabınıza giriş yapın</p>
+          </div>
 
-        {/* Form Card */}
-        <div className="bg-white/95 backdrop-blur-md rounded-lg border border-gray-200/50 p-8 shadow-xl">
-          <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Form Card */}
+          <div className="bg-white/95 backdrop-blur-md rounded-lg border border-gray-200/50 p-8 shadow-xl">
+            <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label
                 htmlFor="email"
@@ -172,9 +172,9 @@ const Login = () => {
             >
               {isLoading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
             </button>
-          </form>
+            </form>
 
-          <div className="mt-6 pt-6 border-t border-gray-200/50 text-center">
+            <div className="mt-6 pt-6 border-t border-gray-200/50 text-center">
             <p className="text-sm text-gray-500 font-light">
               Hesabınız yok mu?{' '}
               <Link
@@ -184,6 +184,7 @@ const Login = () => {
                 Kayıt olun
               </Link>
             </p>
+          </div>
           </div>
         </div>
       </div>
