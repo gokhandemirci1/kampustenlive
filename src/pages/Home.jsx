@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { GraduationCap, BookOpen, Users, ArrowRight } from 'lucide-react'
+import FeaturedTeachersSlider from '../components/home/FeaturedTeachersSlider'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -110,8 +111,11 @@ const Home = () => {
               </span>
             </p>
 
+            {/* Featured Teachers Slider */}
+            <FeaturedTeachersSlider />
+
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4 mt-8 sm:mt-12">
               <Link
                 to="/register/student"
                 className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"

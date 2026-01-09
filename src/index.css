@@ -76,6 +76,16 @@
   .animate-fade-in {
     animation: fade-in 0.8s ease-out;
   }
+
+  /* Scrollbar hide utility */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Toast Notification Custom Styles */
