@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { GraduationCap, BookOpen, Users, ArrowRight } from 'lucide-react'
 
 const Home = () => {
