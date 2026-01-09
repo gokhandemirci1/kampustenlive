@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { supabase, getCurrentUser, getUserProfile } from '../lib/supabase'
-import { LogOut, User, Menu, X } from 'lucide-react'
+import { LogOut, User, Menu, X, LogIn, UserPlus } from 'lucide-react'
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -124,15 +124,19 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login/student"
-                  className="text-white/90 hover:text-[#ffde59] transition-colors duration-200 font-light"
+                  className="group relative inline-flex items-center space-x-2 px-5 py-2.5 bg-white/10 backdrop-blur-md text-white rounded-lg hover:bg-white/20 transition-all duration-300 font-semibold border border-white/20 hover:border-white/40 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
                 >
-                  Giriş Yap
+                  <LogIn size={18} className="group-hover:translate-x-0.5 transition-transform duration-300" />
+                  <span>Giriş Yap</span>
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer transition-opacity duration-300"></div>
                 </Link>
                 <Link
                   to="/register/student"
-                  className="px-4 py-2 bg-[#ffde59] text-black rounded-lg hover:bg-[#ffd700] transition-all duration-200 font-light text-sm font-semibold shadow-md"
+                  className="group relative inline-flex items-center space-x-2 px-6 py-2.5 bg-[#ffde59] text-gray-900 rounded-lg hover:bg-[#ffd700] transition-all duration-300 font-bold text-sm shadow-xl hover:shadow-2xl hover:shadow-[#ffde59]/50 transform hover:scale-105 active:scale-95 border-2 border-gray-900/20 hover:border-gray-900/30"
                 >
-                  Kayıt Ol
+                  <UserPlus size={18} className="group-hover:rotate-12 transition-transform duration-300" />
+                  <span>Kayıt Ol</span>
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer transition-opacity duration-300"></div>
                 </Link>
               </>
             )}
@@ -175,16 +179,18 @@ const Navbar = () => {
                 <Link
                   to="/login/student"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-white/90 hover:text-[#ffde59] transition-colors duration-200 font-light"
+                  className="group flex items-center justify-center space-x-2 w-full px-5 py-3 bg-white/10 backdrop-blur-md text-white rounded-lg hover:bg-white/20 transition-all duration-300 font-semibold border border-white/20 hover:border-white/40 shadow-lg hover:shadow-xl active:scale-95"
                 >
-                  Giriş Yap
+                  <LogIn size={18} className="group-hover:translate-x-0.5 transition-transform duration-300" />
+                  <span>Giriş Yap</span>
                 </Link>
                 <Link
                   to="/register/student"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block px-4 py-2 bg-[#ffde59] text-black rounded-lg hover:bg-[#ffd700] transition-all duration-200 font-light text-sm text-center font-semibold shadow-md"
+                  className="group flex items-center justify-center space-x-2 w-full px-5 py-3 bg-[#ffde59] text-gray-900 rounded-lg hover:bg-[#ffd700] transition-all duration-300 font-bold text-sm shadow-xl hover:shadow-2xl hover:shadow-[#ffde59]/50 active:scale-95 border-2 border-gray-900/20"
                 >
-                  Kayıt Ol
+                  <UserPlus size={18} className="group-hover:rotate-12 transition-transform duration-300" />
+                  <span>Kayıt Ol</span>
                 </Link>
               </div>
             )}

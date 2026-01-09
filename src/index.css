@@ -171,6 +171,34 @@
   .animate-arrow-slide {
     animation: arrow-slide 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
   }
+
+  /* Shimmer animation for buttons */
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  /* Pulse animation for CTA */
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(255, 222, 89, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(255, 222, 89, 0);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }
 
 /* Toast Notification Custom Styles */
