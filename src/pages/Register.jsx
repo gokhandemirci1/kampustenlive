@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Image, Upload, XCircle, User } from 'lucide-react'
 import { supabase } from '../lib/supabase'
@@ -7,6 +7,7 @@ import { showToast, handleApiError } from '../utils/toast'
 const Register = () => {
   const { type } = useParams()
   const navigate = useNavigate()
+  const [isMobile, setIsMobile] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -23,6 +24,15 @@ const Register = () => {
   const [avatarPreview, setAvatarPreview] = useState(null)
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
   const avatarInputRef = useRef(null)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const isStudent = type === 'student'
   const isTeacher = type === 'teacher'
@@ -280,7 +290,7 @@ const Register = () => {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-lg border border-gray-200/50 p-8 shadow-sm">
+        <div className="bg-white/95 backdrop-blur-md rounded-lg border border-gray-200/50 p-8 shadow-xl">
           <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label
