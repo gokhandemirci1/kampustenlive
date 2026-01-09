@@ -46,12 +46,13 @@ const Home = () => {
       <div className="relative min-h-screen overflow-hidden">
         {/* Background Image - Mobile Responsive */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat md:bg-fixed"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/images/hero_background.jpg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center center',
-            backgroundRepeat: 'no-repeat'
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: window.innerWidth >= 768 ? 'fixed' : 'scroll'
           }}
         >
           {/* Professional Gradient Overlay - Semi-transparent yellow background */}
@@ -62,75 +63,61 @@ const Home = () => {
         </div>
 
         {/* Content Layer - z-index to ensure it's above background */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-32">
           <div className="text-center">
             {/* Logo */}
-            <div className="mb-8 flex justify-center">
+            <div className="mb-6 sm:mb-8 flex justify-center">
               <img 
                 src="/images/logo.jpg" 
                 alt="Kampusten.org Logo" 
-                className="h-24 w-24 sm:h-32 sm:w-32 rounded-full object-cover shadow-xl border-4 border-white/50 animate-fade-in hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                className="h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 rounded-full object-cover shadow-xl border-4 border-white/50 animate-fade-in hover:shadow-2xl transition-all duration-300 hover:scale-105"
               />
             </div>
             
             {/* Badge */}
-            <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-primary-200 rounded-full text-sm font-medium text-primary-700 mb-6">
-              <GraduationCap size={16} />
-              <span>Öğrenciden Öğrenciye Özel Ders</span>
+            <div className="inline-flex items-center space-x-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm border border-primary-200 rounded-full text-xs sm:text-sm font-medium text-primary-700 mb-4 sm:mb-6">
+              <GraduationCap size={14} className="sm:w-4 sm:h-4" />
+              <span className="px-1">Öğrenciden Öğrenciye Özel Ders</span>
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight px-2">
               YKS'ye Hazırlanırken
               <br />
-              <span 
-                className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400"
-                style={{
-                  WebkitTextStroke: '2px #000',
-                  textShadow: '-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, -2px 0 0 #000, 2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, 0 0 8px rgba(0,0,0,0.8)',
-                  WebkitTextFillColor: 'transparent',
-                  background: 'linear-gradient(to right, #ffde59, #ffd700)',
-                  WebkitBackgroundClip: 'text'
-                }}
-              >
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400">
                 Yanınızdayız
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed px-4">
               Deneyimli öğretmenlerle özel ders alın, hedefinize ulaşın.
               <br />
-              <span 
-                className="text-primary-600 font-medium"
-                style={{
-                  textShadow: '-1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000, -1.5px 0 0 #000, 1.5px 0 0 #000, 0 -1.5px 0 #000, 0 1.5px 0 #000, 0 0 6px rgba(0,0,0,0.7)'
-                }}
-              >
+              <span className="text-primary-600 font-medium">
                 Öğrenciden öğrenciye, samimi ve etkili eğitim.
               </span>
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4">
               <Link
                 to="/register/student"
-                className="inline-flex items-center space-x-2 px-8 py-4 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"
               >
                 <span>Hemen Başla</span>
-                <ArrowRight size={20} />
+                <ArrowRight size={18} className="sm:w-5 sm:h-5" />
               </Link>
               <Link
                 to="/register/teacher"
-                className="inline-flex items-center space-x-2 px-8 py-4 bg-white text-primary-600 border-2 border-primary-200 rounded-lg font-semibold hover:bg-primary-50 transition-all duration-200"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-primary-600 border-2 border-primary-200 rounded-lg font-semibold hover:bg-primary-50 transition-all duration-200 text-sm sm:text-base"
               >
-                <Users size={20} />
+                <Users size={18} className="sm:w-5 sm:h-5" />
                 <span>Öğretmen Ol</span>
               </Link>
             </div>
 
             {/* Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-12 md:mt-16 max-w-4xl mx-auto px-4">
               <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200">
                 <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
                   <BookOpen className="text-primary-600" size={24} />
