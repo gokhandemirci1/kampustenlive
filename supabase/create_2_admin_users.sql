@@ -43,53 +43,59 @@ BEGIN
   -- Password hash'le (bcrypt)
   v_encrypted_password := crypt(p_password, gen_salt('bf'));
   
-  -- auth.users tablosuna kullanıcı ekle
-  INSERT INTO auth.users (
-    id,
-    instance_id,
-    email,
-    encrypted_password,
-    email_confirmed_at,
-    recovery_sent_at,
-    last_sign_in_at,
-    raw_app_meta_data,
-    raw_user_meta_data,
-    created_at,
-    updated_at,
-    confirmation_token,
-    email_change,
-    email_change_token_new,
-    recovery_token,
-    is_super_admin,
-    role
-  )
-  VALUES (
-    v_user_id,
-    v_instance_id,
-    p_email,
-    v_encrypted_password,
-    NOW(), -- email_confirmed_at
-    NOW(), -- recovery_sent_at
-    NOW(), -- last_sign_in_at
-    '{"provider":"email","providers":["email"]}'::jsonb,
-    jsonb_build_object('full_name', p_full_name),
-    NOW(),
-    NOW(),
-    '', -- confirmation_token
-    '', -- email_change
-    '', -- email_change_token_new
-    '', -- recovery_token
-    false, -- is_super_admin
-    'authenticated' -- role
-  )
-  ON CONFLICT (email) DO UPDATE SET
-    encrypted_password = EXCLUDED.encrypted_password,
-    raw_user_meta_data = EXCLUDED.raw_user_meta_data,
-    updated_at = NOW();
+  -- Önce kullanıcı var mı kontrol et
+  SELECT id INTO v_user_id FROM auth.users WHERE email = p_email;
   
-  -- Eğer kullanıcı zaten varsa ID'yi al
-  IF FOUND THEN
-    SELECT id INTO v_user_id FROM auth.users WHERE email = p_email;
+  -- Eğer kullanıcı yoksa yeni oluştur
+  IF v_user_id IS NULL THEN
+    v_user_id := uuid_generate_v4();
+    
+    INSERT INTO auth.users (
+      id,
+      instance_id,
+      email,
+      encrypted_password,
+      email_confirmed_at,
+      recovery_sent_at,
+      last_sign_in_at,
+      raw_app_meta_data,
+      raw_user_meta_data,
+      created_at,
+      updated_at,
+      confirmation_token,
+      email_change,
+      email_change_token_new,
+      recovery_token,
+      is_super_admin,
+      role
+    )
+    VALUES (
+      v_user_id,
+      v_instance_id,
+      p_email,
+      v_encrypted_password,
+      NOW(),
+      NOW(),
+      NOW(),
+      '{"provider":"email","providers":["email"]}'::jsonb,
+      jsonb_build_object('full_name', p_full_name),
+      NOW(),
+      NOW(),
+      '',
+      '',
+      '',
+      '',
+      false,
+      'authenticated'
+    );
+  ELSE
+    -- Kullanıcı varsa güncelle
+    UPDATE auth.users
+    SET
+      encrypted_password = v_encrypted_password,
+      raw_user_meta_data = jsonb_build_object('full_name', p_full_name),
+      updated_at = NOW()
+    WHERE id = v_user_id;
   END IF;
   
   -- profiles tablosuna admin profil ekle
@@ -178,50 +184,59 @@ BEGIN
   v_encrypted_password := crypt('Salaksacma1', gen_salt('bf'));
   
   -- 1. Admin: gokhan@kampus.org
-  v_user1_id := uuid_generate_v4();
+  -- Önce var mı kontrol et
+  SELECT id INTO v_user1_id FROM auth.users WHERE email = 'gokhan@kampus.org';
   
-  INSERT INTO auth.users (
-    id,
-    instance_id,
-    email,
-    encrypted_password,
-    email_confirmed_at,
-    recovery_sent_at,
-    last_sign_in_at,
-    raw_app_meta_data,
-    raw_user_meta_data,
-    created_at,
-    updated_at,
-    confirmation_token,
-    email_change,
-    email_change_token_new,
-    recovery_token,
-    is_super_admin,
-    role
-  )
-  VALUES (
-    v_user1_id,
-    v_instance_id,
-    'gokhan@kampus.org',
-    v_encrypted_password,
-    NOW(),
-    NOW(),
-    NOW(),
-    '{"provider":"email","providers":["email"]}'::jsonb,
-    jsonb_build_object('full_name', 'Gokhan'),
-    NOW(),
-    NOW(),
-    '',
-    '',
-    '',
-    '',
-    false,
-    'authenticated'
-  )
-  ON CONFLICT (email) DO UPDATE SET
-    encrypted_password = EXCLUDED.encrypted_password,
-    updated_at = NOW()
-  RETURNING id INTO v_user1_id;
+  IF v_user1_id IS NULL THEN
+    v_user1_id := uuid_generate_v4();
+    
+    INSERT INTO auth.users (
+      id,
+      instance_id,
+      email,
+      encrypted_password,
+      email_confirmed_at,
+      recovery_sent_at,
+      last_sign_in_at,
+      raw_app_meta_data,
+      raw_user_meta_data,
+      created_at,
+      updated_at,
+      confirmation_token,
+      email_change,
+      email_change_token_new,
+      recovery_token,
+      is_super_admin,
+      role
+    )
+    VALUES (
+      v_user1_id,
+      v_instance_id,
+      'gokhan@kampus.org',
+      v_encrypted_password,
+      NOW(),
+      NOW(),
+      NOW(),
+      '{"provider":"email","providers":["email"]}'::jsonb,
+      jsonb_build_object('full_name', 'Gokhan'),
+      NOW(),
+      NOW(),
+      '',
+      '',
+      '',
+      '',
+      false,
+      'authenticated'
+    );
+  ELSE
+    -- Kullanıcı varsa şifreyi güncelle
+    UPDATE auth.users
+    SET
+      encrypted_password = v_encrypted_password,
+      raw_user_meta_data = jsonb_build_object('full_name', 'Gokhan'),
+      updated_at = NOW()
+    WHERE id = v_user1_id;
+  END IF;
   
   -- Profile ekle
   INSERT INTO profiles (id, role, full_name, created_at, updated_at)
@@ -232,50 +247,59 @@ BEGIN
     updated_at = NOW();
   
   -- 2. Admin: emre@kampus.org
-  v_user2_id := uuid_generate_v4();
+  -- Önce var mı kontrol et
+  SELECT id INTO v_user2_id FROM auth.users WHERE email = 'emre@kampus.org';
   
-  INSERT INTO auth.users (
-    id,
-    instance_id,
-    email,
-    encrypted_password,
-    email_confirmed_at,
-    recovery_sent_at,
-    last_sign_in_at,
-    raw_app_meta_data,
-    raw_user_meta_data,
-    created_at,
-    updated_at,
-    confirmation_token,
-    email_change,
-    email_change_token_new,
-    recovery_token,
-    is_super_admin,
-    role
-  )
-  VALUES (
-    v_user2_id,
-    v_instance_id,
-    'emre@kampus.org',
-    v_encrypted_password,
-    NOW(),
-    NOW(),
-    NOW(),
-    '{"provider":"email","providers":["email"]}'::jsonb,
-    jsonb_build_object('full_name', 'Emre'),
-    NOW(),
-    NOW(),
-    '',
-    '',
-    '',
-    '',
-    false,
-    'authenticated'
-  )
-  ON CONFLICT (email) DO UPDATE SET
-    encrypted_password = EXCLUDED.encrypted_password,
-    updated_at = NOW()
-  RETURNING id INTO v_user2_id;
+  IF v_user2_id IS NULL THEN
+    v_user2_id := uuid_generate_v4();
+    
+    INSERT INTO auth.users (
+      id,
+      instance_id,
+      email,
+      encrypted_password,
+      email_confirmed_at,
+      recovery_sent_at,
+      last_sign_in_at,
+      raw_app_meta_data,
+      raw_user_meta_data,
+      created_at,
+      updated_at,
+      confirmation_token,
+      email_change,
+      email_change_token_new,
+      recovery_token,
+      is_super_admin,
+      role
+    )
+    VALUES (
+      v_user2_id,
+      v_instance_id,
+      'emre@kampus.org',
+      v_encrypted_password,
+      NOW(),
+      NOW(),
+      NOW(),
+      '{"provider":"email","providers":["email"]}'::jsonb,
+      jsonb_build_object('full_name', 'Emre'),
+      NOW(),
+      NOW(),
+      '',
+      '',
+      '',
+      '',
+      false,
+      'authenticated'
+    );
+  ELSE
+    -- Kullanıcı varsa şifreyi güncelle
+    UPDATE auth.users
+    SET
+      encrypted_password = v_encrypted_password,
+      raw_user_meta_data = jsonb_build_object('full_name', 'Emre'),
+      updated_at = NOW()
+    WHERE id = v_user2_id;
+  END IF;
   
   -- Profile ekle
   INSERT INTO profiles (id, role, full_name, created_at, updated_at)
