@@ -2,8 +2,8 @@
 -- 2 ADMIN KULLANICISI OLUŞTURMA
 -- ============================================
 -- Bu script 2 admin kullanıcısı oluşturur
--- 1. gokhan@kampus.org / Salaksacma1
--- 2. emre@kampus.org / Salaksacma1
+-- 1. gokhan@kampusten.org / Salaksacma1
+-- 2. emre@kampusten.org / Salaksacma1
 
 -- ÖNEMLİ: Bu script auth.users tablosuna direkt erişim gerektirir
 -- Supabase Dashboard > SQL Editor'de service_role ile çalıştırın
@@ -130,30 +130,30 @@ DECLARE
   v_user1_id UUID;
   v_user2_id UUID;
 BEGIN
-  -- 1. Admin: gokhan@kampus.org
+  -- 1. Admin: gokhan@kampusten.org
   BEGIN
     v_user1_id := create_admin_user(
-      'gokhan@kampus.org',
+      'gokhan@kampusten.org',
       'Gokhan',
       'Salaksacma1'
     );
-    RAISE NOTICE 'Admin kullanıcısı oluşturuldu: gokhan@kampus.org (ID: %)', v_user1_id;
+    RAISE NOTICE 'Admin kullanıcısı oluşturuldu: gokhan@kampusten.org (ID: %)', v_user1_id;
   EXCEPTION
     WHEN OTHERS THEN
-      RAISE NOTICE 'Hata (gokhan@kampus.org): % - %', SQLERRM, SQLSTATE;
+      RAISE NOTICE 'Hata (gokhan@kampusten.org): % - %', SQLERRM, SQLSTATE;
   END;
   
-  -- 2. Admin: emre@kampus.org
+  -- 2. Admin: emre@kampusten.org
   BEGIN
     v_user2_id := create_admin_user(
-      'emre@kampus.org',
+      'emre@kampusten.org',
       'Emre',
       'Salaksacma1'
     );
-    RAISE NOTICE 'Admin kullanıcısı oluşturuldu: emre@kampus.org (ID: %)', v_user2_id;
+    RAISE NOTICE 'Admin kullanıcısı oluşturuldu: emre@kampusten.org (ID: %)', v_user2_id;
   EXCEPTION
     WHEN OTHERS THEN
-      RAISE NOTICE 'Hata (emre@kampus.org): % - %', SQLERRM, SQLSTATE;
+      RAISE NOTICE 'Hata (emre@kampusten.org): % - %', SQLERRM, SQLSTATE;
   END;
   
   RAISE NOTICE 'Toplam 2 admin kullanıcısı oluşturma işlemi tamamlandı';
@@ -183,9 +183,9 @@ BEGIN
   -- Password hash'le
   v_encrypted_password := crypt('Salaksacma1', gen_salt('bf'));
   
-  -- 1. Admin: gokhan@kampus.org
+  -- 1. Admin: gokhan@kampusten.org
   -- Önce var mı kontrol et
-  SELECT id INTO v_user1_id FROM auth.users WHERE email = 'gokhan@kampus.org';
+  SELECT id INTO v_user1_id FROM auth.users WHERE email = 'gokhan@kampusten.org';
   
   IF v_user1_id IS NULL THEN
     v_user1_id := uuid_generate_v4();
@@ -212,7 +212,7 @@ BEGIN
     VALUES (
       v_user1_id,
       v_instance_id,
-      'gokhan@kampus.org',
+      'gokhan@kampusten.org',
       v_encrypted_password,
       NOW(),
       NOW(),
@@ -246,9 +246,9 @@ BEGIN
     full_name = 'Gokhan',
     updated_at = NOW();
   
-  -- 2. Admin: emre@kampus.org
+  -- 2. Admin: emre@kampusten.org
   -- Önce var mı kontrol et
-  SELECT id INTO v_user2_id FROM auth.users WHERE email = 'emre@kampus.org';
+  SELECT id INTO v_user2_id FROM auth.users WHERE email = 'emre@kampusten.org';
   
   IF v_user2_id IS NULL THEN
     v_user2_id := uuid_generate_v4();
@@ -275,7 +275,7 @@ BEGIN
     VALUES (
       v_user2_id,
       v_instance_id,
-      'emre@kampus.org',
+      'emre@kampusten.org',
       v_encrypted_password,
       NOW(),
       NOW(),
@@ -309,7 +309,7 @@ BEGIN
     full_name = 'Emre',
     updated_at = NOW();
   
-  RAISE NOTICE 'Admin kullanıcıları oluşturuldu: gokhan@kampus.org (%), emre@kampus.org (%)', v_user1_id, v_user2_id;
+  RAISE NOTICE 'Admin kullanıcıları oluşturuldu: gokhan@kampusten.org (%), emre@kampusten.org (%)', v_user1_id, v_user2_id;
 END;
 $$;
 
@@ -324,7 +324,7 @@ SELECT
 FROM profiles p
 INNER JOIN auth.users au ON p.id = au.id
 WHERE p.role = 'admin'
-AND (au.email = 'gokhan@kampus.org' OR au.email = 'emre@kampus.org')
+AND (au.email = 'gokhan@kampusten.org' OR au.email = 'emre@kampusten.org')
 ORDER BY au.email;
 
 -- ============================================
