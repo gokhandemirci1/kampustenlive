@@ -41,17 +41,26 @@ const Home = () => {
   }, [location, navigate])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-100">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        {/* Decorative Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary-100 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+    <div className="min-h-screen">
+      {/* Hero Section with Background Image */}
+      <div className="relative min-h-screen overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(/images/hero_background.jpg)',
+            backgroundAttachment: 'fixed'
+          }}
+        >
+          {/* Professional Gradient Overlay - Optimized opacity for readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-primary-100/85"></div>
+          
+          {/* Subtle tint overlay for brand consistency */}
+          <div className="absolute inset-0 bg-primary-500/8"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        {/* Content Layer - z-index to ensure it's above background */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
           <div className="text-center">
             {/* Logo */}
             <div className="mb-8 flex justify-center">
