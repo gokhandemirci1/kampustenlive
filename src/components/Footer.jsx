@@ -3,7 +3,7 @@ import { Instagram } from 'lucide-react'
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-black via-black/90 to-[#ffde59] border-t border-gray-200/50 mt-auto">
+    <footer className="bg-gradient-to-r from-black via-black/90 to-[#ffde59] border-t border-gray-200/50 mt-auto shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           {/* Logo and Copyright */}
@@ -14,7 +14,7 @@ const Footer = () => {
                 alt="Kampusten.org Logo" 
                 className="h-12 w-12 rounded-full object-cover shadow-md transition-all duration-200 group-hover:scale-110 group-hover:shadow-lg border-2 border-white/50"
               />
-              <div className="text-lg font-bold text-white/90">
+              <div className="text-lg font-bold text-white">
                 KAMPÜSTEN
               </div>
             </Link>
