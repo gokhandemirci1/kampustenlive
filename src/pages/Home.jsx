@@ -84,13 +84,15 @@ const Home = () => {
               YKS'ye Hazırlanırken
               <br />
               <span 
-                className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400"
+                className="relative inline-block"
                 style={{
-                  WebkitTextStroke: '2px #000',
-                  textShadow: '-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, -2px 0 0 #000, 2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, 0 0 8px rgba(0,0,0,0.8)',
-                  WebkitTextFillColor: 'transparent',
+                  WebkitTextStroke: '2.5px #000',
+                  textShadow: '-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, -2px 0 0 #000, 2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, 0 0 10px rgba(0,0,0,0.9)',
                   background: 'linear-gradient(to right, #ffde59, #ffd700)',
-                  WebkitBackgroundClip: 'text'
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  color: 'transparent'
                 }}
               >
                 Yanınızdayız
