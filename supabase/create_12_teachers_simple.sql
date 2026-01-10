@@ -52,7 +52,7 @@ DECLARE
     'Kimya',
     'İktisat',
     'İşletme',
-    'Tıp',
+    'Elektrik Elektronik Mühendisliği',
     'Diş Hekimliği',
     'Hukuk'
   ];

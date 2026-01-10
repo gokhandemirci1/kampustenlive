@@ -8,15 +8,15 @@ const Testimonials = () => {
     {
       name: 'Ayşe Yılmaz',
       role: 'Öğrenci',
-      university: 'Boğaziçi Üniversitesi - Tıp',
+      university: '',
       image: null,
       rating: 5,
-      text: 'KAMPÜSTEN sayesinde YKS\'de 18.000. sıralama elde ettim. Öğretmenlerimiz gerçekten çok deneyimli ve anlayışlı. Canlı dersler çok verimli geçiyor.'
+      text: 'Canlı dersler çok verimli geçiyor. Akran eğitim modeli gerçekten açıklayıcı '
     },
     {
       name: 'Mehmet Demir',
       role: 'Öğrenci',
-      university: 'ODTÜ - Bilgisayar Mühendisliği',
+      university: '',
       image: null,
       rating: 5,
       text: 'Ücretsiz içerikler ve canlı derslerin kombinasyonu harika! Özellikle soru çözüm videoları çok faydalı oldu. Tüm öğrenci arkadaşlarıma tavsiye ediyorum.'
@@ -24,7 +24,7 @@ const Testimonials = () => {
     {
       name: 'Zeynep Kaya',
       role: 'Öğrenci',
-      university: 'İTÜ - Elektrik-Elektronik Mühendisliği',
+      university: '',
       image: null,
       rating: 5,
       text: 'Öğrenciden öğrenciye eğitim konsepti çok mantıklı. Öğretmenlerimiz bizim gibi YKS sürecinden geçtiği için hangi konularda zorlanacağımızı çok iyi biliyorlar.'
@@ -32,7 +32,7 @@ const Testimonials = () => {
     {
       name: 'Burak Şahin',
       role: 'Öğrenci',
-      university: 'Koç Üniversitesi - İşletme',
+      university: '',
       image: null,
       rating: 5,
       text: 'Fiyat performans açısından mükemmel! Diğer platformlarla karşılaştırdığımda hem daha uygun hem de daha verimli. Kesinlikle tavsiye ederim.'

@@ -11,7 +11,7 @@ const FAQ = () => {
     },
     {
       question: 'Ders ücretleri nasıl belirleniyor?',
-      answer: 'Ders ücretleri öğretmenlerimiz tarafından belirlenir ve ders saatine göre hesaplanır. Örneğin 20 saatlik bir kamp için toplam ücret belirlenir ve saatlik ücret otomatik hesaplanır. Fiyatlar öğretmenin deneyimi ve YKS başarısına göre değişiklik gösterebilir.'
+      answer: 'Ders ücretleri yönetimiz tarafından belirlenir ve ders saatine göre hesaplanır. Fiyatlar öğretmenin deneyimi ve YKS başarısına göre değişiklik göstermez.'
     },
     {
       question: 'Canlı dersler nasıl yapılıyor?',
@@ -26,9 +26,8 @@ const FAQ = () => {
       answer: 'Evet, tüm ödemeler şifrelenmiş bağlantılarla ve güvenli ödeme sistemleri üzerinden yapılır. Kredi kartı bilgileriniz asla saklanmaz ve tüm işlemler banka seviyesinde güvenlik ile korunur.'
     },
     {
-      question: 'Para iade garantisi var mı?',
-      answer: 'Evet! İlk dersinizden memnun kalmazsanız, 7 gün içinde %100 para iade garantisi sunuyoruz. Ayrıca ders sırasında herhangi bir sorun yaşarsanız, müşteri desteğimiz 7/24 size yardımcı olmaya hazır.'
-    }
+      question: 'Dersi kaçırırsam ne olur?',
+      answer: 'Öğrenci destek hattıızdan ve mobil uygulamamızdan ders saati gelmeden bilgi alırsınız. Kaçırırsanız panelinizde kaydolduğunuz dersin ders kaydı mevcuttur. Ayrıca uygulama üzerinden sorunuz olursa eğitmeninize iletebilirsiniz'}
   ]
 
   return (
