@@ -103,21 +103,15 @@ const Login = () => {
       {/* Content Layer */}
       <div className="relative z-10 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md">
-          {/* Logo ve Başlık */}
+          {/* Logo */}
           <div className="text-center mb-10">
-            <Link to="/" className="inline-block mb-6">
+            <Link to="/" className="inline-block">
               <img 
                 src="/images/logo.jpg" 
                 alt="KAMPÜSTEN Logo" 
-                className="h-20 w-20 mx-auto rounded-full object-cover shadow-lg border-4 border-primary-100 transition-all duration-200 hover:scale-110 hover:shadow-xl"
+                className="h-24 w-24 mx-auto rounded-full object-cover shadow-xl border-4 border-white/80 transition-all duration-200 hover:scale-110 hover:shadow-2xl"
               />
             </Link>
-            <div className="bg-white/90 backdrop-blur-sm rounded-xl px-6 py-4 shadow-lg border border-white/50 inline-block">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight drop-shadow-sm">
-                {getTitle()}
-              </h1>
-              <p className="text-gray-700 font-semibold text-base">Hesabınıza giriş yapın</p>
-            </div>
           </div>
 
           {/* Form Card */}
