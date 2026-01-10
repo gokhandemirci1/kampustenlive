@@ -295,15 +295,18 @@ const Register = () => {
       {/* Content Layer */}
       <div className="relative z-10 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md">
-          {/* Logo */}
+          {/* Logo ve Başlık */}
           <div className="text-center mb-10">
-            <Link to="/" className="inline-block">
+            <Link to="/" className="inline-block mb-6">
               <img 
                 src="/images/logo.jpg" 
                 alt="KAMPÜSTEN Logo" 
                 className="h-24 w-24 mx-auto rounded-full object-cover shadow-xl border-4 border-white/80 transition-all duration-200 hover:scale-110 hover:shadow-2xl"
               />
             </Link>
+            <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
+              {getTitle()}
+            </h1>
           </div>
 
         {/* Form Card */}
