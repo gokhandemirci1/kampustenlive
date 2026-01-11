@@ -80,7 +80,7 @@ const Home = () => {
                 Seni En İyi,
               </span>
               <br />
-              <span className="bg-gradient-to-r from-[#E0F7FA] via-[#E1BEE7] to-[#FFCCBC] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]" style={{ textShadow: '0 2px 8px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4)' }}>
+              <span className="bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)]" style={{ textShadow: '0 2px 8px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.6)' }}>
                 Senin Yolundan Geçen Anlar.
               </span>
             </h1>
