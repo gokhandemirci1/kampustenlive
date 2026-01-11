@@ -122,8 +122,9 @@ const LiveClassStudent = ({ courseId, channelName, onLeave }) => {
       // Set client role as audience (default - subscriber) with low latency
       await agoraClient.setClientRole('audience', { level: 1 })
 
-      // Fetch token with subscriber role (audience)
-      const tokenResponse = await fetchAgoraToken(channelName, rtcUid.current, AGORA_ROLES.SUBSCRIBER)
+      // Fetch token with PUBLISHER role so student can enable video/audio later
+      // Even though we start as audience, token needs PUBLISHER permissions
+      const tokenResponse = await fetchAgoraToken(channelName, rtcUid.current, AGORA_ROLES.PUBLISHER)
       const token = typeof tokenResponse === 'string' ? tokenResponse : tokenResponse.token
       const appIdFromServer = typeof tokenResponse === 'string' ? null : tokenResponse.appId
       
