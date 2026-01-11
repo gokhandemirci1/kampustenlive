@@ -11,7 +11,7 @@ const StudentDashboard = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
   const [cart, setCart] = useState([])
-  const [activeTab, setActiveTab] = useState('enrolled') // 'enrolled', 'live', 'free'
+  const [activeTab, setActiveTab] = useState('live') // 'live', 'enrolled', 'free'
 
   // Sepet localStorage'dan yükle
   useEffect(() => {
@@ -119,20 +119,10 @@ const StudentDashboard = () => {
         </div>
 
         {/* Tabs */}
-        <div className="mb-8 flex flex-wrap gap-4">
-          <button
-            onClick={() => setActiveTab('enrolled')}
-            className={`px-6 py-3 rounded-full font-light text-base transition-all duration-200 ${
-              activeTab === 'enrolled'
-                ? 'bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] text-white shadow-lg'
-                : 'glass-strong text-gray-700 hover:text-gray-900 border border-gray-200/50 hover:border-gray-300/50'
-            }`}
-          >
-            Satın Aldığım Kamplar
-          </button>
+        <div className="mb-8 flex flex-wrap gap-3 sm:gap-4 justify-center sm:justify-start">
           <button
             onClick={() => setActiveTab('live')}
-            className={`px-6 py-3 rounded-full font-light text-base transition-all duration-200 ${
+            className={`px-4 py-2.5 sm:px-6 sm:py-3 rounded-full font-light text-sm sm:text-base transition-all duration-200 whitespace-nowrap ${
               activeTab === 'live'
                 ? 'bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] text-white shadow-lg'
                 : 'glass-strong text-gray-700 hover:text-gray-900 border border-gray-200/50 hover:border-gray-300/50'
@@ -141,8 +131,18 @@ const StudentDashboard = () => {
             Canlı Dersler
           </button>
           <button
+            onClick={() => setActiveTab('enrolled')}
+            className={`px-4 py-2.5 sm:px-6 sm:py-3 rounded-full font-light text-sm sm:text-base transition-all duration-200 whitespace-nowrap ${
+              activeTab === 'enrolled'
+                ? 'bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] text-white shadow-lg'
+                : 'glass-strong text-gray-700 hover:text-gray-900 border border-gray-200/50 hover:border-gray-300/50'
+            }`}
+          >
+            Satın Aldığım Kamplar
+          </button>
+          <button
             onClick={() => setActiveTab('free')}
-            className={`px-6 py-3 rounded-full font-light text-base transition-all duration-200 ${
+            className={`px-4 py-2.5 sm:px-6 sm:py-3 rounded-full font-light text-sm sm:text-base transition-all duration-200 whitespace-nowrap ${
               activeTab === 'free'
                 ? 'bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] text-white shadow-lg'
                 : 'glass-strong text-gray-700 hover:text-gray-900 border border-gray-200/50 hover:border-gray-300/50'
