@@ -75,15 +75,18 @@ const Home = () => {
             </div>
 
             {/* Main Heading - Çok Büyük, İnce Font */}
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light mb-6 leading-tight text-gray-900 tracking-tight">
-              Seni En İyi,<br />
-              <span className="bg-gradient-to-r from-[#E0F7FA] via-[#E1BEE7] to-[#FFCCBC] bg-clip-text text-transparent">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light mb-6 leading-tight tracking-tight">
+              <span className="text-gray-900 drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)]" style={{ textShadow: '0 2px 8px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.5)' }}>
+                Seni En İyi,
+              </span>
+              <br />
+              <span className="bg-gradient-to-r from-[#E0F7FA] via-[#E1BEE7] to-[#FFCCBC] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]" style={{ textShadow: '0 2px 8px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4)' }}>
                 Senin Yolundan Geçen Anlar.
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-700 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-800 mb-12 max-w-3xl mx-auto font-normal leading-relaxed drop-shadow-[0_1px_3px_rgba(255,255,255,0.8)]" style={{ textShadow: '0 1px 4px rgba(255,255,255,0.9), 0 0 10px rgba(255,255,255,0.5)' }}>
               YKS maratonunda yalnız değilsin. Derece yapmış akranlarından,<br />
               sana özel butik gruplarda ders dinle.
             </p>
