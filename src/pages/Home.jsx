@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { GraduationCap, BookOpen, Users, ArrowRight } from 'lucide-react'
 import FeaturedTeachersSlider from '../components/home/FeaturedTeachersSlider'
 import StatsSection from '../components/home/StatsCounter'
@@ -11,17 +11,6 @@ import FAQ from '../components/home/FAQ'
 const Home = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    // Check if mobile
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
 
   useEffect(() => {
     // Check if URL has hash fragment with password recovery token
@@ -59,26 +48,10 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section with Background Image */}
+      {/* Hero Section with Gradient Background */}
       <div className="relative min-h-screen overflow-hidden">
-        {/* Background Image - Mobile Responsive */}
-        <div 
-          className={`absolute inset-0 bg-cover bg-center bg-no-repeat ${!isMobile ? 'md:bg-fixed' : ''}`}
-          style={{
-            backgroundImage: 'url(/images/hero_background.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: isMobile ? 'center top' : 'center center',
-            backgroundRepeat: 'no-repeat',
-            minHeight: '100vh',
-            width: '100%'
-          }}
-        >
-          {/* Professional Gradient Overlay - Semi-transparent yellow background */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#ffde59]/30 via-[#ffde59]/25 to-[#ffde59]/35"></div>
-          
-          {/* Additional subtle overlay for better contrast and readability */}
-          <div className="absolute inset-0 bg-black/10"></div>
-        </div>
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F5F5F5] to-[#1A1A1A]"></div>
 
         {/* Content Layer - z-index to ensure it's above background */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-32">
