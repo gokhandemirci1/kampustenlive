@@ -5,10 +5,16 @@
 @layer base {
   * {
     @apply border-gray-200;
+    cursor: none; /* Custom cursor için default cursor'u gizle */
   }
   
   body {
-    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+    @apply bg-[#FAFAFA] text-gray-900 font-sans antialiased;
+  }
+  
+  /* Custom cursor için pointer elements */
+  a, button, [role="button"], input, textarea, select {
+    cursor: none;
   }
 }
 
@@ -232,5 +238,109 @@
 
 .Toastify__close-button {
   @apply text-gray-600 opacity-70 hover:opacity-100;
+}
+
+/* Custom Cursor Styles */
+.custom-cursor {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+.custom-cursor.hover {
+  transform: translate(-50%, -50%) scale(1.5);
+  opacity: 0.7;
+  border-color: rgba(0, 0, 0, 0.8);
+}
+
+.custom-cursor.click {
+  transform: translate(-50%, -50%) scale(0.8);
+  border-width: 3px;
+}
+
+.custom-cursor.magnetic {
+  transform: translate(-50%, -50%) scale(1.2);
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Glassmorphism Utility */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Mesh Gradient Animations */
+@keyframes mesh-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.mesh-gradient {
+  background: linear-gradient(
+    135deg,
+    #E0F7FA 0%,
+    #E1BEE7 50%,
+    #FFCCBC 100%
+  );
+  background-size: 200% 200%;
+  animation: mesh-gradient 15s ease infinite;
+}
+
+/* Floating Animation for Hero Shape */
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(30px, -30px) rotate(5deg);
+  }
+  66% {
+    transform: translate(-20px, 20px) rotate(-5deg);
+  }
+}
+
+.animate-float {
+  animation: float 20s ease-in-out infinite;
+}
+
+/* Ripple Effect */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple-effect {
+  animation: ripple 0.6s ease-out;
 }
 

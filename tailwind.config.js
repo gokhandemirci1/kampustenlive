@@ -7,7 +7,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Soft color palette - açık mavi, gri ve beyaz tonları
+        // Aurora & Glass Palette - Mesh Gradient Colors
+        aurora: {
+          calmBlue: '#E0F7FA',    // Dingin Mavi
+          vibrantLilac: '#E1BEE7', // Canlı Leylak
+          softCoral: '#FFCCBC',    // Soft Mercan
+        },
+        // Primary color palette (retained for backward compatibility)
         primary: {
           50: '#fffef0',   // Çok açık sarı
           100: '#fffce0',  // Açık sarı
@@ -21,7 +27,7 @@ export default {
           900: '#b39900',  // En koyu sarı
         },
         gray: {
-          50: '#fafafa',   // Neredeyse beyaz
+          50: '#fafafa',   // Neredeyse beyaz (zemin rengi)
           100: '#f5f5f5',  // Çok açık gri
           200: '#e5e5e5',  // Açık gri
           300: '#d4d4d4',  // Orta açık gri

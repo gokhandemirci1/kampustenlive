@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import CustomCursor from './components/CustomCursor'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -16,6 +17,7 @@ import LiveClass from './pages/LiveClass'
 function App() {
   return (
     <Router>
+      <CustomCursor />
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow">
