@@ -2,6 +2,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { ArrowRight, BookOpen, Sparkles, UserPlus } from 'lucide-react'
 import FeaturedTeachersSlider from '../components/home/FeaturedTeachersSlider'
+import TestimonialsSlider from '../components/home/TestimonialsSlider'
 
 const Home = () => {
   const navigate = useNavigate()
