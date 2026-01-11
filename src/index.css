@@ -5,16 +5,10 @@
 @layer base {
   * {
     @apply border-gray-200;
-    cursor: none; /* Custom cursor için default cursor'u gizle */
   }
   
   body {
     @apply bg-[#FAFAFA] text-gray-900 font-sans antialiased;
-  }
-  
-  /* Custom cursor için pointer elements */
-  a, button, [role="button"], input, textarea, select {
-    cursor: none;
   }
 }
 
