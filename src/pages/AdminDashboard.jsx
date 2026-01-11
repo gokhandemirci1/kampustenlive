@@ -17,11 +17,8 @@ const AdminDashboard = () => {
   const [statsRefreshKey, setStatsRefreshKey] = useState(0)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-primary-50/30 to-gray-50">
-      <AdminSidebar />
-      
-      <div className="ml-64 pt-16">
-        <div className="p-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-primary-50/30 to-gray-50 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-8 relative">
             <div className="absolute inset-0 bg-gradient-to-r from-primary-500/10 via-primary-400/5 to-transparent rounded-2xl blur-3xl"></div>
