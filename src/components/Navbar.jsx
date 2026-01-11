@@ -82,7 +82,7 @@ const Navbar = () => {
             <img 
               src="/images/logo.jpg" 
               alt="Kampusten.org Logo" 
-              className="h-10 w-10 rounded-full object-cover shadow-md transition-all duration-200 group-hover:scale-105 group-hover:shadow-lg border-2 border-primary-100"
+              className="h-10 w-10 rounded-full object-cover shadow-md transition-all duration-200 group-hover:scale-105 group-hover:shadow-lg border-2 border-gray-200/50"
             />
             <div className="text-base sm:text-lg font-bold text-white">
               KAMPÜSTEN
@@ -95,14 +95,14 @@ const Navbar = () => {
               <>
                 <Link
                   to={getDashboardPath()}
-                  className="text-white/90 hover:text-[#ffde59] transition-colors duration-200 font-light"
+                  className="text-gray-700 hover:text-gray-900 transition-colors duration-200 font-light"
                 >
                   Dashboard
                 </Link>
                 <div className="relative">
                   <button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center space-x-2 text-white/90 hover:text-[#ffde59] transition-colors duration-200 font-light"
+                    className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors duration-200 font-light"
                   >
                     <User size={18} />
                     <span>{profile.full_name || user.email}</span>
@@ -124,7 +124,7 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login/student"
-                  className="group relative inline-flex items-center space-x-2 px-5 py-2.5 bg-white/10 backdrop-blur-md text-white rounded-lg hover:bg-white/20 transition-all duration-300 font-semibold border border-white/20 hover:border-white/40 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+                  className="group relative inline-flex items-center space-x-2 px-5 py-2.5 glass text-gray-700 rounded-full hover:text-gray-900 transition-all duration-300 font-light text-sm border border-gray-200/50 hover:border-gray-300/50"
                 >
                   <LogIn size={18} className="group-hover:translate-x-0.5 transition-transform duration-300" />
                   <span>Giriş Yap</span>
@@ -132,7 +132,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register/student"
-                  className="group relative inline-flex items-center space-x-2 px-6 py-2.5 bg-[#ffde59] text-gray-900 rounded-lg hover:bg-[#ffd700] transition-all duration-300 font-bold text-sm shadow-xl hover:shadow-2xl hover:shadow-[#ffde59]/50 transform hover:scale-105 active:scale-95 border-2 border-gray-900/20 hover:border-gray-900/30"
+                  className="group relative inline-flex items-center space-x-2 px-6 py-2.5 bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] text-white rounded-full hover:opacity-90 transition-all duration-300 font-light text-sm shadow-lg hover:shadow-xl"
                 >
                   <UserPlus size={18} className="group-hover:rotate-12 transition-transform duration-300" />
                   <span>Kayıt Ol</span>
@@ -145,7 +145,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-white hover:text-[#ffde59] transition-colors"
+            className="md:hidden text-gray-700 hover:text-gray-900 transition-colors"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -153,13 +153,13 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-white/20">
+          <div className="md:hidden py-4 border-t border-gray-200/50">
             {user && profile ? (
               <div className="space-y-3">
                 <Link
                   to={getDashboardPath()}
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-white/90 hover:text-[#ffde59] transition-colors duration-200 font-light"
+                  className="block text-gray-700 hover:text-gray-900 transition-colors duration-200 font-light"
                 >
                   Dashboard
                 </Link>
