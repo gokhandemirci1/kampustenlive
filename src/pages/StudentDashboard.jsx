@@ -138,6 +138,22 @@ const StudentDashboard = () => {
         onRemoveFromCart={handleRemoveFromCart}
         onCartUpdate={setCart}
       />
+
+      {/* Footer */}
+      <footer className="relative py-20 overflow-hidden mt-12">
+        {/* Gradient Background - Güven Veren Tonlar */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#E0F7FA]/30 via-[#E1BEE7]/20 to-[#FFCCBC]/25"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent"></div>
+        
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-3xl sm:text-4xl font-light text-gray-900 tracking-tight drop-shadow-[0_2px_4px_rgba(255,255,255,0.8)]" style={{ textShadow: '0 2px 8px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.5)' }}>
+            Sen yaparsın,<br />
+            <span className="bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)]" style={{ textShadow: '0 2px 8px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.6)' }}>
+              biz destekleriz.
+            </span>
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }
