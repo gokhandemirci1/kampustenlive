@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Trash2, Calendar, DollarSign, Users, UserCog } from 'lucide-react'
+import { Trash2, Calendar, DollarSign, Users, UserCog, Eye, EyeOff } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import { showToast, handleApiError } from '../../utils/toast'
 import ChangeTeacherModal from './ChangeTeacherModal'
@@ -55,6 +55,30 @@ const CampsList = () => {
 
       showToast.success('Ders kampı başarıyla silindi!')
       setCamps((prev) => prev.filter((c) => c.id !== campId))
+    } catch (error) {
+      handleApiError(error)
+    }
+  }
+
+  const handleToggleVisibility = async (campId, currentVisibility) => {
+    try {
+      const { error } = await supabase
+        .from('courses')
+        .update({ is_hidden: !currentVisibility })
+        .eq('id', campId)
+
+      if (error) throw error
+
+      showToast.success(
+        !currentVisibility
+          ? 'Ders kampı başarıyla gizlendi!'
+          : 'Ders kampı başarıyla görünür yapıldı!'
+      )
+      setCamps((prev) =>
+        prev.map((c) =>
+          c.id === campId ? { ...c, is_hidden: !currentVisibility } : c
+        )
+      )
     } catch (error) {
       handleApiError(error)
     }

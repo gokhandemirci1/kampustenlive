@@ -24,6 +24,7 @@ const FreeContentTabs = () => {
           .from('contents')
           .select('*')
           .eq('is_free', true)
+          .eq('is_hidden', false)
           .eq('type', contentType)
           .order('created_at', { ascending: false })
 

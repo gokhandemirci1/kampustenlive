@@ -82,6 +82,30 @@ const ContentManagement = () => {
     }
   }
 
+  const handleToggleVisibility = async (contentId, currentVisibility) => {
+    try {
+      const { error } = await supabase
+        .from('contents')
+        .update({ is_hidden: !currentVisibility })
+        .eq('id', contentId)
+
+      if (error) throw error
+
+      showToast.success(
+        !currentVisibility
+          ? 'İçerik başarıyla gizlendi!'
+          : 'İçerik başarıyla görünür yapıldı!'
+      )
+      setContents((prev) =>
+        prev.map((c) =>
+          c.id === contentId ? { ...c, is_hidden: !currentVisibility } : c
+        )
+      )
+    } catch (error) {
+      handleApiError(error)
+    }
+  }
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('tr-TR', {
       day: 'numeric',
@@ -195,13 +219,26 @@ const ContentManagement = () => {
                       </span>
                     </td>
                     <td className="py-3 px-4 text-center">
-                      <button
-                        onClick={() => handleDelete(content.id)}
-                        className="inline-flex items-center justify-center p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
-                        title="Sil"
-                      >
-                        <Trash2 size={16} />
-                      </button>
+                      <div className="flex items-center justify-center space-x-2">
+                        <button
+                          onClick={() => handleToggleVisibility(content.id, content.is_hidden)}
+                          className="inline-flex items-center justify-center p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                          title={content.is_hidden ? 'Göster' : 'Gizle'}
+                        >
+                          {content.is_hidden ? (
+                            <EyeOff size={16} />
+                          ) : (
+                            <Eye size={16} />
+                          )}
+                        </button>
+                        <button
+                          onClick={() => handleDelete(content.id)}
+                          className="inline-flex items-center justify-center p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                          title="Sil"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 )
