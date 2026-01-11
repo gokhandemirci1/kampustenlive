@@ -119,18 +119,45 @@ const StudentDashboard = () => {
           </p>
         </div>
 
-        {/* Main Content Grid */}
+        {/* Tabs */}
+        <div className="mb-8 flex flex-wrap gap-4">
+          <button
+            onClick={() => setActiveTab('enrolled')}
+            className={`px-6 py-3 rounded-full font-light text-base transition-all duration-200 ${
+              activeTab === 'enrolled'
+                ? 'bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] text-white shadow-lg'
+                : 'glass-strong text-gray-700 hover:text-gray-900 border border-gray-200/50 hover:border-gray-300/50'
+            }`}
+          >
+            Satın Aldığım Kamplar
+          </button>
+          <button
+            onClick={() => setActiveTab('live')}
+            className={`px-6 py-3 rounded-full font-light text-base transition-all duration-200 ${
+              activeTab === 'live'
+                ? 'bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] text-white shadow-lg'
+                : 'glass-strong text-gray-700 hover:text-gray-900 border border-gray-200/50 hover:border-gray-300/50'
+            }`}
+          >
+            Canlı Dersler
+          </button>
+          <button
+            onClick={() => setActiveTab('free')}
+            className={`px-6 py-3 rounded-full font-light text-base transition-all duration-200 ${
+              activeTab === 'free'
+                ? 'bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] text-white shadow-lg'
+                : 'glass-strong text-gray-700 hover:text-gray-900 border border-gray-200/50 hover:border-gray-300/50'
+            }`}
+          >
+            Ücretsiz İçerikler
+          </button>
+        </div>
+
+        {/* Tab Content */}
         <div className="space-y-6">
-          {/* My Enrolled Courses */}
-          <MyEnrolledCourses />
-
-          {/* Live Courses */}
-          <LiveCoursesGrid 
-            onAddToCart={handleAddToCart}
-          />
-
-          {/* Free Content */}
-          <FreeContentTabs />
+          {activeTab === 'enrolled' && <MyEnrolledCourses />}
+          {activeTab === 'live' && <LiveCoursesGrid onAddToCart={handleAddToCart} />}
+          {activeTab === 'free' && <FreeContentTabs />}
         </div>
       </div>
 
