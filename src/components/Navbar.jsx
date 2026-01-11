@@ -168,7 +168,7 @@ const Navbar = () => {
                     handleLogout()
                     setIsMenuOpen(false)
                   }}
-                  className="flex items-center space-x-2 text-white/90 hover:text-[#ffde59] transition-colors duration-200 font-light"
+                  className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors duration-200 font-light"
                 >
                   <LogOut size={18} />
                   <span>Çıkış Yap</span>
