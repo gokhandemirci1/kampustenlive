@@ -161,7 +161,7 @@ const Home = () => {
                   to="/register/student"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-light text-lg hover:opacity-90 transition-opacity shadow-lg"
                 >
-                  Premium'a Geç
+                  Ücretsiz Kaydol
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
