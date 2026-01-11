@@ -6,7 +6,6 @@ import FeaturedTeachersSlider from '../components/home/FeaturedTeachersSlider'
 const Home = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     // Check if URL has hash fragment with password recovery token
@@ -91,27 +90,23 @@ const Home = () => {
               sana özel butik gruplarda ders dinle.
             </p>
 
-            {/* Glassmorphism Search Bar - Pill Shape */}
-            <form onSubmit={handleSearchSubmit} className="max-w-2xl mx-auto mb-16">
-              <div className="relative glass-strong rounded-full p-2 shadow-2xl">
-                <div className="flex items-center">
-                  <Search className="w-6 h-6 text-gray-600 ml-4" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Hangi derste takıldın? (Örn: Türev, Organik Kimya)"
-                    className="flex-1 bg-transparent border-none outline-none px-4 py-4 text-gray-900 placeholder-gray-500 text-lg font-light"
-                  />
-                  <button
-                    type="submit"
-                    className="mr-2 p-3 rounded-full bg-gradient-to-r from-[#E0F7FA] to-[#E1BEE7] text-white hover:opacity-90 transition-opacity"
-                  >
-                    <ArrowRight className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            </form>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+              <Link
+                to="/register/student"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] text-white rounded-full font-light text-lg hover:opacity-90 transition-opacity shadow-lg hover:shadow-xl"
+              >
+                <span>Hemen Başla</span>
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                to="/register/teacher"
+                className="inline-flex items-center gap-2 px-8 py-4 glass-strong text-gray-700 rounded-full hover:text-gray-900 transition-all duration-300 font-light text-lg border border-gray-200/50 hover:border-gray-300/50"
+              >
+                <UserPlus className="w-5 h-5" />
+                <span>Eğitmenimiz Ol</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
