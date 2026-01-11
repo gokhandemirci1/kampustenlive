@@ -11,6 +11,7 @@ const StudentDashboard = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
   const [cart, setCart] = useState([])
+  const [activeTab, setActiveTab] = useState('enrolled') // 'enrolled', 'live', 'free'
 
   // Sepet localStorage'dan yükle
   useEffect(() => {
