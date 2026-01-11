@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { Search, ArrowRight, Play, BookOpen, Sparkles } from 'lucide-react'
+import { useEffect } from 'react'
+import { ArrowRight, BookOpen, Sparkles, UserPlus } from 'lucide-react'
 import FeaturedTeachersSlider from '../components/home/FeaturedTeachersSlider'
 
 const Home = () => {
