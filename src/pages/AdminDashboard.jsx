@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import AdminSidebar from '../components/AdminSidebar'
 import PendingTeachersList from '../components/admin/PendingTeachersList'
 import PendingCoursesList from '../components/admin/PendingCoursesList'
 import FinancialSummary from '../components/admin/FinancialSummary'
@@ -139,9 +138,8 @@ const AdminDashboard = () => {
                   biz destekleriz.
                 </span>
               </p>
-            </div>
-          </footer>
-        </div>
+          </div>
+        </footer>
       </div>
 
       {/* Modals */}
