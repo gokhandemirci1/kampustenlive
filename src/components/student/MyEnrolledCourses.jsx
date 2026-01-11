@@ -44,31 +44,13 @@ const MyEnrolledCourses = () => {
 
         if (coursesError) throw coursesError
 
-        // is_live alanını ayrı bir sorgu ile çek (eğer varsa)
-        let isLiveMap = {}
-        try {
-          const { data: coursesWithLive, error: liveError } = await supabase
-            .from('courses')
-            .select('id, is_live')
-            .in('id', courseIds)
-
-          if (!liveError && coursesWithLive) {
-            coursesWithLive.forEach(course => {
-              isLiveMap[course.id] = course.is_live || false
-            })
-          }
-        } catch (e) {
-          // is_live alanı yoksa, tüm kurslar için false kullan
-          console.log('is_live alanı henüz eklenmemiş, varsayılan olarak false kullanılıyor')
-        }
-
         // Verileri birleştir
         if (courses) {
           const transformedData = courses.map((course) => {
             const enrollment = enrollments.find(e => e.course_id === course.id)
             return {
               ...course,
-              is_live: isLiveMap[course.id] || false,
+              is_live: course.is_live || false,
               teacher_name: course.profiles?.full_name || 'Bilinmeyen Öğretmen',
               teacher_university: course.profiles?.teacher_details?.[0]?.university || null,
               teacher_department: course.profiles?.teacher_details?.[0]?.department || null,
@@ -96,7 +78,10 @@ const MyEnrolledCourses = () => {
           schema: 'public',
           table: 'courses',
         },
-        () => {
+        (payload) => {
+          console.log('Courses UPDATE event received:', payload)
+          // Refresh enrolled courses list when any course is updated
+          // fetchEnrolledCourses will only fetch courses the student is enrolled in
           fetchEnrolledCourses()
         }
       )
