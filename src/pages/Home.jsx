@@ -41,15 +41,6 @@ const Home = () => {
     }
   }, [location, navigate])
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      // Search functionality - can navigate to course search or filter
-      console.log('Search query:', searchQuery)
-      // TODO: Implement search functionality
-    }
-  }
-
   return (
     <div className="min-h-screen bg-[#FAFAFA] overflow-hidden">
       {/* Hero Section - "Kaos Yok, Akış Var" */}
