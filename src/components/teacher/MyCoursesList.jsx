@@ -365,13 +365,17 @@ const MyCoursesList = () => {
                           </div>
                         )}
                       </div>
-                      
-                      {/* Dersi Başlat/Durdur Butonu */}
-                      <div className="pt-4 border-t border-gray-100">
+                    </div>
+                  )}
+
+                  {/* Dersi Başlat/Durdur Butonu - Published kurslar için */}
+                  {isPublished && (
+                    <div className="mb-4 p-4 bg-white border border-gray-200">
+                      <div className="pt-2">
                         {course.is_live ? (
                           <button
                             onClick={() => handleStopCourse(course.id, course.title)}
-                            className="px-6 py-2 bg-red-500 text-white rounded-sm hover:bg-red-600 transition-colors duration-200 font-light text-sm tracking-wide flex items-center justify-center space-x-2"
+                            className="w-full px-6 py-2 bg-red-500 text-white rounded-sm hover:bg-red-600 transition-colors duration-200 font-light text-sm tracking-wide flex items-center justify-center space-x-2"
                           >
                             <Square size={18} />
                             <span>Dersi Durdur</span>
@@ -379,7 +383,7 @@ const MyCoursesList = () => {
                         ) : (
                           <button
                             onClick={() => handleStartCourse(course.id, course.title)}
-                            className="px-6 py-2 bg-[#ffde59] text-gray-900 rounded-sm hover:bg-[#ffd700] transition-colors duration-200 font-light text-sm tracking-wide flex items-center justify-center space-x-2"
+                            className="w-full px-6 py-2 bg-[#ffde59] text-gray-900 rounded-sm hover:bg-[#ffd700] transition-colors duration-200 font-light text-sm tracking-wide flex items-center justify-center space-x-2"
                           >
                             <Video size={18} />
                             <span>Dersi Başlat</span>
