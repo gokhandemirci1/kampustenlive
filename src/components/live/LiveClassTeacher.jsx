@@ -364,6 +364,13 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
 
   const handleUserPublished = async (user, mediaType) => {
     try {
+      // Get client from state or use a fallback
+      const currentClient = client
+      if (!currentClient) {
+        console.warn('Teacher: Client is null, cannot subscribe')
+        return
+      }
+
       console.log('Teacher: ⚡ USER PUBLISHED EVENT TRIGGERED ⚡', { 
         uid: user.uid, 
         mediaType,
@@ -374,7 +381,7 @@ const LiveClassTeacher = ({ courseId, channelName, onLeave }) => {
       })
       
       console.log('Teacher: Attempting to subscribe to user', user.uid, 'mediaType:', mediaType)
-      await client.subscribe(user, mediaType)
+      await currentClient.subscribe(user, mediaType)
       console.log('Teacher: ✅ Successfully subscribed to user', user.uid, 'mediaType:', mediaType)
       
       if (mediaType === 'video') {
