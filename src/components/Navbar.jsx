@@ -84,7 +84,7 @@ const Navbar = () => {
               alt="Kampusten.org Logo" 
               className="h-10 w-10 rounded-full object-cover shadow-md transition-all duration-200 group-hover:scale-105 group-hover:shadow-lg border-2 border-gray-200/50"
             />
-            <div className="text-base sm:text-lg font-bold text-white">
+            <div className="text-base sm:text-lg font-light text-gray-900 tracking-tight">
               KAMPÜSTEN
             </div>
           </Link>
@@ -187,7 +187,7 @@ const Navbar = () => {
                 <Link
                   to="/register/student"
                   onClick={() => setIsMenuOpen(false)}
-                  className="group flex items-center justify-center space-x-2 w-full px-5 py-3 bg-[#ffde59] text-gray-900 rounded-lg hover:bg-[#ffd700] transition-all duration-300 font-bold text-sm shadow-xl hover:shadow-2xl hover:shadow-[#ffde59]/50 active:scale-95 border-2 border-gray-900/20"
+                  className="group flex items-center justify-center space-x-2 w-full px-5 py-3 bg-gradient-to-r from-[#1a73e8] via-[#8e24aa] to-[#e91e63] text-white rounded-full hover:opacity-90 transition-all duration-300 font-light text-sm shadow-lg hover:shadow-xl"
                 >
                   <UserPlus size={18} className="group-hover:rotate-12 transition-transform duration-300" />
                   <span>Kayıt Ol</span>
