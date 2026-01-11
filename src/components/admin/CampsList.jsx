@@ -210,6 +210,17 @@ const CampsList = () => {
                   <td className="py-3 px-4 text-center">
                     <div className="flex items-center justify-center space-x-2">
                       <button
+                        onClick={() => handleToggleVisibility(camp.id, camp.is_hidden)}
+                        className="inline-flex items-center justify-center p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                        title={camp.is_hidden ? 'Göster' : 'Gizle'}
+                      >
+                        {camp.is_hidden ? (
+                          <EyeOff size={16} />
+                        ) : (
+                          <Eye size={16} />
+                        )}
+                      </button>
+                      <button
                         onClick={() => {
                           setSelectedCamp(camp)
                           setIsChangeTeacherModalOpen(true)
