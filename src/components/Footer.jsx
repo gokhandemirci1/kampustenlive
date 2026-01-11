@@ -25,7 +25,7 @@ const Footer = () => {
   }
 
   return (
-    <footer className="bg-gradient-to-r from-black via-black/90 to-[#ffde59] border-t border-gray-200/50 mt-auto shadow-lg">
+    <footer className="glass-strong border-t border-white/20 mt-auto shadow-lg backdrop-blur-xl bg-white/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-8">
           {/* Logo and Brand */}
@@ -34,20 +34,20 @@ const Footer = () => {
               <img 
                 src="/images/logo.jpg" 
                 alt="Kampusten.org Logo" 
-                className="h-12 w-12 rounded-full object-cover shadow-md transition-all duration-200 group-hover:scale-110 group-hover:shadow-lg border-2 border-white/50"
+                className="h-10 w-10 rounded-full object-cover shadow-md transition-all duration-200 group-hover:scale-105 group-hover:shadow-lg border-2 border-gray-200/50"
               />
-              <div className="text-base sm:text-lg font-bold text-white">
+              <div className="text-base sm:text-lg font-light text-gray-900 tracking-tight">
                 KAMPÜSTEN
               </div>
             </Link>
-            <p className="text-sm text-white/70 leading-relaxed">
+            <p className="text-sm text-gray-600 leading-relaxed font-light">
               Öğrenciden öğrenciye, samimi ve etkili eğitim platformu. YKS'ye hazırlanırken yanınızdayız.
             </p>
           </div>
 
           {/* Hızlı Linkler */}
           <div className="flex flex-col space-y-4">
-            <h3 className="text-base font-bold text-white mb-2 flex items-center space-x-2">
+            <h3 className="text-base font-light text-gray-900 mb-2 flex items-center space-x-2">
               <Home size={18} />
               <span>Hızlı Linkler</span>
             </h3>
@@ -59,7 +59,7 @@ const Footer = () => {
                     key={index}
                     to={link.to}
                     onClick={(e) => handleAnchorClick(e, link.to)}
-                    className="flex items-center space-x-2 text-sm text-white/80 hover:text-[#ffde59] transition-all duration-200 group"
+                    className="flex items-center space-x-2 text-sm text-gray-700 hover:text-gray-900 transition-all duration-200 group font-light"
                   >
                     <Icon size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
                     <span>{link.label}</span>
@@ -71,7 +71,7 @@ const Footer = () => {
 
           {/* Şirket */}
           <div className="flex flex-col space-y-4">
-            <h3 className="text-base font-bold text-white mb-2 flex items-center space-x-2">
+            <h3 className="text-base font-light text-gray-900 mb-2 flex items-center space-x-2">
               <Info size={18} />
               <span>Şirket</span>
             </h3>
@@ -82,7 +82,7 @@ const Footer = () => {
                   <Link
                     key={index}
                     to={link.to}
-                    className="flex items-center space-x-2 text-sm text-white/80 hover:text-[#ffde59] transition-all duration-200 group"
+                    className="flex items-center space-x-2 text-sm text-gray-700 hover:text-gray-900 transition-all duration-200 group font-light"
                   >
                     <Icon size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
                     <span>{link.label}</span>
@@ -94,13 +94,13 @@ const Footer = () => {
 
           {/* İletişim */}
           <div className="flex flex-col space-y-4">
-            <h3 className="text-base font-bold text-white mb-2">İletişim</h3>
+            <h3 className="text-base font-light text-gray-900 mb-2">İletişim</h3>
             <div className="flex flex-col space-y-3">
               <a
                 href="https://instagram.com/kampusten.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center space-x-2 text-sm text-white/80 hover:text-[#ffde59] transition-all duration-200 group"
+                className="inline-flex items-center space-x-2 text-sm text-gray-700 hover:text-gray-900 transition-all duration-200 group font-light"
                 aria-label="Instagram"
               >
                 <Instagram size={18} className="group-hover:scale-110 transition-transform duration-200" />
@@ -111,12 +111,12 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/20 pt-6 mt-6">
+        <div className="border-t border-gray-200/50 pt-6 mt-6">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
-            <div className="text-sm text-white/70 text-center sm:text-left">
+            <div className="text-sm text-gray-600 text-center sm:text-left font-light">
               © {new Date().getFullYear()} KAMPÜSTEN. Tüm hakları saklıdır.
             </div>
-            <div className="flex items-center space-x-4 text-sm text-white/70">
+            <div className="flex items-center space-x-4 text-sm text-gray-600 font-light">
               <span>YKS'ye hazırlanırken yanınızdayız</span>
             </div>
           </div>
